@@ -232,8 +232,8 @@ const sourceData = formatSource(d);
   
 
   //await page.keyboard.type(dateString),{delay:1000};
-  //await page.keyboard.type('20180720'),{delay:1000};
-  await page.keyboard.type(dateFirstDayString),{delay:1000};
+  await page.keyboard.type('20180701'),{delay:1000};
+  //await page.keyboard.type(dateFirstDayString),{delay:1000};
   
   //await page.click('#ext-gen394',{delay:2000});
   await page.click('#ext-gen441',{delay:2000});
@@ -925,7 +925,7 @@ var smtpTransport = nodemailer.createTransport({
 
 	var mailOptions = {
 	  from: process.env.GMAIL_USERNAME,
-	  to: "Kornarmy@gmail.com",
+	  to: "Kornarmy@gmail.com, mfilson148@gmail.com",
 	  subject: "REI FAX Mailer list No Results",
 	  generateTextFromHTML: true,
 	  html: "<b>REI FAX Found zero results today.</b>",
@@ -1168,17 +1168,18 @@ function queryDatabase(item)
 
 
 
-getREIFaxData();
+//getREIFaxData();
 
 
 
-//const init = async () => {
+const init = async () => {
   // run every 10 minutes
-//   cron.schedule('*/10 * * * *', getREIFaxData);
-//};
+   cron.schedule('*/10 * * * *', getREIFaxData);
+   //cron.schedule('0 8 * * Monday-Friday', getREIFaxData);
+};
 
 
-//init();
+init();
 
 
 
