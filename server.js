@@ -128,6 +128,13 @@ await page.keyboard.type(process.env.REIFAX_PASSWORD);
 
 await page.click(SIGNIN_BUTTON_SELECTOR,{delay:1000} );
 
+try
+{
+  await navigationPromise;
+}
+catch(err){
+  console.log(err);
+}
 
 
 await page.waitForNavigation({waitUntil:'networkidle2'});
@@ -1161,17 +1168,17 @@ function queryDatabase(item)
 
 
 
-//getREIFaxData();
+getREIFaxData();
 
 
 
-const init = async () => {
+//const init = async () => {
   // run every 10 minutes
-   cron.schedule('*/10 * * * *', getREIFaxData);
-};
+//   cron.schedule('*/10 * * * *', getREIFaxData);
+//};
 
 
-init();
+//init();
 
 
 
