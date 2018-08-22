@@ -232,8 +232,8 @@ const sourceData = formatSource(d);
   
 
   //await page.keyboard.type(dateString),{delay:1000};
-  //await page.keyboard.type('20180701'),{delay:1000};
-  await page.keyboard.type(dateFirstDayString),{delay:1000};
+  await page.keyboard.type('20180701'),{delay:1000};
+  //await page.keyboard.type(dateFirstDayString),{delay:1000};
   
   //await page.click('#ext-gen394',{delay:2000});
   await page.click('#ext-gen441',{delay:2000});
@@ -1175,11 +1175,11 @@ function queryDatabase(item)
 const init = async () => {
   // run every 10 minutes
    //cron.schedule('*/10 * * * *', getREIFaxData);
-   cron.schedule('0 8 * * Monday-Friday', getREIFaxData);
+   cron.schedule('0 0 8 * * 1-5', getREIFaxData);
 };
 
 
-init();
+init(); 
 
 
 
