@@ -1175,7 +1175,7 @@ function queryDatabase(item)
 const init = async () => {
   // run every 10 minutes
    //cron.schedule('*/10 * * * *', getREIFaxData);
-   cron.schedule('0 45 9 * * 1-5', getREIFaxData);
+   cron.schedule('0 0 12 * * 1-5', getREIFaxData);
 };
 
 
