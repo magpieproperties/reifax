@@ -3371,11 +3371,11 @@ await converter.json2csv(viewData, json2csvCallback);
   await page.waitFor(2000);
   if(viewData.length == 0)
   {
-      //sendZeroResultsEmail();
+      sendZeroResultsEmail();
   }
   else
   {
-      //sendTheEmail(fileName);
+      sendTheEmail(fileName);
   }
 
   await page.waitFor(1500);
