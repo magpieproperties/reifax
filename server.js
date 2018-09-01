@@ -3382,7 +3382,7 @@ await converter.json2csv(viewData, json2csvCallback);
 
 
 //console.log(Date.now());
-  //await browser.close();
+  await browser.close();
 
   //await getREIFaxProbate();
 
