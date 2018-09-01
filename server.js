@@ -114,7 +114,8 @@ try
 {
   await navigationPromise;
 }
-catch(err){
+catch(err)
+{
   console.log(err);
 }
 
@@ -220,10 +221,10 @@ await page.keyboard.down('Enter');
  const d = new Date();
  
   
-const dateString = formatDate(d);
-const dateFirstDayString = formatDateFirstOfMonth(d);
-const intakeDate = formatIntakeDate(d);
-const sourceData = formatSource(d);
+  const dateString = formatDate(d);
+  const dateFirstDayString = formatDateFirstOfMonth(d);
+  const intakeDate = formatIntakeDate(d);
+  const sourceData = formatSource(d);
   //console.log(dateString);
   
   //await page.click('#ext-gen392',{delay:2000});
@@ -232,8 +233,8 @@ const sourceData = formatSource(d);
   
 
   //await page.keyboard.type(dateString),{delay:1000};
-  await page.keyboard.type('20180601'),{delay:1000};
-  //await page.keyboard.type(dateFirstDayString),{delay:1000};
+  //await page.keyboard.type('20180601'),{delay:1000};
+  await page.keyboard.type(dateFirstDayString),{delay:1000};
   
   //await page.click('#ext-gen394',{delay:2000});
   await page.click('#ext-gen441',{delay:2000});
@@ -243,10 +244,8 @@ const sourceData = formatSource(d);
   
   try
   {
-	  
     //await page.click('#ext-gen93'),{delay:5000};
     await page.click('#ext-gen131'),{delay:5000};
-	
   }
   catch(err)
   {
@@ -256,16 +255,17 @@ const sourceData = formatSource(d);
   
   
   
-   try
-   {
-	await page.waitForSelector('#result_orderby_asc');
-   }
-   catch(error2)
-   {
+  try
+  {
+	  await page.waitForSelector('#result_orderby_asc');
+  }
+  catch(error2)
+  {
 	   console.log(error2);
-	   sendZeroResultsEmail();
-	   await browser.close();
-   }
+     
+     //sendZeroResultsEmail();
+	   //await browser.close();
+  }
 	   
   
    //let results = await page.evaluate((sel) => {
@@ -277,7 +277,12 @@ const sourceData = formatSource(d);
 	
    // var queryPropertieCount = res[19];
 	
-	
+   //let pageSelector = await page.evaluate((sel) => {
+    //let elements = Array.from(document.getElementsByClassName('x-panel-body x-panel-body-noheader x-panel-body-noborder'));
+    //  return elements[4].getAttribute("id");
+    // }, '#BasicResult');
+
+    // console.log(pageSelector);
  
   
  
@@ -288,156 +293,147 @@ const sourceData = formatSource(d);
  let pageNumber = await page.evaluate((sel) => {
 		let elements = Array.from(document.querySelectorAll(sel));
 		return elements.length;
- }, '#ext-gen541 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select > option');
+  }, '#ext-gen541 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select > option');
  
- //#ext-gen541 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select
- 
-	//console.log(pageNumber);
+    //#ext-gen541 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select
+    //#ext-gen17372 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select > option:nth-child(1)
+    //#ext-gen541 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)
+    //console.log(pageNumber);
    
-   pageNumber = pageNumber-1;
+  pageNumber = pageNumber-1;
  
   for (let i = 0; i <= pageNumber ; i++) 
-{
+  {
  
-   if(i > 0)
-   {
-    	//await page.click('#ext-gen525 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)');
-        
-        await page.click('#ext-gen541 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)');
-        
-
-        await page.waitForSelector('#result_orderby_asc');
-   }
+    if(i > 0)
+    {
+        //#ext-gen541 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)
+        //#ext-gen725 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)
+       //#ext-gen541 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)
+       //const pageSelector = '#ext-gen541 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select > option:nth-child(INDEX)'; 
+       //let pageSelector2 = pageSelector.replace("INDEX",(i+1));
+       await page.focus('#ext-gen541 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)', {delay:1000});
+       await page.click('#ext-gen541 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)');
+        //await page.click('#ext-gen541 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select > option:nth-child(2)');
+        //await page.click('#ext-gen725 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)');
+        await page.waitForSelector('#result_orderby_data');
+    }
  
  
     let boxResult1  = await page.evaluate((sel) => {
           let elements = Array.from(document.querySelectorAll(sel));
           return elements.length;
 		}, '#box_result_0');
-		
-		
-	//console.log(boxResult1);
+		//console.log(boxResult1);
   
-  let boxResult2  = await page.evaluate((sel) => {
+    let boxResult2  = await page.evaluate((sel) => {
             let elements = Array.from(document.querySelectorAll(sel));
               return elements.length;
 		}, '#box_result_1');
-		
-	//console.log(boxResult2);
+		//console.log(boxResult2);
 	
-  let boxResult3  = await page.evaluate((sel) => {
+    let boxResult3  = await page.evaluate((sel) => {
             let elements = Array.from(document.querySelectorAll(sel));
               return elements.length;
 		}, '#box_result_2');
-		
-	//console.log(boxResult3);
+		//console.log(boxResult3);
 	
-  let boxResult4  = await page.evaluate((sel) => {
+    let boxResult4  = await page.evaluate((sel) => {
            let elements = Array.from(document.querySelectorAll(sel));
              return elements.length;
 		}, '#box_result_3');
-		
-	//console.log(boxResult4);
+		//console.log(boxResult4);
 	
- let boxResult5  = await page.evaluate((sel) => {
+    let boxResult5  = await page.evaluate((sel) => {
          let elements = Array.from(document.querySelectorAll(sel));
            return elements.length;
 		}, '#box_result_4');
-		
-	//console.log(boxResult5);
+		//console.log(boxResult5);
 	
-let boxResult6  = await page.evaluate((sel) => {
+    let boxResult6  = await page.evaluate((sel) => {
             let elements = Array.from(document.querySelectorAll(sel));
               return elements.length;
 		}, '#box_result_5');
-		
-	//console.log(boxResult6);
+		//console.log(boxResult6);
 	
-let boxResult7  = await page.evaluate((sel) => {
+    let boxResult7  = await page.evaluate((sel) => {
            let elements = Array.from(document.querySelectorAll(sel));
              return elements.length;
 		}, '#box_result_6');
-		
-	//console.log(boxResult7);
+		//console.log(boxResult7);
   
-let boxResult8  = await page.evaluate((sel) => {
+    let boxResult8  = await page.evaluate((sel) => {
             let elements = Array.from(document.querySelectorAll(sel));
             return elements.length;
-	}, '#box_result_7');
-		
-	//console.log(boxResult8);
+	  }, '#box_result_7');
+		//console.log(boxResult8);
 	
-let boxResult9  = await page.evaluate((sel) => {
+    let boxResult9  = await page.evaluate((sel) => {
             let elements = Array.from(document.querySelectorAll(sel));
              return elements.length;
 		}, '#box_result_8');
-		
-	//console.log(boxResult9);
+		//console.log(boxResult9);
 	
-let boxResult10  = await page.evaluate((sel) => {
+    let boxResult10  = await page.evaluate((sel) => {
            let elements = Array.from(document.querySelectorAll(sel));
              return elements.length;
-	}, '#box_result_9');
-		
-	//console.log(boxResult10);
+	  }, '#box_result_9');
+		//console.log(boxResult10);
   
-  let boxNumbers = (boxResult1+boxResult2+boxResult3+boxResult4+boxResult5+boxResult6+boxResult7+boxResult8+boxResult9+boxResult10);
-  boxNumbers  = boxNumbers -1;
+    let boxNumbers = (boxResult1+boxResult2+boxResult3+boxResult4+boxResult5+boxResult6+boxResult7+boxResult8+boxResult9+boxResult10);
+    boxNumbers  = boxNumbers -1;
   
-  for (let i = 0; i <= boxNumbers ; i++) 
-{
+    for (let i = 0; i <= boxNumbers ; i++) 
+    {
 
-	 let boxSelector = boxResults.replace("INDEX", i);
-	 let bedBathSelector = bedBathResults.replace("INDEX", i);
-	 let grossAreaSelector = grossAreaResults.replace("INDEX", i);
-	 let livingAreaSelector = livingAreaResults.replace("INDEX", i);
-	 let poolSelector = poolResults.replace("INDEX", i);
-	 let waterFrontSelector = waterFrontResults.replace("INDEX",i);
-	 let builtSelector = builtResults.replace("INDEX",i);
-	 let foreclosureSelector = foreclosureResults.replace("INDEX",i);
-	
-     let box_result = await page.evaluate((sel) => {
-     let element = document.querySelector(sel);
-      return element? element.innerHTML:null;
-      }, boxSelector);
+	    let boxSelector = boxResults.replace("INDEX", i);
+      let bedBathSelector = bedBathResults.replace("INDEX", i);
+      let grossAreaSelector = grossAreaResults.replace("INDEX", i);
+      let livingAreaSelector = livingAreaResults.replace("INDEX", i);
+      let poolSelector = poolResults.replace("INDEX", i);
+      let waterFrontSelector = waterFrontResults.replace("INDEX",i);
+      let builtSelector = builtResults.replace("INDEX",i);
+      let foreclosureSelector = foreclosureResults.replace("INDEX",i);
+      
+      let box_result = await page.evaluate((sel) => {
+      let element = document.querySelector(sel);
+        return element? element.innerHTML:null;
+        }, boxSelector);
 	  
-	   let bedBath_result = await page.evaluate((sel) => {
-       let element = document.querySelector(sel);
-       return element? element.innerHTML:null;
-      }, bedBathSelector);
+      let bedBath_result = await page.evaluate((sel) => {
+      let element = document.querySelector(sel);
+        return element? element.innerHTML:null;
+        }, bedBathSelector);
 	  
-	   let grossArea_result = await page.evaluate((sel) => {
-       let element = document.querySelector(sel);
+	    let grossArea_result = await page.evaluate((sel) => {
+      let element = document.querySelector(sel);
        return element? element.innerHTML:null;
       }, grossAreaSelector);
 	  
-	   let livingArea_result = await page.evaluate((sel) => {
-       let element = document.querySelector(sel);
+	    let livingArea_result = await page.evaluate((sel) => {
+      let element = document.querySelector(sel);
        return element? element.innerHTML:null;
       }, livingAreaSelector);
 	  
-	   let pool_result = await page.evaluate((sel) => {
-       let element = document.querySelector(sel);
+	    let pool_result = await page.evaluate((sel) => {
+      let element = document.querySelector(sel);
        return element? element.innerHTML:null;
       }, poolSelector);
 	  
-	  let waterFront_result = await page.evaluate((sel) => {
-       let element = document.querySelector(sel);
+	    let waterFront_result = await page.evaluate((sel) => {
+      let element = document.querySelector(sel);
        return element? element.innerHTML:null;
       }, waterFrontSelector);
 	  
-	   let built_result = await page.evaluate((sel) => {
-       let element = document.querySelector(sel);
+	    let built_result = await page.evaluate((sel) => {
+      let element = document.querySelector(sel);
        return element? element.innerHTML:null;
       }, builtSelector);
 	  
-	   let foreclosure_result = await page.evaluate((sel) => {
-       let element = document.querySelector(sel);
+	    let foreclosure_result = await page.evaluate((sel) => {
+      let element = document.querySelector(sel);
        return element? element.innerHTML:null;
       }, foreclosureSelector);
-	  
-	  
-	  
 	  
 	  res = box_result.split(",");
 	  
@@ -488,54 +484,53 @@ let boxResult10  = await page.evaluate((sel) => {
 	 
 	 await page.waitForSelector('#psummary_data_div > div > h1:nth-child(4)',{delay:1000});
 	 
-	 let address_result = await page.evaluate((sel) => {
-       let element = document.querySelector(sel);
+	  let address_result = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
        return element? element.innerHTML:null;
       }, addressResults);
 	 
 	 
 	  let zip_result = await page.evaluate((sel) => {
-       let element = document.querySelector(sel);
+    let element = document.querySelector(sel);
        return element? element.innerHTML:null;
       }, zipResults);
 	 
 	 
 	  let soldPrice_result = await page.evaluate((sel) => {
-       let element = document.querySelector(sel);
+    let element = document.querySelector(sel);
        return element? element.innerHTML:null;
       }, soldPriceResults);
 	 
 	  let taxValue_result = await page.evaluate((sel) => {
-       let element = document.querySelector(sel);
+    let element = document.querySelector(sel);
        return element? element.innerHTML:null;
       }, taxValueResults);
 	 
-	 let landValue_result = await page.evaluate((sel) => {
-       let element = document.querySelector(sel);
+	  let landValue_result = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
        return element? element.innerHTML:null;
       }, landValueResults);
 	  
-	   let buildValue_result = await page.evaluate((sel) => {
-       let element = document.querySelector(sel);
+	  let buildValue_result = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
        return element? element.innerHTML:null;
       }, buildValueResults);
 	  
-	   let cityValue_result = await page.evaluate((sel) => {
-       let element = document.querySelector(sel);
+	  let cityValue_result = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
        return element? element.innerHTML:null;
       }, cityValueResults);
 	  
-	   let list_length  = await page.evaluate((sel) => {
-            let elements = Array.from(document.querySelectorAll(sel));
-            return elements.length;
+	  let list_length  = await page.evaluate((sel) => {
+    let elements = Array.from(document.querySelectorAll(sel));
+      return elements.length;
 		}, '#pagtag_table');
-	
 	  //console.log(list_length);
 	  
-      var href = 'N/A';
+    var href = 'N/A';
       
-      var Owner = [];
-      //#pagtag_table > tbody > tr:nth-child(1) > td:nth-child(2)
+    var Owner = [];
+    //#pagtag_table > tbody > tr:nth-child(1) > td:nth-child(2)
       
 	  for(let i=1; i< list_length; i++){
          href = await page.evaluate((l, sel) => {
@@ -559,7 +554,7 @@ let boxResult10  = await page.evaluate((sel) => {
     }
 	  
 	  
-	  //let ownerName_result = await page.evaluate((sel) => {
+	    //let ownerName_result = await page.evaluate((sel) => {
       // let element = document.querySelector(sel);
       // return element? element.innerHTML:null;
       //}, ownerNameValueResults);
@@ -575,15 +570,15 @@ let boxResult10  = await page.evaluate((sel) => {
         //console.log("ListLength=4");
           ownerName_result = Owner[1];
       }
-	  //console.log(ownerName_result);
+	    //console.log(ownerName_result);
 	  
-	//console.log('Owner: '+ownerName_result.toString());
+	  //console.log('Owner: '+ownerName_result.toString());
     var Address = [];
     
 	  for(let i=1; i< list_length; i++){
         href = await page.evaluate((l, sel) => {
-                    let elements= Array.from(document.querySelectorAll(sel));
-                    let anchor  = elements[l].getElementsByTagName('td')[3];
+        let elements= Array.from(document.querySelectorAll(sel));
+        let anchor  = elements[l].getElementsByTagName('td')[3];
                     if(anchor){
                         return anchor.innerHTML;
                     }else{
@@ -614,7 +609,7 @@ let boxResult10  = await page.evaluate((sel) => {
        //return element? element.innerHTML:null;
       //}, ownerNameValueResults);
 
-      var Zip = [];
+    var Zip = [];
 	  
 	   for(let i=1; i< list_length; i++){
         href = await page.evaluate((l, sel) => {
@@ -722,28 +717,30 @@ let boxResult10  = await page.evaluate((sel) => {
       //}, ownerPhoneNumber1ValueResults);
 	 
 	 
-	 await page.click('#principal__resultTab',{delay:1000});
+	  await page.click('#principal__resultTab',{delay:1000});
 	 
-	 var soldPrice = soldPrice_result.replace(',','');
-	 var taxValue = taxValue_result.replace(',','');
-	 var landValue = landValue_result.replace(',','');
-	 var buildValue = buildValue_result.replace(',','');
+	  var soldPrice = soldPrice_result.replace(',','');
+	  var taxValue = taxValue_result.replace(',','');
+	  var landValue = landValue_result.replace(',','');
+	  var buildValue = buildValue_result.replace(',','');
 	 
-	 var json = {'city':cityValue_result,'address':address_result,'unit':"",'zip':zip_result,'garea':gLiving,'larea':lArea,'beds':bed, 'baths':baths,'pool':pool_result,'wf':waterFront_result,'built':built_result,'frclosure':foreclosure_result,'sold_price':soldPrice,'tax_value':taxValue,'land_value':landValue,'build_value':buildValue,'owner_name':ownerName_result,'owner_address':ownerAddress_result,'owner_zip':ownerZip_result,'owner_city':ownerCity_result,'owner_state':ownerState_result,'owner_phone':ownerPhone_result};
+	  var json = {'city':cityValue_result,'address':address_result,'unit':"",'zip':zip_result,'garea':gLiving,'larea':lArea,'beds':bed, 'baths':baths,'pool':pool_result,'wf':waterFront_result,'built':built_result,'frclosure':foreclosure_result,'sold_price':soldPrice,'tax_value':taxValue,'land_value':landValue,'build_value':buildValue,'owner_name':ownerName_result,'owner_address':ownerAddress_result,'owner_zip':ownerZip_result,'owner_city':ownerCity_result,'owner_state':ownerState_result,'owner_phone':ownerPhone_result};
      
-     var data = [ownerName_result,address_result +" ,"+ cityValue_result + " ," + zip_result]
-     var dataInserted;
+    var data = [ownerName_result,address_result +" ,"+ cityValue_result + " ," + zip_result]
+    var dataInserted;
      
-     request = new Request("INSERT INTO Properties with (ROWLOCK) ([Ownername], [Address]) SELECT '"+ data[0].toString()+ "', '"+ data[1].toString()+ "' WHERE NOT EXISTS (SELECT * FROM dbo.Properties WHERE Address = '"+data[1].toString() +"');",
-     function(err,rowCount)
-     {
-       if(err)
-       {
+    //console.log(data);
+
+    request = new Request("INSERT INTO Properties with (ROWLOCK) ([Ownername], [Address]) SELECT '"+ data[0].toString()+ "', '"+ data[1].toString()+ "' WHERE NOT EXISTS (SELECT * FROM dbo.Properties WHERE Address = '"+data[1].toString() +"');",
+    function(err,rowCount)
+    {
+      if(err)
+      {
          console.log(err);
         }
         //console.log(rowCount + ' row(s) returned');
         dataInserted = rowCount;
-       }
+    }
      
 
     );
@@ -754,19 +751,19 @@ let boxResult10  = await page.evaluate((sel) => {
         viewData.push(json);
      }
 	 
-	 var podioJson = {"fields":{"title":ownerName_result,"lead-source":sourceData,"lead-intake-date":intakeDate,"motivation":7,"status-of-lead":14,"next-action":15,"property-address":address_result +" ,"+ cityValue_result+" ,"+zip_result ,"owners-address":ownerAddress_result +" ,"+ ownerCity_result+" ,"+ownerZip_result,"estimated-value":{"value":buildValue,"currency":"USD"},"beds-2":bed,"baths-2":baths,"square-feet":lArea,"year-built-2":built_result,"property-taxes-assement":taxValue,"last-sale-price":soldPrice}};
+	    var podioJson = {"fields":{"title":ownerName_result,"lead-source":sourceData,"lead-intake-date":intakeDate,"motivation":7,"status-of-lead":14,"next-action":15,"property-address":address_result +" ,"+ cityValue_result+" ,"+zip_result ,"owners-address":ownerAddress_result +" ,"+ ownerCity_result+" ,"+ownerZip_result,"estimated-value":{"value":buildValue,"currency":"USD"},"beds-2":bed,"baths-2":baths,"square-feet":lArea,"year-built-2":built_result,"property-taxes-assement":taxValue,"last-sale-price":soldPrice}};
 
-	 //console.log(podioJson);
-     //console.log(intakeDate);
+	    //console.log(podioJson);
+      //console.log(intakeDate);
 
      
     
     
-    //await request.on('done', function (rowCount, more, rows) {
-     //  dataInserted = rowCount;
+      await request.on('done', function (rowCount, more, rows) {
+      dataInserted = rowCount;
 
 
-     //});
+     });
     
     
     //console.log(dataInserted);
@@ -775,24 +772,2531 @@ let boxResult10  = await page.evaluate((sel) => {
       insertPODIOItem(podioJson);
     }
 	 
-}
+  }
 
 }
+//Brevard
+try
+{
+	await page.click('#principal__searchTab',{delay:2000});
+}
+catch(err)
+ {
+ 	console.log(err);
+} 
 
-	var fileName = dateFirstDayString + ' to ' + dateString + ' LP Lake.csv';
+//await page.waitForNavigation({waitUntil:'networkidle0'});
+await page.click("#ext-gen201", {delay:2000});
+
+await page.keyboard.press('ArrowUp',{delay:250});
+await page.keyboard.press('ArrowUp',{delay:250});
+await page.keyboard.press('ArrowUp',{delay:250});
+await page.keyboard.press('ArrowUp',{delay:250});
+await page.keyboard.press('ArrowUp',{delay:250});
+await page.keyboard.press('ArrowUp',{delay:250});
+await page.keyboard.press('ArrowUp',{delay:250});
+await page.keyboard.press('ArrowUp',{delay:250});
+await page.keyboard.press('ArrowUp',{delay:250});
+await page.keyboard.press('ArrowUp',{delay:250});
+await page.keyboard.press('ArrowUp',{delay:250});
+await page.keyboard.press('ArrowUp',{delay:250});
+await page.keyboard.press('ArrowUp',{delay:250});
+await page.keyboard.press('ArrowUp',{delay:250});
+await page.keyboard.press('ArrowUp',{delay:250});
+await page.keyboard.press('ArrowUp',{delay:250});
+await page.keyboard.press('ArrowUp',{delay:250});
+await page.keyboard.press('ArrowUp',{delay:250});
+await page.keyboard.press('ArrowUp',{delay:250});
+await page.keyboard.press('ArrowUp',{delay:250});
+await page.keyboard.press('ArrowUp',{delay:250});
+await page.keyboard.press('ArrowUp',{delay:250});
+await page.keyboard.press('ArrowUp',{delay:250});
+await page.keyboard.press('ArrowUp',{delay:250});
+await page.keyboard.press('ArrowUp',{delay:250});
+await page.keyboard.press('ArrowUp',{delay:250});
+await page.keyboard.press('ArrowUp',{delay:250});
+await page.keyboard.press('ArrowUp',{delay:250});
+await page.keyboard.press('ArrowUp',{delay:250});
+await page.keyboard.press('ArrowUp',{delay:250});
+//await page.keyboard.press('ArrowUp',{delay:250});
+await page.keyboard.down('Enter'); 
+
+
+//await page.focus(FORECLOSURE, {delay:2000});
+//await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.down('Enter');
+
+//await page.click(FORECLOSURE_BUTTON, {delay:2000});
+
+//await page.click('#ext-gen167', {delay:2000});
+
+
+//await page.focus(FILEDATE_BETWEEN, {delay:2000});
+//await page.click('#ext-gen436',{delay:2000});
+
+//await page.focus('#ext-gen517',{delay:2000});
+
+//await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.down('Enter');
+
+
+ // d = new Date();
+ 
+  
+  //dateString = formatDate(d);
+  //dateFirstDayString = formatDateFirstOfMonth(d);
+  //intakeDate = formatIntakeDate(d);
+  //sourceData = formatSource(d);
+  
+  //console.log(dateString);
+  
+  //await page.click('#ext-gen392',{delay:2000});
+  
+  //await page.click('#ext-gen439',{delay:2000});
+  
+
+  //await page.keyboard.type(dateString),{delay:1000};
+  //await page.keyboard.type('20180601'),{delay:1000};
+  //await page.keyboard.type(dateFirstDayString),{delay:1000};
+  
+  //await page.click('#ext-gen394',{delay:2000});
+  //await page.click('#ext-gen441',{delay:2000});
+  
+  //await page.keyboard.type('20180607'),{delay:1000};
+  //await page.keyboard.type(dateString),{delay:1000};
+  
+  try
+  {
+    //await page.click('#ext-gen93'),{delay:5000};
+    await page.click('#ext-gen131',{delay:2000});
+  }
+  catch(err)
+  {
+	  console.log(err);
+	  await page.click('#ext-gen130',{delay:2000});
+  }
+  
+
+  
+  
+  try
+  {
+	  await page.waitForSelector('#result_orderby_data');
+  }
+  catch(error2)
+  {
+	   console.log(error2);
+     
+     //sendZeroResultsEmail();
+	   //await browser.close();
+  } 
+
+  await page.waitFor(4000);
+
+    let pageSelector = await page.evaluate(() => {
+    let elements = Array.from( document.getElementsByClassName('x-panel-body x-panel-body-noheader x-panel-body-noborder'));
+      return elements[4].getAttribute("id");
+     });
+  
+  
+   //console.log(pageSelector);
+
+   let pageNumberOrderSelector = '#INDEX > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select > option';
+   let pageNumberAdvanceSelector = '#INDEX > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)';
+   let pageNumberOrder = pageNumberOrderSelector.replace("INDEX",pageSelector);
+   let pageNumberAdvance = pageNumberAdvanceSelector.replace("INDEX",pageSelector);
+
+
+  pageNumber = await page.evaluate((sel) => {
+ let elements = Array.from(document.querySelectorAll(sel));
+  return elements.length;
+}, pageNumberOrder);
+  //#ext-gen4734 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select > option:nth-child(1)
+  //#ext-gen602 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select > option:nth-child(1)
+  //#ext-gen786 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select > option:nth-child(1)
+  //#ext-gen541 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select
+
+  //console.log(pageNumber2);
+ 
+  pageNumber = pageNumber-1; 
+
+ for (let i = 0; i <= pageNumber ; i++) 
+{
+
+  if(i > 0)
+  {
+      //#ext-gen786 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)
+      //await page.click('#ext-gen525 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)');
+      //await page.click('#ext-gen602 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)');
+      //#ext-gen4734 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)
+      await page.focus(pageNumberAdvance, {delay:1000});
+      await page.click(pageNumberAdvance);
+      await page.waitForSelector('#result_orderby_data');
+  }
+
+
+  boxResult1  = await page.evaluate((sel) => {
+        let elements = Array.from(document.querySelectorAll(sel));
+        return elements.length;
+  }, '#box_result_0');
+  //console.log(boxResult1);
+
+  boxResult2  = await page.evaluate((sel) => {
+          let elements = Array.from(document.querySelectorAll(sel));
+            return elements.length;
+  }, '#box_result_1');
+  //console.log(boxResult2);
+
+  boxResult3  = await page.evaluate((sel) => {
+          let elements = Array.from(document.querySelectorAll(sel));
+            return elements.length;
+  }, '#box_result_2');
+  //console.log(boxResult3);
+
+  boxResult4  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+           return elements.length;
+  }, '#box_result_3');
+  //console.log(boxResult4);
+
+  boxResult5  = await page.evaluate((sel) => {
+       let elements = Array.from(document.querySelectorAll(sel));
+         return elements.length;
+  }, '#box_result_4');
+  //console.log(boxResult5);
+
+  boxResult6  = await page.evaluate((sel) => {
+          let elements = Array.from(document.querySelectorAll(sel));
+            return elements.length;
+  }, '#box_result_5');
+  //console.log(boxResult6);
+
+  boxResult7  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+           return elements.length;
+  }, '#box_result_6');
+  //console.log(boxResult7);
+
+  boxResult8  = await page.evaluate((sel) => {
+          let elements = Array.from(document.querySelectorAll(sel));
+          return elements.length;
+  }, '#box_result_7');
+  //console.log(boxResult8);
+
+  boxResult9  = await page.evaluate((sel) => {
+          let elements = Array.from(document.querySelectorAll(sel));
+           return elements.length;
+  }, '#box_result_8');
+  //console.log(boxResult9);
+
+  boxResult10  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+           return elements.length;
+  }, '#box_result_9');
+  //console.log(boxResult10);
+
+  boxNumbers = (boxResult1+boxResult2+boxResult3+boxResult4+boxResult5+boxResult6+boxResult7+boxResult8+boxResult9+boxResult10);
+  boxNumbers  = boxNumbers -1;
+
+  for (let i = 0; i <= boxNumbers ; i++) 
+  {
+
+    let boxSelector = boxResults.replace("INDEX", i);
+    let bedBathSelector = bedBathResults.replace("INDEX", i);
+    let grossAreaSelector = grossAreaResults.replace("INDEX", i);
+    let livingAreaSelector = livingAreaResults.replace("INDEX", i);
+    let poolSelector = poolResults.replace("INDEX", i);
+    let waterFrontSelector = waterFrontResults.replace("INDEX",i);
+    let builtSelector = builtResults.replace("INDEX",i);
+    let foreclosureSelector = foreclosureResults.replace("INDEX",i);
+    
+    let box_result = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
+      return element? element.innerHTML:null;
+      }, boxSelector);
+  
+    let bedBath_result = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
+      return element? element.innerHTML:null;
+      }, bedBathSelector);
+  
+    let grossArea_result = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, grossAreaSelector);
+  
+    let livingArea_result = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, livingAreaSelector);
+  
+    let pool_result = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, poolSelector);
+  
+    let waterFront_result = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, waterFrontSelector);
+  
+    let built_result = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, builtSelector);
+  
+    let foreclosure_result = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, foreclosureSelector);
+  
+  res = box_result.split(",");
+  
+  
+ //console.log(res);  
+ 
+ //var addr = res[0].split(" ");
+ 
+ //var address = addr[32] +  ' ' + addr[33] + ' ' + addr[34];
+ 
+ //console.log(address);
+
+
+// var zip = res[2].replace(/ /g, '');
+ 
+ //console.log(zip);
+ 
+ //console.log(bedBath_result);
+ 
+ temp = bedBath_result.split("/");
+ 
+ bed = temp[0];
+ 
+ content = bed.toString().replace(/\t/g, '').split('\n');
+ 
+ //console.log(content);
+ 
+ bed = content[1];
+ 
+ //console.log(bed);
+ 
+ baths = temp[1];
+ 
+ //console.log(baths);
+ 
+ grossLivingTemp = grossArea_result.toString().replace(/\t/g, '').split('\n');
+ 
+ gLiving = grossLivingTemp[1];
+ 
+ //console.log(gLiving);
+ 
+ livingTemp = livingArea_result.toString().replace(/\t/g, '').split('\n');
+ 
+ lArea = livingTemp[1];
+ 
+ 
+ await page.click(boxSelector);
+ 
+ await page.waitForSelector('#psummary_data_div > div > h1:nth-child(4)',{delay:1000});
+ 
+  address_result = await page.evaluate((sel) => {
+  let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, addressResults);
+ 
+ 
+  zip_result = await page.evaluate((sel) => {
+  let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, zipResults);
+ 
+ 
+  soldPrice_result = await page.evaluate((sel) => {
+  let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, soldPriceResults);
+ 
+  taxValue_result = await page.evaluate((sel) => {
+  let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, taxValueResults);
+ 
+  landValue_result = await page.evaluate((sel) => {
+  let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, landValueResults);
+  
+  buildValue_result = await page.evaluate((sel) => {
+  let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, buildValueResults);
+  
+  cityValue_result = await page.evaluate((sel) => {
+  let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, cityValueResults);
+  
+  list_length  = await page.evaluate((sel) => {
+  let elements = Array.from(document.querySelectorAll(sel));
+    return elements.length;
+  }, '#pagtag_table');
+  //console.log(list_length);
+  
+  href = 'N/A';
+    
+  Owner = [];
+  //#pagtag_table > tbody > tr:nth-child(1) > td:nth-child(2)
+    
+  for(let i=1; i< list_length; i++){
+       href = await page.evaluate((l, sel) => {
+                  let elements= Array.from(document.querySelectorAll(sel));
+                  let anchor  = elements[l].getElementsByTagName('td')[1];
+                  //let name = elements[l].getElementsByTagName('td')[1];
+                  if(anchor)
+                  {
+                      //console.log('TestOwner:',name.innerHTML);
+                      //Owner.push(anchor.innerHTML);
+                      return anchor.innerHTML;
+                  }
+                  else
+                  {
+                      //Owner.push('N/A');
+                      return 'N/A';
+                  }
+              }, i, '#pagtag_table');
+      //console.log('OwnerName--------> ', href)
+      Owner.push(href);
+  }
+  
+  
+    //let ownerName_result = await page.evaluate((sel) => {
+    // let element = document.querySelector(sel);
+    // return element? element.innerHTML:null;
+    //}, ownerNameValueResults);
+    ownerName_result = href;
+
+    if(list_length == 3)
+    {
+       // console.log("ListLength=3");
+      ownerName_result = Owner[0];
+    }
+    else if(list_length == 4)
+    {
+      //console.log("ListLength=4");
+        ownerName_result = Owner[1];
+    }
+    //console.log(ownerName_result);
+  
+  //console.log('Owner: '+ownerName_result.toString());
+  Address = [];
+  
+  for(let i=1; i< list_length; i++){
+      href = await page.evaluate((l, sel) => {
+      let elements= Array.from(document.querySelectorAll(sel));
+      let anchor  = elements[l].getElementsByTagName('td')[3];
+                  if(anchor){
+                      return anchor.innerHTML;
+                  }else{
+                      return 'N/A';
+                  }
+              }, i, '#pagtag_table');
+      //console.log('--------> ', href)
+      Address.push(href);
+    }
+    
+   
+  
+    ownerAddress_result = href;
+    
+    if(list_length == 3)
+    {
+       // console.log("ListLength=3");
+       ownerAddress_result = Address[0];
+    }
+    else if(list_length == 4)
+    {
+      //console.log("ListLength=4");
+      ownerAddress_result = Address[1];
+    }
+  
+  // let ownerAddress_result = await page.evaluate((sel) => {
+     //let element = document.querySelector(sel);
+     //return element? element.innerHTML:null;
+    //}, ownerNameValueResults);
+
+   Zip = [];
+  
+   for(let i=1; i< list_length; i++){
+      href = await page.evaluate((l, sel) => {
+                  let elements= Array.from(document.querySelectorAll(sel));
+                  let anchor  = elements[l].getElementsByTagName('td')[7];
+                  if(anchor){
+                      return anchor.innerHTML;
+                  }else{
+                      return 'N/A';
+                  }
+              }, i, '#pagtag_table');
+              Zip.push(href);
+      //console.log('--------> ', href)
+  }
+  
+    ownerZip_result = href;
+    
+    if(list_length == 3)
+    {
+       // console.log("ListLength=3");
+       ownerZip_result = Zip[0];
+    }
+    else if(list_length == 4)
+    {
+      //console.log("ListLength=4");
+      ownerZip_result = Zip[1];
+    }
+  
+    // let ownerZip_result = await page.evaluate((sel) => {
+    // let element = document.querySelector(sel);
+    // return element? element.innerHTML:null;
+    //}, ownerZipCodeValueResults);
+   City = [];
+  
+   for(let i=1; i< list_length; i++){
+      href = await page.evaluate((l, sel) => {
+                  let elements= Array.from(document.querySelectorAll(sel));
+                  let anchor  = elements[l].getElementsByTagName('td')[5];
+                  if(anchor){
+                      return anchor.innerHTML;
+                  }else{
+                      return 'N/A';
+                  }
+              }, i, '#pagtag_table');
+              City.push(href);
+      //console.log('--------> ', href)
+  }
+  
+    ownerCity_result = href;
+    
+    if(list_length == 3)
+    {
+       // console.log("ListLength=3");
+       ownerCity_result = City[0];
+    }
+    else if(list_length == 4)
+    {
+      //console.log("ListLength=4");
+      ownerCity_result = City[1];
+    }
+  
+     //let ownerCity_result = await page.evaluate((sel) => {
+     //let element = document.querySelector(sel);
+     //return element? element.innerHTML:null;
+     //}, ownerCityValueResults);
+  
+   for(let i=2; i< list_length; i++){
+      href = await page.evaluate((l, sel) => {
+                  let elements= Array.from(document.querySelectorAll(sel));
+                  let anchor  = elements[l].getElementsByTagName('td')[9];
+                  if(anchor){
+                      return anchor.innerHTML;
+                  }else{
+                      return 'N/A';
+                  }
+              }, i, '#pagtag_table');
+      //console.log('--------> ', href)
+  }
+  
+    ownerState_result = href;
+  
+     //let ownerState_result = await page.evaluate((sel) => {
+     //let element = document.querySelector(sel);
+     //return element? element.innerHTML:null;
+     //}, ownerStateValueResults);
+  
+    for(let i=2; i< list_length; i++){
+      href = await page.evaluate((l, sel) => {
+                  let elements= Array.from(document.querySelectorAll(sel));
+                  let anchor  = elements[l].getElementsByTagName('td')[13];
+                  if(anchor){
+                      return anchor.innerHTML;
+                  }else{
+                      return 'N/A';
+                  }
+              }, i, '#pagtag_table');
+      //console.log('--------> ', href)
+  }
+  
+  ownerPhone_result = href;
+  
+    // let ownerPhone_result = await page.evaluate((sel) => {
+    // let element = document.querySelector(sel);
+    // return element? element.innerHTML:"N/A";
+    //}, ownerPhoneNumber1ValueResults);
+ 
+ 
+  await page.click('#principal__resultTab',{delay:1000});
+ 
+  soldPrice = soldPrice_result.replace(',','');
+  taxValue = taxValue_result.replace(',','');
+  landValue = landValue_result.replace(',','');
+  buildValue = buildValue_result.replace(',','');
+ 
+  json = {'city':cityValue_result,'address':address_result,'unit':"",'zip':zip_result,'garea':gLiving,'larea':lArea,'beds':bed, 'baths':baths,'pool':pool_result,'wf':waterFront_result,'built':built_result,'frclosure':foreclosure_result,'sold_price':soldPrice,'tax_value':taxValue,'land_value':landValue,'build_value':buildValue,'owner_name':ownerName_result,'owner_address':ownerAddress_result,'owner_zip':ownerZip_result,'owner_city':ownerCity_result,'owner_state':ownerState_result,'owner_phone':ownerPhone_result};
+   
+  data = [ownerName_result,address_result +" ,"+ cityValue_result + " ," + zip_result]
+  
+  dataInserted;
+   
+  request = new Request("INSERT INTO Properties with (ROWLOCK) ([Ownername], [Address]) SELECT '"+ data[0].toString()+ "', '"+ data[1].toString()+ "' WHERE NOT EXISTS (SELECT * FROM dbo.Properties WHERE Address = '"+data[1].toString() +"');",
+  function(err,rowCount)
+  {
+    if(err)
+    {
+       console.log(err);
+      }
+      //console.log(rowCount + ' row(s) returned');
+      dataInserted = rowCount;
+  }
+   
+
+  );
+  await connection.execSql(request);
+
+   if(dataInserted > 0)
+   {
+      viewData.push(json);
+   }
+ 
+   podioJson = {"fields":{"title":ownerName_result,"lead-source":sourceData,"lead-intake-date":intakeDate,"motivation":7,"status-of-lead":14,"next-action":15,"property-address":address_result +" ,"+ cityValue_result+" ,"+zip_result ,"owners-address":ownerAddress_result +" ,"+ ownerCity_result+" ,"+ownerZip_result,"estimated-value":{"value":buildValue,"currency":"USD"},"beds-2":bed,"baths-2":baths,"square-feet":lArea,"year-built-2":built_result,"property-taxes-assement":taxValue,"last-sale-price":soldPrice}};
+
+    //console.log(podioJson);
+    //console.log(intakeDate);
+
+   
+  
+  
+    await request.on('done', function (rowCount, more, rows) {
+    dataInserted = rowCount;
+
+
+   });
+  
+  
+  //console.log(dataInserted);
+  if(dataInserted > 0)
+  {
+    insertPODIOItem(podioJson);
+  }
+ 
+}
+
+} 
+
+//Polk
+try
+{
+	await page.click('#principal__searchTab',{delay:2000});
+}
+catch(err)
+ {
+ 	console.log(err);
+} 
+
+//await page.waitForNavigation({waitUntil:'networkidle0'});
+await page.click("#ext-gen201", {delay:2000});
+
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.down('Enter'); 
+
+
+//await page.focus(FORECLOSURE, {delay:2000});
+//await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.down('Enter');
+
+//await page.click(FORECLOSURE_BUTTON, {delay:2000});
+
+//await page.click('#ext-gen167', {delay:2000});
+
+
+//await page.focus(FILEDATE_BETWEEN, {delay:2000});
+//await page.click('#ext-gen436',{delay:2000});
+
+//await page.focus('#ext-gen517',{delay:2000});
+
+//await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.down('Enter');
+
+
+ // d = new Date();
+ 
+  
+  //dateString = formatDate(d);
+  //dateFirstDayString = formatDateFirstOfMonth(d);
+  //intakeDate = formatIntakeDate(d);
+  //sourceData = formatSource(d);
+  
+  //console.log(dateString);
+  
+  //await page.click('#ext-gen392',{delay:2000});
+  
+  //await page.click('#ext-gen439',{delay:2000});
+  
+
+  //await page.keyboard.type(dateString),{delay:1000};
+  //await page.keyboard.type('20180601'),{delay:1000};
+  //await page.keyboard.type(dateFirstDayString),{delay:1000};
+  
+  //await page.click('#ext-gen394',{delay:2000});
+  //await page.click('#ext-gen441',{delay:2000});
+  
+  //await page.keyboard.type('20180607'),{delay:1000};
+  //await page.keyboard.type(dateString),{delay:1000};
+  
+  try
+  {
+    //await page.click('#ext-gen93'),{delay:5000};
+    await page.click('#ext-gen131',{delay:2000});
+  }
+  catch(err)
+  {
+	  console.log(err);
+	  await page.click('#ext-gen130',{delay:2000});
+  }
+  
+
+  
+  
+  try
+  {
+	  await page.waitForSelector('#result_orderby_data');
+  }
+  catch(error2)
+  {
+	   console.log(error2);
+     
+     //sendZeroResultsEmail();
+	   //await browser.close();
+  } 
+
+  await page.waitFor(4000);
+
+  //#ext-gen1897 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select
+  pageSelector = await page.evaluate(() => {
+    let elements = Array.from( document.getElementsByClassName('x-panel-body x-panel-body-noheader x-panel-body-noborder'));
+      return elements[4].getAttribute("id");
+     });
+
+     pageNumberOrder = pageNumberOrderSelector.replace("INDEX",pageSelector);
+     pageNumberAdvance = pageNumberAdvanceSelector.replace("INDEX",pageSelector);
+
+  
+  
+   //console.log(pageSelector);
+
+  pageNumber = await page.evaluate((sel) => {
+ let elements = Array.from(document.querySelectorAll(sel));
+  return elements.length;
+}, pageNumberOrder);
+  //#ext-gen4734 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select > option:nth-child(1)
+  //#ext-gen602 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select > option:nth-child(1)
+  //#ext-gen786 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select > option:nth-child(1)
+  //#ext-gen541 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select
+
+ 
+  pageNumber = pageNumber-1; 
+
+ for (let i = 0; i <= pageNumber ; i++) 
+{
+
+  if(i > 0)
+  {
+      //#ext-gen786 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)
+      //await page.click('#ext-gen525 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)');
+      //await page.click('#ext-gen602 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)');
+      //#ext-gen4734 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)
+      await page.focus(pageNumberAdvance, {delay:1000});
+      await page.click(pageNumberAdvance);
+      await page.waitForSelector('#result_orderby_data');
+  }
+
+
+  boxResult1  = await page.evaluate((sel) => {
+        let elements = Array.from(document.querySelectorAll(sel));
+        return elements.length;
+  }, '#box_result_0');
+  //console.log(boxResult1);
+
+  boxResult2  = await page.evaluate((sel) => {
+          let elements = Array.from(document.querySelectorAll(sel));
+            return elements.length;
+  }, '#box_result_1');
+  //console.log(boxResult2);
+
+  boxResult3  = await page.evaluate((sel) => {
+          let elements = Array.from(document.querySelectorAll(sel));
+            return elements.length;
+  }, '#box_result_2');
+  //console.log(boxResult3);
+
+  boxResult4  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+           return elements.length;
+  }, '#box_result_3');
+  //console.log(boxResult4);
+
+  boxResult5  = await page.evaluate((sel) => {
+       let elements = Array.from(document.querySelectorAll(sel));
+         return elements.length;
+  }, '#box_result_4');
+  //console.log(boxResult5);
+
+  boxResult6  = await page.evaluate((sel) => {
+          let elements = Array.from(document.querySelectorAll(sel));
+            return elements.length;
+  }, '#box_result_5');
+  //console.log(boxResult6);
+
+  boxResult7  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+           return elements.length;
+  }, '#box_result_6');
+  //console.log(boxResult7);
+
+  boxResult8  = await page.evaluate((sel) => {
+          let elements = Array.from(document.querySelectorAll(sel));
+          return elements.length;
+  }, '#box_result_7');
+  //console.log(boxResult8);
+
+  boxResult9  = await page.evaluate((sel) => {
+          let elements = Array.from(document.querySelectorAll(sel));
+           return elements.length;
+  }, '#box_result_8');
+  //console.log(boxResult9);
+
+  boxResult10  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+           return elements.length;
+  }, '#box_result_9');
+  //console.log(boxResult10);
+
+  boxNumbers = (boxResult1+boxResult2+boxResult3+boxResult4+boxResult5+boxResult6+boxResult7+boxResult8+boxResult9+boxResult10);
+  boxNumbers  = boxNumbers -1;
+
+  for (let i = 0; i <= boxNumbers ; i++) 
+  {
+
+    let boxSelector = boxResults.replace("INDEX", i);
+    let bedBathSelector = bedBathResults.replace("INDEX", i);
+    let grossAreaSelector = grossAreaResults.replace("INDEX", i);
+    let livingAreaSelector = livingAreaResults.replace("INDEX", i);
+    let poolSelector = poolResults.replace("INDEX", i);
+    let waterFrontSelector = waterFrontResults.replace("INDEX",i);
+    let builtSelector = builtResults.replace("INDEX",i);
+    let foreclosureSelector = foreclosureResults.replace("INDEX",i);
+    
+    let box_result = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
+      return element? element.innerHTML:null;
+      }, boxSelector);
+  
+    let bedBath_result = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
+      return element? element.innerHTML:null;
+      }, bedBathSelector);
+  
+    let grossArea_result = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, grossAreaSelector);
+  
+    let livingArea_result = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, livingAreaSelector);
+  
+    let pool_result = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, poolSelector);
+  
+    let waterFront_result = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, waterFrontSelector);
+  
+    let built_result = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, builtSelector);
+  
+    let foreclosure_result = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, foreclosureSelector);
+  
+  res = box_result.split(",");
+  
+  
+ //console.log(res);  
+ 
+ //var addr = res[0].split(" ");
+ 
+ //var address = addr[32] +  ' ' + addr[33] + ' ' + addr[34];
+ 
+ //console.log(address);
+
+
+// var zip = res[2].replace(/ /g, '');
+ 
+ //console.log(zip);
+ 
+ //console.log(bedBath_result);
+ 
+ temp = bedBath_result.split("/");
+ 
+ bed = temp[0];
+ 
+ content = bed.toString().replace(/\t/g, '').split('\n');
+ 
+ //console.log(content);
+ 
+ bed = content[1];
+ 
+ //console.log(bed);
+ 
+ baths = temp[1];
+ 
+ //console.log(baths);
+ 
+ grossLivingTemp = grossArea_result.toString().replace(/\t/g, '').split('\n');
+ 
+ gLiving = grossLivingTemp[1];
+ 
+ //console.log(gLiving);
+ 
+ livingTemp = livingArea_result.toString().replace(/\t/g, '').split('\n');
+ 
+ lArea = livingTemp[1];
+ 
+ 
+ await page.click(boxSelector);
+ 
+ await page.waitForSelector('#psummary_data_div > div > h1:nth-child(4)',{delay:1000});
+ 
+  address_result = await page.evaluate((sel) => {
+  let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, addressResults);
+ 
+ 
+  zip_result = await page.evaluate((sel) => {
+  let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, zipResults);
+ 
+ 
+  soldPrice_result = await page.evaluate((sel) => {
+  let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, soldPriceResults);
+ 
+  taxValue_result = await page.evaluate((sel) => {
+  let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, taxValueResults);
+ 
+  landValue_result = await page.evaluate((sel) => {
+  let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, landValueResults);
+  
+  buildValue_result = await page.evaluate((sel) => {
+  let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, buildValueResults);
+  
+  cityValue_result = await page.evaluate((sel) => {
+  let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, cityValueResults);
+  
+  list_length  = await page.evaluate((sel) => {
+  let elements = Array.from(document.querySelectorAll(sel));
+    return elements.length;
+  }, '#pagtag_table');
+  //console.log(list_length);
+  
+  href = 'N/A';
+    
+  Owner = [];
+  //#pagtag_table > tbody > tr:nth-child(1) > td:nth-child(2)
+    
+  for(let i=1; i< list_length; i++){
+       href = await page.evaluate((l, sel) => {
+                  let elements= Array.from(document.querySelectorAll(sel));
+                  let anchor  = elements[l].getElementsByTagName('td')[1];
+                  //let name = elements[l].getElementsByTagName('td')[1];
+                  if(anchor)
+                  {
+                      //console.log('TestOwner:',name.innerHTML);
+                      //Owner.push(anchor.innerHTML);
+                      return anchor.innerHTML;
+                  }
+                  else
+                  {
+                      //Owner.push('N/A');
+                      return 'N/A';
+                  }
+              }, i, '#pagtag_table');
+      //console.log('OwnerName--------> ', href)
+      Owner.push(href);
+  }
+  
+  
+    //let ownerName_result = await page.evaluate((sel) => {
+    // let element = document.querySelector(sel);
+    // return element? element.innerHTML:null;
+    //}, ownerNameValueResults);
+    ownerName_result = href;
+
+    if(list_length == 3)
+    {
+       // console.log("ListLength=3");
+      ownerName_result = Owner[0];
+    }
+    else if(list_length == 4)
+    {
+      //console.log("ListLength=4");
+        ownerName_result = Owner[1];
+    }
+    //console.log(ownerName_result);
+  
+  //console.log('Owner: '+ownerName_result.toString());
+  Address = [];
+  
+  for(let i=1; i< list_length; i++){
+      href = await page.evaluate((l, sel) => {
+      let elements= Array.from(document.querySelectorAll(sel));
+      let anchor  = elements[l].getElementsByTagName('td')[3];
+                  if(anchor){
+                      return anchor.innerHTML;
+                  }else{
+                      return 'N/A';
+                  }
+              }, i, '#pagtag_table');
+      //console.log('--------> ', href)
+      Address.push(href);
+    }
+    
+   
+  
+    ownerAddress_result = href;
+    
+    if(list_length == 3)
+    {
+       // console.log("ListLength=3");
+       ownerAddress_result = Address[0];
+    }
+    else if(list_length == 4)
+    {
+      //console.log("ListLength=4");
+      ownerAddress_result = Address[1];
+    }
+  
+  // let ownerAddress_result = await page.evaluate((sel) => {
+     //let element = document.querySelector(sel);
+     //return element? element.innerHTML:null;
+    //}, ownerNameValueResults);
+
+   Zip = [];
+  
+   for(let i=1; i< list_length; i++){
+      href = await page.evaluate((l, sel) => {
+                  let elements= Array.from(document.querySelectorAll(sel));
+                  let anchor  = elements[l].getElementsByTagName('td')[7];
+                  if(anchor){
+                      return anchor.innerHTML;
+                  }else{
+                      return 'N/A';
+                  }
+              }, i, '#pagtag_table');
+              Zip.push(href);
+      //console.log('--------> ', href)
+  }
+  
+    ownerZip_result = href;
+    
+    if(list_length == 3)
+    {
+       // console.log("ListLength=3");
+       ownerZip_result = Zip[0];
+    }
+    else if(list_length == 4)
+    {
+      //console.log("ListLength=4");
+      ownerZip_result = Zip[1];
+    }
+  
+    // let ownerZip_result = await page.evaluate((sel) => {
+    // let element = document.querySelector(sel);
+    // return element? element.innerHTML:null;
+    //}, ownerZipCodeValueResults);
+   City = [];
+  
+   for(let i=1; i< list_length; i++){
+      href = await page.evaluate((l, sel) => {
+                  let elements= Array.from(document.querySelectorAll(sel));
+                  let anchor  = elements[l].getElementsByTagName('td')[5];
+                  if(anchor){
+                      return anchor.innerHTML;
+                  }else{
+                      return 'N/A';
+                  }
+              }, i, '#pagtag_table');
+              City.push(href);
+      //console.log('--------> ', href)
+  }
+  
+    ownerCity_result = href;
+    
+    if(list_length == 3)
+    {
+       // console.log("ListLength=3");
+       ownerCity_result = City[0];
+    }
+    else if(list_length == 4)
+    {
+      //console.log("ListLength=4");
+      ownerCity_result = City[1];
+    }
+  
+     //let ownerCity_result = await page.evaluate((sel) => {
+     //let element = document.querySelector(sel);
+     //return element? element.innerHTML:null;
+     //}, ownerCityValueResults);
+  
+   for(let i=2; i< list_length; i++){
+      href = await page.evaluate((l, sel) => {
+                  let elements= Array.from(document.querySelectorAll(sel));
+                  let anchor  = elements[l].getElementsByTagName('td')[9];
+                  if(anchor){
+                      return anchor.innerHTML;
+                  }else{
+                      return 'N/A';
+                  }
+              }, i, '#pagtag_table');
+      //console.log('--------> ', href)
+  }
+  
+    ownerState_result = href;
+  
+     //let ownerState_result = await page.evaluate((sel) => {
+     //let element = document.querySelector(sel);
+     //return element? element.innerHTML:null;
+     //}, ownerStateValueResults);
+  
+    for(let i=2; i< list_length; i++){
+      href = await page.evaluate((l, sel) => {
+                  let elements= Array.from(document.querySelectorAll(sel));
+                  let anchor  = elements[l].getElementsByTagName('td')[13];
+                  if(anchor){
+                      return anchor.innerHTML;
+                  }else{
+                      return 'N/A';
+                  }
+              }, i, '#pagtag_table');
+      //console.log('--------> ', href)
+  }
+  
+  ownerPhone_result = href;
+  
+    // let ownerPhone_result = await page.evaluate((sel) => {
+    // let element = document.querySelector(sel);
+    // return element? element.innerHTML:"N/A";
+    //}, ownerPhoneNumber1ValueResults);
+ 
+ 
+  await page.click('#principal__resultTab',{delay:1000});
+ 
+  soldPrice = soldPrice_result.replace(',','');
+  taxValue = taxValue_result.replace(',','');
+  landValue = landValue_result.replace(',','');
+  buildValue = buildValue_result.replace(',','');
+ 
+  json = {'city':cityValue_result,'address':address_result,'unit':"",'zip':zip_result,'garea':gLiving,'larea':lArea,'beds':bed, 'baths':baths,'pool':pool_result,'wf':waterFront_result,'built':built_result,'frclosure':foreclosure_result,'sold_price':soldPrice,'tax_value':taxValue,'land_value':landValue,'build_value':buildValue,'owner_name':ownerName_result,'owner_address':ownerAddress_result,'owner_zip':ownerZip_result,'owner_city':ownerCity_result,'owner_state':ownerState_result,'owner_phone':ownerPhone_result};
+   
+  data = [ownerName_result,address_result +" ,"+ cityValue_result + " ," + zip_result]
+  
+  dataInserted;
+   
+  request = new Request("INSERT INTO Properties with (ROWLOCK) ([Ownername], [Address]) SELECT '"+ data[0].toString()+ "', '"+ data[1].toString()+ "' WHERE NOT EXISTS (SELECT * FROM dbo.Properties WHERE Address = '"+data[1].toString() +"');",
+  function(err,rowCount)
+  {
+    if(err)
+    {
+       console.log(err);
+      }
+      //console.log(rowCount + ' row(s) returned');
+      dataInserted = rowCount;
+  }
+   
+
+  );
+  await connection.execSql(request);
+
+   if(dataInserted > 0)
+   {
+      viewData.push(json);
+   }
+ 
+   podioJson = {"fields":{"title":ownerName_result,"lead-source":sourceData,"lead-intake-date":intakeDate,"motivation":7,"status-of-lead":14,"next-action":15,"property-address":address_result +" ,"+ cityValue_result+" ,"+zip_result ,"owners-address":ownerAddress_result +" ,"+ ownerCity_result+" ,"+ownerZip_result,"estimated-value":{"value":buildValue,"currency":"USD"},"beds-2":bed,"baths-2":baths,"square-feet":lArea,"year-built-2":built_result,"property-taxes-assement":taxValue,"last-sale-price":soldPrice}};
+
+    //console.log(podioJson);
+    //console.log(intakeDate);
+
+   
+  
+  
+    await request.on('done', function (rowCount, more, rows) {
+    dataInserted = rowCount;
+
+
+   });
+  
+  
+  //console.log(dataInserted);
+  if(dataInserted > 0)
+  {
+    insertPODIOItem(podioJson);
+  }
+ 
+}
+
+} 
+
+//Marion
+try
+{
+	await page.click('#principal__searchTab',{delay:2000});
+}
+catch(err)
+ {
+ 	console.log(err);
+} 
+
+//await page.waitForNavigation({waitUntil:'networkidle0'});
+await page.click("#ext-gen201", {delay:2000});
+
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+
+await page.keyboard.down('Enter'); 
+
+
+//await page.focus(FORECLOSURE, {delay:2000});
+//await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.down('Enter');
+
+//await page.click(FORECLOSURE_BUTTON, {delay:2000});
+
+//await page.click('#ext-gen167', {delay:2000});
+
+
+//await page.focus(FILEDATE_BETWEEN, {delay:2000});
+//await page.click('#ext-gen436',{delay:2000});
+
+//await page.focus('#ext-gen517',{delay:2000});
+
+//await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.down('Enter');
+
+
+ // d = new Date();
+ 
+  
+  //dateString = formatDate(d);
+  //dateFirstDayString = formatDateFirstOfMonth(d);
+  //intakeDate = formatIntakeDate(d);
+  //sourceData = formatSource(d);
+  
+  //console.log(dateString);
+  
+  //await page.click('#ext-gen392',{delay:2000});
+  
+  //await page.click('#ext-gen439',{delay:2000});
+  
+
+  //await page.keyboard.type(dateString),{delay:1000};
+  //await page.keyboard.type('20180601'),{delay:1000};
+  //await page.keyboard.type(dateFirstDayString),{delay:1000};
+  
+  //await page.click('#ext-gen394',{delay:2000});
+  //await page.click('#ext-gen441',{delay:2000});
+  
+  //await page.keyboard.type('20180607'),{delay:1000};
+  //await page.keyboard.type(dateString),{delay:1000};
+  
+  try
+  {
+    //await page.click('#ext-gen93'),{delay:5000};
+    await page.click('#ext-gen131',{delay:2000});
+  }
+  catch(err)
+  {
+	  console.log(err);
+	  await page.click('#ext-gen130',{delay:2000});
+  }
+  
+
+  
+  
+  try
+  {
+	  await page.waitForSelector('#result_orderby_data');
+  }
+  catch(error2)
+  {
+	   console.log(error2);
+     
+     //sendZeroResultsEmail();
+	   //await browser.close();
+  } 
+
+  await page.waitFor(4000);
+
+  //#ext-gen1897 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select
+  pageSelector = await page.evaluate(() => {
+    let elements = Array.from( document.getElementsByClassName('x-panel-body x-panel-body-noheader x-panel-body-noborder'));
+      return elements[4].getAttribute("id");
+     });
+
+     pageNumberOrder = pageNumberOrderSelector.replace("INDEX",pageSelector);
+     pageNumberAdvance = pageNumberAdvanceSelector.replace("INDEX",pageSelector);
+
+  
+  
+   //console.log(pageSelector);
+
+  pageNumber = await page.evaluate((sel) => {
+ let elements = Array.from(document.querySelectorAll(sel));
+  return elements.length;
+}, pageNumberOrder);
+  //#ext-gen4734 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select > option:nth-child(1)
+  //#ext-gen602 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select > option:nth-child(1)
+  //#ext-gen786 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select > option:nth-child(1)
+  //#ext-gen541 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select
+
+ 
+  pageNumber = pageNumber-1; 
+
+ for (let i = 0; i <= pageNumber ; i++) 
+{
+
+  if(i > 0)
+  {
+      //#ext-gen786 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)
+      //await page.click('#ext-gen525 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)');
+      //await page.click('#ext-gen602 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)');
+      //#ext-gen4734 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)
+      await page.focus(pageNumberAdvance, {delay:1000});
+      await page.click(pageNumberAdvance);
+      await page.waitForSelector('#result_orderby_data');
+  }
+
+
+  boxResult1  = await page.evaluate((sel) => {
+        let elements = Array.from(document.querySelectorAll(sel));
+        return elements.length;
+  }, '#box_result_0');
+  //console.log(boxResult1);
+
+  boxResult2  = await page.evaluate((sel) => {
+          let elements = Array.from(document.querySelectorAll(sel));
+            return elements.length;
+  }, '#box_result_1');
+  //console.log(boxResult2);
+
+  boxResult3  = await page.evaluate((sel) => {
+          let elements = Array.from(document.querySelectorAll(sel));
+            return elements.length;
+  }, '#box_result_2');
+  //console.log(boxResult3);
+
+  boxResult4  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+           return elements.length;
+  }, '#box_result_3');
+  //console.log(boxResult4);
+
+  boxResult5  = await page.evaluate((sel) => {
+       let elements = Array.from(document.querySelectorAll(sel));
+         return elements.length;
+  }, '#box_result_4');
+  //console.log(boxResult5);
+
+  boxResult6  = await page.evaluate((sel) => {
+          let elements = Array.from(document.querySelectorAll(sel));
+            return elements.length;
+  }, '#box_result_5');
+  //console.log(boxResult6);
+
+  boxResult7  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+           return elements.length;
+  }, '#box_result_6');
+  //console.log(boxResult7);
+
+  boxResult8  = await page.evaluate((sel) => {
+          let elements = Array.from(document.querySelectorAll(sel));
+          return elements.length;
+  }, '#box_result_7');
+  //console.log(boxResult8);
+
+  boxResult9  = await page.evaluate((sel) => {
+          let elements = Array.from(document.querySelectorAll(sel));
+           return elements.length;
+  }, '#box_result_8');
+  //console.log(boxResult9);
+
+  boxResult10  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+           return elements.length;
+  }, '#box_result_9');
+  //console.log(boxResult10);
+
+  boxNumbers = (boxResult1+boxResult2+boxResult3+boxResult4+boxResult5+boxResult6+boxResult7+boxResult8+boxResult9+boxResult10);
+  boxNumbers  = boxNumbers -1;
+
+  for (let i = 0; i <= boxNumbers ; i++) 
+  {
+
+    let boxSelector = boxResults.replace("INDEX", i);
+    let bedBathSelector = bedBathResults.replace("INDEX", i);
+    let grossAreaSelector = grossAreaResults.replace("INDEX", i);
+    let livingAreaSelector = livingAreaResults.replace("INDEX", i);
+    let poolSelector = poolResults.replace("INDEX", i);
+    let waterFrontSelector = waterFrontResults.replace("INDEX",i);
+    let builtSelector = builtResults.replace("INDEX",i);
+    let foreclosureSelector = foreclosureResults.replace("INDEX",i);
+    
+    let box_result = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
+      return element? element.innerHTML:null;
+      }, boxSelector);
+  
+    let bedBath_result = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
+      return element? element.innerHTML:null;
+      }, bedBathSelector);
+  
+    let grossArea_result = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, grossAreaSelector);
+  
+    let livingArea_result = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, livingAreaSelector);
+  
+    let pool_result = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, poolSelector);
+  
+    let waterFront_result = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, waterFrontSelector);
+  
+    let built_result = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, builtSelector);
+  
+    let foreclosure_result = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, foreclosureSelector);
+  
+  res = box_result.split(",");
+  
+  
+ //console.log(res);  
+ 
+ //var addr = res[0].split(" ");
+ 
+ //var address = addr[32] +  ' ' + addr[33] + ' ' + addr[34];
+ 
+ //console.log(address);
+
+
+// var zip = res[2].replace(/ /g, '');
+ 
+ //console.log(zip);
+ 
+ //console.log(bedBath_result);
+ 
+ temp = bedBath_result.split("/");
+ 
+ bed = temp[0];
+ 
+ content = bed.toString().replace(/\t/g, '').split('\n');
+ 
+ //console.log(content);
+ 
+ bed = content[1];
+ 
+ //console.log(bed);
+ 
+ baths = temp[1];
+ 
+ //console.log(baths);
+ 
+ grossLivingTemp = grossArea_result.toString().replace(/\t/g, '').split('\n');
+ 
+ gLiving = grossLivingTemp[1];
+ 
+ //console.log(gLiving);
+ 
+ livingTemp = livingArea_result.toString().replace(/\t/g, '').split('\n');
+ 
+ lArea = livingTemp[1];
+ 
+ 
+ await page.click(boxSelector);
+ 
+ await page.waitForSelector('#psummary_data_div > div > h1:nth-child(4)',{delay:1000});
+ 
+  address_result = await page.evaluate((sel) => {
+  let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, addressResults);
+ 
+ 
+  zip_result = await page.evaluate((sel) => {
+  let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, zipResults);
+ 
+ 
+  soldPrice_result = await page.evaluate((sel) => {
+  let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, soldPriceResults);
+ 
+  taxValue_result = await page.evaluate((sel) => {
+  let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, taxValueResults);
+ 
+  landValue_result = await page.evaluate((sel) => {
+  let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, landValueResults);
+  
+  buildValue_result = await page.evaluate((sel) => {
+  let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, buildValueResults);
+  
+  cityValue_result = await page.evaluate((sel) => {
+  let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, cityValueResults);
+  
+  list_length  = await page.evaluate((sel) => {
+  let elements = Array.from(document.querySelectorAll(sel));
+    return elements.length;
+  }, '#pagtag_table');
+  //console.log(list_length);
+  
+  href = 'N/A';
+    
+  Owner = [];
+  //#pagtag_table > tbody > tr:nth-child(1) > td:nth-child(2)
+    
+  for(let i=1; i< list_length; i++){
+       href = await page.evaluate((l, sel) => {
+                  let elements= Array.from(document.querySelectorAll(sel));
+                  let anchor  = elements[l].getElementsByTagName('td')[1];
+                  //let name = elements[l].getElementsByTagName('td')[1];
+                  if(anchor)
+                  {
+                      //console.log('TestOwner:',name.innerHTML);
+                      //Owner.push(anchor.innerHTML);
+                      return anchor.innerHTML;
+                  }
+                  else
+                  {
+                      //Owner.push('N/A');
+                      return 'N/A';
+                  }
+              }, i, '#pagtag_table');
+      //console.log('OwnerName--------> ', href)
+      Owner.push(href);
+  }
+  
+  
+    //let ownerName_result = await page.evaluate((sel) => {
+    // let element = document.querySelector(sel);
+    // return element? element.innerHTML:null;
+    //}, ownerNameValueResults);
+    ownerName_result = href;
+
+    if(list_length == 3)
+    {
+       // console.log("ListLength=3");
+      ownerName_result = Owner[0];
+    }
+    else if(list_length == 4)
+    {
+      //console.log("ListLength=4");
+        ownerName_result = Owner[1];
+    }
+    //console.log(ownerName_result);
+  
+  //console.log('Owner: '+ownerName_result.toString());
+  Address = [];
+  
+  for(let i=1; i< list_length; i++){
+      href = await page.evaluate((l, sel) => {
+      let elements= Array.from(document.querySelectorAll(sel));
+      let anchor  = elements[l].getElementsByTagName('td')[3];
+                  if(anchor){
+                      return anchor.innerHTML;
+                  }else{
+                      return 'N/A';
+                  }
+              }, i, '#pagtag_table');
+      //console.log('--------> ', href)
+      Address.push(href);
+    }
+    
+   
+  
+    ownerAddress_result = href;
+    
+    if(list_length == 3)
+    {
+       // console.log("ListLength=3");
+       ownerAddress_result = Address[0];
+    }
+    else if(list_length == 4)
+    {
+      //console.log("ListLength=4");
+      ownerAddress_result = Address[1];
+    }
+  
+  // let ownerAddress_result = await page.evaluate((sel) => {
+     //let element = document.querySelector(sel);
+     //return element? element.innerHTML:null;
+    //}, ownerNameValueResults);
+
+   Zip = [];
+  
+   for(let i=1; i< list_length; i++){
+      href = await page.evaluate((l, sel) => {
+                  let elements= Array.from(document.querySelectorAll(sel));
+                  let anchor  = elements[l].getElementsByTagName('td')[7];
+                  if(anchor){
+                      return anchor.innerHTML;
+                  }else{
+                      return 'N/A';
+                  }
+              }, i, '#pagtag_table');
+              Zip.push(href);
+      //console.log('--------> ', href)
+  }
+  
+    ownerZip_result = href;
+    
+    if(list_length == 3)
+    {
+       // console.log("ListLength=3");
+       ownerZip_result = Zip[0];
+    }
+    else if(list_length == 4)
+    {
+      //console.log("ListLength=4");
+      ownerZip_result = Zip[1];
+    }
+  
+    // let ownerZip_result = await page.evaluate((sel) => {
+    // let element = document.querySelector(sel);
+    // return element? element.innerHTML:null;
+    //}, ownerZipCodeValueResults);
+   City = [];
+  
+   for(let i=1; i< list_length; i++){
+      href = await page.evaluate((l, sel) => {
+                  let elements= Array.from(document.querySelectorAll(sel));
+                  let anchor  = elements[l].getElementsByTagName('td')[5];
+                  if(anchor){
+                      return anchor.innerHTML;
+                  }else{
+                      return 'N/A';
+                  }
+              }, i, '#pagtag_table');
+              City.push(href);
+      //console.log('--------> ', href)
+  }
+  
+    ownerCity_result = href;
+    
+    if(list_length == 3)
+    {
+       // console.log("ListLength=3");
+       ownerCity_result = City[0];
+    }
+    else if(list_length == 4)
+    {
+      //console.log("ListLength=4");
+      ownerCity_result = City[1];
+    }
+  
+     //let ownerCity_result = await page.evaluate((sel) => {
+     //let element = document.querySelector(sel);
+     //return element? element.innerHTML:null;
+     //}, ownerCityValueResults);
+  
+   for(let i=2; i< list_length; i++){
+      href = await page.evaluate((l, sel) => {
+                  let elements= Array.from(document.querySelectorAll(sel));
+                  let anchor  = elements[l].getElementsByTagName('td')[9];
+                  if(anchor){
+                      return anchor.innerHTML;
+                  }else{
+                      return 'N/A';
+                  }
+              }, i, '#pagtag_table');
+      //console.log('--------> ', href)
+  }
+  
+    ownerState_result = href;
+  
+     //let ownerState_result = await page.evaluate((sel) => {
+     //let element = document.querySelector(sel);
+     //return element? element.innerHTML:null;
+     //}, ownerStateValueResults);
+  
+    for(let i=2; i< list_length; i++){
+      href = await page.evaluate((l, sel) => {
+                  let elements= Array.from(document.querySelectorAll(sel));
+                  let anchor  = elements[l].getElementsByTagName('td')[13];
+                  if(anchor){
+                      return anchor.innerHTML;
+                  }else{
+                      return 'N/A';
+                  }
+              }, i, '#pagtag_table');
+      //console.log('--------> ', href)
+  }
+  
+  ownerPhone_result = href;
+  
+    // let ownerPhone_result = await page.evaluate((sel) => {
+    // let element = document.querySelector(sel);
+    // return element? element.innerHTML:"N/A";
+    //}, ownerPhoneNumber1ValueResults);
+ 
+ 
+  await page.click('#principal__resultTab',{delay:1000});
+ 
+  soldPrice = soldPrice_result.replace(',','');
+  taxValue = taxValue_result.replace(',','');
+  landValue = landValue_result.replace(',','');
+  buildValue = buildValue_result.replace(',','');
+ 
+  json = {'city':cityValue_result,'address':address_result,'unit':"",'zip':zip_result,'garea':gLiving,'larea':lArea,'beds':bed, 'baths':baths,'pool':pool_result,'wf':waterFront_result,'built':built_result,'frclosure':foreclosure_result,'sold_price':soldPrice,'tax_value':taxValue,'land_value':landValue,'build_value':buildValue,'owner_name':ownerName_result,'owner_address':ownerAddress_result,'owner_zip':ownerZip_result,'owner_city':ownerCity_result,'owner_state':ownerState_result,'owner_phone':ownerPhone_result};
+   
+  data = [ownerName_result,address_result +" ,"+ cityValue_result + " ," + zip_result]
+  
+  dataInserted;
+   
+  request = new Request("INSERT INTO Properties with (ROWLOCK) ([Ownername], [Address]) SELECT '"+ data[0].toString()+ "', '"+ data[1].toString()+ "' WHERE NOT EXISTS (SELECT * FROM dbo.Properties WHERE Address = '"+data[1].toString() +"');",
+  function(err,rowCount)
+  {
+    if(err)
+    {
+       console.log(err);
+      }
+      //console.log(rowCount + ' row(s) returned');
+      dataInserted = rowCount;
+  }
+   
+
+  );
+  await connection.execSql(request);
+
+   if(dataInserted > 0)
+   {
+      viewData.push(json);
+   }
+ 
+   podioJson = {"fields":{"title":ownerName_result,"lead-source":sourceData,"lead-intake-date":intakeDate,"motivation":7,"status-of-lead":14,"next-action":15,"property-address":address_result +" ,"+ cityValue_result+" ,"+zip_result ,"owners-address":ownerAddress_result +" ,"+ ownerCity_result+" ,"+ownerZip_result,"estimated-value":{"value":buildValue,"currency":"USD"},"beds-2":bed,"baths-2":baths,"square-feet":lArea,"year-built-2":built_result,"property-taxes-assement":taxValue,"last-sale-price":soldPrice}};
+
+    //console.log(podioJson);
+    //console.log(intakeDate);
+
+   
+  
+  
+    await request.on('done', function (rowCount, more, rows) {
+    dataInserted = rowCount;
+
+
+   });
+  
+  
+  //console.log(dataInserted);
+  if(dataInserted > 0)
+  {
+    insertPODIOItem(podioJson);
+  }
+ 
+}
+
+} 
+
+//Volusia
+try
+{
+	await page.click('#principal__searchTab',{delay:2000});
+}
+catch(err)
+ {
+ 	console.log(err);
+} 
+
+//await page.waitForNavigation({waitUntil:'networkidle0'});
+await page.click("#ext-gen201", {delay:2000});
+
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+
+await page.keyboard.down('Enter'); 
+
+
+//await page.focus(FORECLOSURE, {delay:2000});
+//await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.down('Enter');
+
+//await page.click(FORECLOSURE_BUTTON, {delay:2000});
+
+//await page.click('#ext-gen167', {delay:2000});
+
+
+//await page.focus(FILEDATE_BETWEEN, {delay:2000});
+//await page.click('#ext-gen436',{delay:2000});
+
+//await page.focus('#ext-gen517',{delay:2000});
+
+//await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.down('Enter');
+
+
+ // d = new Date();
+ 
+  
+  //dateString = formatDate(d);
+  //dateFirstDayString = formatDateFirstOfMonth(d);
+  //intakeDate = formatIntakeDate(d);
+  //sourceData = formatSource(d);
+  
+  //console.log(dateString);
+  
+  //await page.click('#ext-gen392',{delay:2000});
+  
+  //await page.click('#ext-gen439',{delay:2000});
+  
+
+  //await page.keyboard.type(dateString),{delay:1000};
+  //await page.keyboard.type('20180601'),{delay:1000};
+  //await page.keyboard.type(dateFirstDayString),{delay:1000};
+  
+  //await page.click('#ext-gen394',{delay:2000});
+  //await page.click('#ext-gen441',{delay:2000});
+  
+  //await page.keyboard.type('20180607'),{delay:1000};
+  //await page.keyboard.type(dateString),{delay:1000};
+  
+  try
+  {
+    //await page.click('#ext-gen93'),{delay:5000};
+    await page.click('#ext-gen131',{delay:2000});
+  }
+  catch(err)
+  {
+	  console.log(err);
+	  await page.click('#ext-gen130',{delay:2000});
+  }
+  
+
+  
+  
+  try
+  {
+	  await page.waitForSelector('#result_orderby_data');
+  }
+  catch(error2)
+  {
+	   console.log(error2);
+     
+     //sendZeroResultsEmail();
+	   //await browser.close();
+  } 
+
+  await page.waitFor(4000);
+
+  //#ext-gen1897 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select
+  pageSelector = await page.evaluate((sel) => {
+    let elements = Array.from( document.getElementsByClassName('x-panel-body x-panel-body-noheader x-panel-body-noborder'));
+      return elements[4].getAttribute("id");
+     }, '#BasicResult');
+
+     pageNumberOrder = pageNumberOrderSelector.replace("INDEX",pageSelector);
+     pageNumberAdvance = pageNumberAdvanceSelector.replace("INDEX",pageSelector);
+
+  
+  
+   //console.log(pageSelector);
+
+  pageNumber = await page.evaluate((sel) => {
+ let elements = Array.from(document.querySelectorAll(sel));
+  return elements.length;
+}, pageNumberOrder);
+  //#ext-gen4734 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select > option:nth-child(1)
+  //#ext-gen602 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select > option:nth-child(1)
+  //#ext-gen786 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select > option:nth-child(1)
+  //#ext-gen541 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select
+
+ 
+  pageNumber = pageNumber-1; 
+
+ for (let i = 0; i <= pageNumber ; i++) 
+{
+
+  if(i > 0)
+  {
+      //#ext-gen786 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)
+      //await page.click('#ext-gen525 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)');
+      //await page.click('#ext-gen602 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)');
+      //#ext-gen4734 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)
+      await page.focus(pageNumberAdvance, {delay:1000});
+      await page.click(pageNumberAdvance);
+      await page.waitForSelector('#result_orderby_data');
+  }
+
+
+  boxResult1  = await page.evaluate((sel) => {
+        let elements = Array.from(document.querySelectorAll(sel));
+        return elements.length;
+  }, '#box_result_0');
+  //console.log(boxResult1);
+
+  boxResult2  = await page.evaluate((sel) => {
+          let elements = Array.from(document.querySelectorAll(sel));
+            return elements.length;
+  }, '#box_result_1');
+  //console.log(boxResult2);
+
+  boxResult3  = await page.evaluate((sel) => {
+          let elements = Array.from(document.querySelectorAll(sel));
+            return elements.length;
+  }, '#box_result_2');
+  //console.log(boxResult3);
+
+  boxResult4  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+           return elements.length;
+  }, '#box_result_3');
+  //console.log(boxResult4);
+
+  boxResult5  = await page.evaluate((sel) => {
+       let elements = Array.from(document.querySelectorAll(sel));
+         return elements.length;
+  }, '#box_result_4');
+  //console.log(boxResult5);
+
+  boxResult6  = await page.evaluate((sel) => {
+          let elements = Array.from(document.querySelectorAll(sel));
+            return elements.length;
+  }, '#box_result_5');
+  //console.log(boxResult6);
+
+  boxResult7  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+           return elements.length;
+  }, '#box_result_6');
+  //console.log(boxResult7);
+
+  boxResult8  = await page.evaluate((sel) => {
+          let elements = Array.from(document.querySelectorAll(sel));
+          return elements.length;
+  }, '#box_result_7');
+  //console.log(boxResult8);
+
+  boxResult9  = await page.evaluate((sel) => {
+          let elements = Array.from(document.querySelectorAll(sel));
+           return elements.length;
+  }, '#box_result_8');
+  //console.log(boxResult9);
+
+  boxResult10  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+           return elements.length;
+  }, '#box_result_9');
+  //console.log(boxResult10);
+
+  boxNumbers = (boxResult1+boxResult2+boxResult3+boxResult4+boxResult5+boxResult6+boxResult7+boxResult8+boxResult9+boxResult10);
+  boxNumbers  = boxNumbers -1;
+
+  for (let i = 0; i <= boxNumbers ; i++) 
+  {
+
+    let boxSelector = boxResults.replace("INDEX", i);
+    let bedBathSelector = bedBathResults.replace("INDEX", i);
+    let grossAreaSelector = grossAreaResults.replace("INDEX", i);
+    let livingAreaSelector = livingAreaResults.replace("INDEX", i);
+    let poolSelector = poolResults.replace("INDEX", i);
+    let waterFrontSelector = waterFrontResults.replace("INDEX",i);
+    let builtSelector = builtResults.replace("INDEX",i);
+    let foreclosureSelector = foreclosureResults.replace("INDEX",i);
+    
+    let box_result = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
+      return element? element.innerHTML:null;
+      }, boxSelector);
+  
+    let bedBath_result = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
+      return element? element.innerHTML:null;
+      }, bedBathSelector);
+  
+    let grossArea_result = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, grossAreaSelector);
+  
+    let livingArea_result = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, livingAreaSelector);
+  
+    let pool_result = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, poolSelector);
+  
+    let waterFront_result = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, waterFrontSelector);
+  
+    let built_result = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, builtSelector);
+  
+    let foreclosure_result = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, foreclosureSelector);
+  
+  res = box_result.split(",");
+  
+  
+ //console.log(res);  
+ 
+ //var addr = res[0].split(" ");
+ 
+ //var address = addr[32] +  ' ' + addr[33] + ' ' + addr[34];
+ 
+ //console.log(address);
+
+
+// var zip = res[2].replace(/ /g, '');
+ 
+ //console.log(zip);
+ 
+ //console.log(bedBath_result);
+ 
+ temp = bedBath_result.split("/");
+ 
+ bed = temp[0];
+ 
+ content = bed.toString().replace(/\t/g, '').split('\n');
+ 
+ //console.log(content);
+ 
+ bed = content[1];
+ 
+ //console.log(bed);
+ 
+ baths = temp[1];
+ 
+ //console.log(baths);
+ 
+ grossLivingTemp = grossArea_result.toString().replace(/\t/g, '').split('\n');
+ 
+ gLiving = grossLivingTemp[1];
+ 
+ //console.log(gLiving);
+ 
+ livingTemp = livingArea_result.toString().replace(/\t/g, '').split('\n');
+ 
+ lArea = livingTemp[1];
+ 
+ 
+ await page.click(boxSelector);
+ 
+ await page.waitForSelector('#psummary_data_div > div > h1:nth-child(4)',{delay:1000});
+ 
+  address_result = await page.evaluate((sel) => {
+  let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, addressResults);
+ 
+ 
+  zip_result = await page.evaluate((sel) => {
+  let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, zipResults);
+ 
+ 
+  soldPrice_result = await page.evaluate((sel) => {
+  let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, soldPriceResults);
+ 
+  taxValue_result = await page.evaluate((sel) => {
+  let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, taxValueResults);
+ 
+  landValue_result = await page.evaluate((sel) => {
+  let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, landValueResults);
+  
+  buildValue_result = await page.evaluate((sel) => {
+  let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, buildValueResults);
+  
+  cityValue_result = await page.evaluate((sel) => {
+  let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, cityValueResults);
+  
+  list_length  = await page.evaluate((sel) => {
+  let elements = Array.from(document.querySelectorAll(sel));
+    return elements.length;
+  }, '#pagtag_table');
+  //console.log(list_length);
+  
+  href = 'N/A';
+    
+  Owner = [];
+  //#pagtag_table > tbody > tr:nth-child(1) > td:nth-child(2)
+    
+  for(let i=1; i< list_length; i++){
+       href = await page.evaluate((l, sel) => {
+                  let elements= Array.from(document.querySelectorAll(sel));
+                  let anchor  = elements[l].getElementsByTagName('td')[1];
+                  //let name = elements[l].getElementsByTagName('td')[1];
+                  if(anchor)
+                  {
+                      //console.log('TestOwner:',name.innerHTML);
+                      //Owner.push(anchor.innerHTML);
+                      return anchor.innerHTML;
+                  }
+                  else
+                  {
+                      //Owner.push('N/A');
+                      return 'N/A';
+                  }
+              }, i, '#pagtag_table');
+      //console.log('OwnerName--------> ', href)
+      Owner.push(href);
+  }
+  
+  
+    //let ownerName_result = await page.evaluate((sel) => {
+    // let element = document.querySelector(sel);
+    // return element? element.innerHTML:null;
+    //}, ownerNameValueResults);
+    ownerName_result = href;
+
+    if(list_length == 3)
+    {
+       // console.log("ListLength=3");
+      ownerName_result = Owner[0];
+    }
+    else if(list_length == 4)
+    {
+      //console.log("ListLength=4");
+        ownerName_result = Owner[1];
+    }
+    //console.log(ownerName_result);
+  
+  //console.log('Owner: '+ownerName_result.toString());
+  Address = [];
+  
+  for(let i=1; i< list_length; i++){
+      href = await page.evaluate((l, sel) => {
+      let elements= Array.from(document.querySelectorAll(sel));
+      let anchor  = elements[l].getElementsByTagName('td')[3];
+                  if(anchor){
+                      return anchor.innerHTML;
+                  }else{
+                      return 'N/A';
+                  }
+              }, i, '#pagtag_table');
+      //console.log('--------> ', href)
+      Address.push(href);
+    }
+    
+   
+  
+    ownerAddress_result = href;
+    
+    if(list_length == 3)
+    {
+       // console.log("ListLength=3");
+       ownerAddress_result = Address[0];
+    }
+    else if(list_length == 4)
+    {
+      //console.log("ListLength=4");
+      ownerAddress_result = Address[1];
+    }
+  
+  // let ownerAddress_result = await page.evaluate((sel) => {
+     //let element = document.querySelector(sel);
+     //return element? element.innerHTML:null;
+    //}, ownerNameValueResults);
+
+   Zip = [];
+  
+   for(let i=1; i< list_length; i++){
+      href = await page.evaluate((l, sel) => {
+                  let elements= Array.from(document.querySelectorAll(sel));
+                  let anchor  = elements[l].getElementsByTagName('td')[7];
+                  if(anchor){
+                      return anchor.innerHTML;
+                  }else{
+                      return 'N/A';
+                  }
+              }, i, '#pagtag_table');
+              Zip.push(href);
+      //console.log('--------> ', href)
+  }
+  
+    ownerZip_result = href;
+    
+    if(list_length == 3)
+    {
+       // console.log("ListLength=3");
+       ownerZip_result = Zip[0];
+    }
+    else if(list_length == 4)
+    {
+      //console.log("ListLength=4");
+      ownerZip_result = Zip[1];
+    }
+  
+    // let ownerZip_result = await page.evaluate((sel) => {
+    // let element = document.querySelector(sel);
+    // return element? element.innerHTML:null;
+    //}, ownerZipCodeValueResults);
+   City = [];
+  
+   for(let i=1; i< list_length; i++){
+      href = await page.evaluate((l, sel) => {
+                  let elements= Array.from(document.querySelectorAll(sel));
+                  let anchor  = elements[l].getElementsByTagName('td')[5];
+                  if(anchor){
+                      return anchor.innerHTML;
+                  }else{
+                      return 'N/A';
+                  }
+              }, i, '#pagtag_table');
+              City.push(href);
+      //console.log('--------> ', href)
+  }
+  
+    ownerCity_result = href;
+    
+    if(list_length == 3)
+    {
+       // console.log("ListLength=3");
+       ownerCity_result = City[0];
+    }
+    else if(list_length == 4)
+    {
+      //console.log("ListLength=4");
+      ownerCity_result = City[1];
+    }
+  
+     //let ownerCity_result = await page.evaluate((sel) => {
+     //let element = document.querySelector(sel);
+     //return element? element.innerHTML:null;
+     //}, ownerCityValueResults);
+  
+   for(let i=2; i< list_length; i++){
+      href = await page.evaluate((l, sel) => {
+                  let elements= Array.from(document.querySelectorAll(sel));
+                  let anchor  = elements[l].getElementsByTagName('td')[9];
+                  if(anchor){
+                      return anchor.innerHTML;
+                  }else{
+                      return 'N/A';
+                  }
+              }, i, '#pagtag_table');
+      //console.log('--------> ', href)
+  }
+  
+    ownerState_result = href;
+  
+     //let ownerState_result = await page.evaluate((sel) => {
+     //let element = document.querySelector(sel);
+     //return element? element.innerHTML:null;
+     //}, ownerStateValueResults);
+  
+    for(let i=2; i< list_length; i++){
+      href = await page.evaluate((l, sel) => {
+                  let elements= Array.from(document.querySelectorAll(sel));
+                  let anchor  = elements[l].getElementsByTagName('td')[13];
+                  if(anchor){
+                      return anchor.innerHTML;
+                  }else{
+                      return 'N/A';
+                  }
+              }, i, '#pagtag_table');
+      //console.log('--------> ', href)
+  }
+  
+  ownerPhone_result = href;
+  
+    // let ownerPhone_result = await page.evaluate((sel) => {
+    // let element = document.querySelector(sel);
+    // return element? element.innerHTML:"N/A";
+    //}, ownerPhoneNumber1ValueResults);
+ 
+ 
+  await page.click('#principal__resultTab',{delay:1000});
+ 
+  soldPrice = soldPrice_result.replace(',','');
+  taxValue = taxValue_result.replace(',','');
+  landValue = landValue_result.replace(',','');
+  buildValue = buildValue_result.replace(',','');
+ 
+  json = {'city':cityValue_result,'address':address_result,'unit':"",'zip':zip_result,'garea':gLiving,'larea':lArea,'beds':bed, 'baths':baths,'pool':pool_result,'wf':waterFront_result,'built':built_result,'frclosure':foreclosure_result,'sold_price':soldPrice,'tax_value':taxValue,'land_value':landValue,'build_value':buildValue,'owner_name':ownerName_result,'owner_address':ownerAddress_result,'owner_zip':ownerZip_result,'owner_city':ownerCity_result,'owner_state':ownerState_result,'owner_phone':ownerPhone_result};
+   
+  data = [ownerName_result,address_result +" ,"+ cityValue_result + " ," + zip_result]
+  //dataInserted;
+   
+  request = new Request("INSERT INTO Properties with (ROWLOCK) ([Ownername], [Address]) SELECT '"+ data[0].toString()+ "', '"+ data[1].toString()+ "' WHERE NOT EXISTS (SELECT * FROM dbo.Properties WHERE Address = '"+data[1].toString() +"');",
+  function(err,rowCount)
+  {
+    if(err)
+    {
+       console.log(err);
+      }
+      //console.log(rowCount + ' row(s) returned');
+      dataInserted = rowCount;
+  }
+   
+
+  );
+  await connection.execSql(request);
+
+   if(dataInserted > 0)
+   {
+      viewData.push(json);
+   }
+ 
+   podioJson = {"fields":{"title":ownerName_result,"lead-source":sourceData,"lead-intake-date":intakeDate,"motivation":7,"status-of-lead":14,"next-action":15,"property-address":address_result +" ,"+ cityValue_result+" ,"+zip_result ,"owners-address":ownerAddress_result +" ,"+ ownerCity_result+" ,"+ownerZip_result,"estimated-value":{"value":buildValue,"currency":"USD"},"beds-2":bed,"baths-2":baths,"square-feet":lArea,"year-built-2":built_result,"property-taxes-assement":taxValue,"last-sale-price":soldPrice}};
+
+    //console.log(podioJson);
+    //console.log(intakeDate);
+
+   
+  
+  
+    await request.on('done', function (rowCount, more, rows) {
+    dataInserted = rowCount;
+
+
+   });
+  
+  
+  //console.log(dataInserted);
+  if(dataInserted > 0)
+  {
+    insertPODIOItem(podioJson);
+  }
+ 
+}
+
+} 
 
 
 
-   var json2csvCallback = function (err, csv) {
+	var fileName = dateFirstDayString + ' to ' + dateString + ' LP.csv';
+
+
+
+   var json2csvCallback = function (err, csv) 
+   {
     if (err) throw err;
     //console.log(csv);
 	
-    fs.writeFile(fileName, csv, function(err) {
-    if (err) throw err;
-    console.log('file saved');
-	thecsv = csv;
-  });
-}; 
+    fs.writeFile(fileName, csv, function(err) 
+    {
+      if (err) throw err;
+      console.log('file saved');
+	    thecsv = csv;    
+      });
+    }; 
 
 await converter.json2csv(viewData, json2csvCallback);
   
@@ -867,20 +3371,20 @@ await converter.json2csv(viewData, json2csvCallback);
   await page.waitFor(2000);
   if(viewData.length == 0)
   {
-      sendZeroResultsEmail();
+      //sendZeroResultsEmail();
   }
   else
   {
-      sendTheEmail(fileName);
+      //sendTheEmail(fileName);
   }
 
   await page.waitFor(1500);
 
 
 //console.log(Date.now());
-  await browser.close();
+  //await browser.close();
 
-  await getREIFaxProbate();
+  //await getREIFaxProbate();
 
 }
 
@@ -1965,7 +4469,7 @@ function formatDate(date) {
 
 function formatDateFirstOfMonth(date){
 	var d = new Date(date),
-	month = '' + (d.getMonth() + 1),
+	month = '' + (d.getMonth()),
 	day = '01',
 	year = d.getFullYear();
 	
