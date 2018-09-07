@@ -722,9 +722,11 @@ await page.keyboard.down('Enter');
 	  var soldPrice = soldPrice_result.replace(',','');
 	  var taxValue = taxValue_result.replace(',','');
 	  var landValue = landValue_result.replace(',','');
-	  var buildValue = buildValue_result.replace(',','');
+    var buildValue = buildValue_result.replace(',','');
+    
+    var OwnerOne = ownerName_result.split('&');
 	 
-	  var json = {'city':cityValue_result,'address':address_result,'unit':"",'zip':zip_result,'garea':gLiving,'larea':lArea,'beds':bed, 'baths':baths,'pool':pool_result,'wf':waterFront_result,'built':built_result,'frclosure':foreclosure_result,'sold_price':soldPrice,'tax_value':taxValue,'land_value':landValue,'build_value':buildValue,'owner_name':ownerName_result,'owner_address':ownerAddress_result,'owner_zip':ownerZip_result,'owner_city':ownerCity_result,'owner_state':ownerState_result,'owner_phone':ownerPhone_result};
+	  var json = {'city':cityValue_result,'address':address_result,'unit':"",'zip':zip_result,'garea':gLiving,'larea':lArea,'beds':bed, 'baths':baths,'pool':pool_result,'wf':waterFront_result,'built':built_result,'frclosure':foreclosure_result,'sold_price':soldPrice,'tax_value':taxValue,'land_value':landValue,'build_value':buildValue,'owner_name':OwnerOne[0],'owner_address':ownerAddress_result,'owner_zip':ownerZip_result,'owner_city':ownerCity_result,'owner_state':ownerState_result,'owner_phone':ownerPhone_result};
      
     var data = [ownerName_result,address_result +" ,"+ cityValue_result + " ," + zip_result]
     var dataInserted;
@@ -822,55 +824,7 @@ await page.keyboard.press('ArrowUp',{delay:250});
 await page.keyboard.down('Enter'); 
 
 
-//await page.focus(FORECLOSURE, {delay:2000});
-//await page.keyboard.press('ArrowDown',{delay:250});
-//await page.keyboard.press('ArrowDown',{delay:250});
-//await page.keyboard.press('ArrowDown',{delay:250});
-//await page.keyboard.down('Enter');
 
-//await page.click(FORECLOSURE_BUTTON, {delay:2000});
-
-//await page.click('#ext-gen167', {delay:2000});
-
-
-//await page.focus(FILEDATE_BETWEEN, {delay:2000});
-//await page.click('#ext-gen436',{delay:2000});
-
-//await page.focus('#ext-gen517',{delay:2000});
-
-//await page.keyboard.press('ArrowDown',{delay:250});
-//await page.keyboard.press('ArrowDown',{delay:250});
-//await page.keyboard.press('ArrowDown',{delay:250});
-//await page.keyboard.press('ArrowDown',{delay:250});
-//await page.keyboard.press('ArrowDown',{delay:250});
-//await page.keyboard.press('ArrowDown',{delay:250});
-//await page.keyboard.down('Enter');
-
-
- // d = new Date();
- 
-  
-  //dateString = formatDate(d);
-  //dateFirstDayString = formatDateFirstOfMonth(d);
-  //intakeDate = formatIntakeDate(d);
-  //sourceData = formatSource(d);
-  
-  //console.log(dateString);
-  
-  //await page.click('#ext-gen392',{delay:2000});
-  
-  //await page.click('#ext-gen439',{delay:2000});
-  
-
-  //await page.keyboard.type(dateString),{delay:1000};
-  //await page.keyboard.type('20180601'),{delay:1000};
-  //await page.keyboard.type(dateFirstDayString),{delay:1000};
-  
-  //await page.click('#ext-gen394',{delay:2000});
-  //await page.click('#ext-gen441',{delay:2000});
-  
-  //await page.keyboard.type('20180607'),{delay:1000};
-  //await page.keyboard.type(dateString),{delay:1000};
   
   try
   {
@@ -1360,7 +1314,7 @@ await page.keyboard.down('Enter');
        console.log(err);
       }
       //console.log(rowCount + ' row(s) returned');
-      dataInserted = rowCount;
+    dataInserted = rowCount;
   }
    
 
@@ -1453,55 +1407,7 @@ await page.keyboard.press('ArrowDown',{delay:250});
 await page.keyboard.down('Enter'); 
 
 
-//await page.focus(FORECLOSURE, {delay:2000});
-//await page.keyboard.press('ArrowDown',{delay:250});
-//await page.keyboard.press('ArrowDown',{delay:250});
-//await page.keyboard.press('ArrowDown',{delay:250});
-//await page.keyboard.down('Enter');
 
-//await page.click(FORECLOSURE_BUTTON, {delay:2000});
-
-//await page.click('#ext-gen167', {delay:2000});
-
-
-//await page.focus(FILEDATE_BETWEEN, {delay:2000});
-//await page.click('#ext-gen436',{delay:2000});
-
-//await page.focus('#ext-gen517',{delay:2000});
-
-//await page.keyboard.press('ArrowDown',{delay:250});
-//await page.keyboard.press('ArrowDown',{delay:250});
-//await page.keyboard.press('ArrowDown',{delay:250});
-//await page.keyboard.press('ArrowDown',{delay:250});
-//await page.keyboard.press('ArrowDown',{delay:250});
-//await page.keyboard.press('ArrowDown',{delay:250});
-//await page.keyboard.down('Enter');
-
-
- // d = new Date();
- 
-  
-  //dateString = formatDate(d);
-  //dateFirstDayString = formatDateFirstOfMonth(d);
-  //intakeDate = formatIntakeDate(d);
-  //sourceData = formatSource(d);
-  
-  //console.log(dateString);
-  
-  //await page.click('#ext-gen392',{delay:2000});
-  
-  //await page.click('#ext-gen439',{delay:2000});
-  
-
-  //await page.keyboard.type(dateString),{delay:1000};
-  //await page.keyboard.type('20180601'),{delay:1000};
-  //await page.keyboard.type(dateFirstDayString),{delay:1000};
-  
-  //await page.click('#ext-gen394',{delay:2000});
-  //await page.click('#ext-gen441',{delay:2000});
-  
-  //await page.keyboard.type('20180607'),{delay:1000};
-  //await page.keyboard.type(dateString),{delay:1000};
   
   try
   {
@@ -2080,55 +1986,7 @@ await page.keyboard.press('ArrowDown',{delay:250});
 await page.keyboard.down('Enter'); 
 
 
-//await page.focus(FORECLOSURE, {delay:2000});
-//await page.keyboard.press('ArrowDown',{delay:250});
-//await page.keyboard.press('ArrowDown',{delay:250});
-//await page.keyboard.press('ArrowDown',{delay:250});
-//await page.keyboard.down('Enter');
 
-//await page.click(FORECLOSURE_BUTTON, {delay:2000});
-
-//await page.click('#ext-gen167', {delay:2000});
-
-
-//await page.focus(FILEDATE_BETWEEN, {delay:2000});
-//await page.click('#ext-gen436',{delay:2000});
-
-//await page.focus('#ext-gen517',{delay:2000});
-
-//await page.keyboard.press('ArrowDown',{delay:250});
-//await page.keyboard.press('ArrowDown',{delay:250});
-//await page.keyboard.press('ArrowDown',{delay:250});
-//await page.keyboard.press('ArrowDown',{delay:250});
-//await page.keyboard.press('ArrowDown',{delay:250});
-//await page.keyboard.press('ArrowDown',{delay:250});
-//await page.keyboard.down('Enter');
-
-
- // d = new Date();
- 
-  
-  //dateString = formatDate(d);
-  //dateFirstDayString = formatDateFirstOfMonth(d);
-  //intakeDate = formatIntakeDate(d);
-  //sourceData = formatSource(d);
-  
-  //console.log(dateString);
-  
-  //await page.click('#ext-gen392',{delay:2000});
-  
-  //await page.click('#ext-gen439',{delay:2000});
-  
-
-  //await page.keyboard.type(dateString),{delay:1000};
-  //await page.keyboard.type('20180601'),{delay:1000};
-  //await page.keyboard.type(dateFirstDayString),{delay:1000};
-  
-  //await page.click('#ext-gen394',{delay:2000});
-  //await page.click('#ext-gen441',{delay:2000});
-  
-  //await page.keyboard.type('20180607'),{delay:1000};
-  //await page.keyboard.type(dateString),{delay:1000};
   
   try
   {
@@ -2623,10 +2481,10 @@ await page.keyboard.down('Enter');
   );
   await connection.execSql(request);
 
-   if(dataInserted > 0)
-   {
+  if(dataInserted > 0)
+  {
       viewData.push(json);
-   }
+  }
  
    podioJson = {"fields":{"title":ownerName_result,"lead-source":sourceData,"lead-intake-date":intakeDate,"motivation":7,"status-of-lead":14,"next-action":15,"property-address":address_result +" ,"+ cityValue_result+" ,"+zip_result ,"owners-address":ownerAddress_result +" ,"+ ownerCity_result+" ,"+ownerZip_result,"estimated-value":{"value":buildValue,"currency":"USD"},"beds-2":bed,"baths-2":baths,"square-feet":lArea,"year-built-2":built_result,"property-taxes-assement":taxValue,"last-sale-price":soldPrice}};
 
@@ -2707,55 +2565,7 @@ await page.keyboard.press('ArrowDown',{delay:250});
 await page.keyboard.down('Enter'); 
 
 
-//await page.focus(FORECLOSURE, {delay:2000});
-//await page.keyboard.press('ArrowDown',{delay:250});
-//await page.keyboard.press('ArrowDown',{delay:250});
-//await page.keyboard.press('ArrowDown',{delay:250});
-//await page.keyboard.down('Enter');
 
-//await page.click(FORECLOSURE_BUTTON, {delay:2000});
-
-//await page.click('#ext-gen167', {delay:2000});
-
-
-//await page.focus(FILEDATE_BETWEEN, {delay:2000});
-//await page.click('#ext-gen436',{delay:2000});
-
-//await page.focus('#ext-gen517',{delay:2000});
-
-//await page.keyboard.press('ArrowDown',{delay:250});
-//await page.keyboard.press('ArrowDown',{delay:250});
-//await page.keyboard.press('ArrowDown',{delay:250});
-//await page.keyboard.press('ArrowDown',{delay:250});
-//await page.keyboard.press('ArrowDown',{delay:250});
-//await page.keyboard.press('ArrowDown',{delay:250});
-//await page.keyboard.down('Enter');
-
-
- // d = new Date();
- 
-  
-  //dateString = formatDate(d);
-  //dateFirstDayString = formatDateFirstOfMonth(d);
-  //intakeDate = formatIntakeDate(d);
-  //sourceData = formatSource(d);
-  
-  //console.log(dateString);
-  
-  //await page.click('#ext-gen392',{delay:2000});
-  
-  //await page.click('#ext-gen439',{delay:2000});
-  
-
-  //await page.keyboard.type(dateString),{delay:1000};
-  //await page.keyboard.type('20180601'),{delay:1000};
-  //await page.keyboard.type(dateFirstDayString),{delay:1000};
-  
-  //await page.click('#ext-gen394',{delay:2000});
-  //await page.click('#ext-gen441',{delay:2000});
-  
-  //await page.keyboard.type('20180607'),{delay:1000};
-  //await page.keyboard.type(dateString),{delay:1000};
   
   try
   {
@@ -3232,7 +3042,7 @@ await page.keyboard.down('Enter');
   json = {'city':cityValue_result,'address':address_result,'unit':"",'zip':zip_result,'garea':gLiving,'larea':lArea,'beds':bed, 'baths':baths,'pool':pool_result,'wf':waterFront_result,'built':built_result,'frclosure':foreclosure_result,'sold_price':soldPrice,'tax_value':taxValue,'land_value':landValue,'build_value':buildValue,'owner_name':ownerName_result,'owner_address':ownerAddress_result,'owner_zip':ownerZip_result,'owner_city':ownerCity_result,'owner_state':ownerState_result,'owner_phone':ownerPhone_result};
    
   data = [ownerName_result,address_result +" ,"+ cityValue_result + " ," + zip_result]
-  //dataInserted;
+  dataInserted;
    
   request = new Request("INSERT INTO Properties with (ROWLOCK) ([Ownername], [Address]) SELECT '"+ data[0].toString()+ "', '"+ data[1].toString()+ "' WHERE NOT EXISTS (SELECT * FROM dbo.Properties WHERE Address = '"+data[1].toString() +"');",
   function(err,rowCount)
@@ -4246,9 +4056,9 @@ var smtpTransport = nodemailer.createTransport({
 	var mailOptions = {
 	  from: process.env.GMAIL_USERNAME,
 	  to: "Kornarmy@gmail.com, mfilson148@gmail.com",
-	  subject: "REI FAX Mailer list No Results",
+	  subject: "REIFAX LP Mailer list No Results",
 	  generateTextFromHTML: true,
-	  html: "<b>REI FAX Found zero results today.</b>",
+	  html: "<b>REIFAX Found zero results today.</b>",
 	  //attachments: [{   filename: 'Testfile.csv',// file on disk as an attachment
 		//				content: thecsv
 		//			}]
@@ -4370,9 +4180,9 @@ var smtpTransport = nodemailer.createTransport({
 var mailOptions = {
   from: process.env.GMAIL_USERNAME,
   to: "Kornarmy@gmail.com, mfilson148@gmail.com",
-  subject: "REI FAX LP LAKE",
+  subject: "REIFAX LP SIX Counties",
   generateTextFromHTML: true,
-  html: "<b>REI FAX From the machines!</b>",
+  html: "<b>REIFAX From the machines!</b>",
   attachments: [{   filename: fileName,// file on disk as an attachment
 					content: thecsv
 				}]
