@@ -6,10 +6,12 @@
   "dependencies": {
     "async": "^2.6.1",
     "choco": "^0.2.1",
+    "docxtemplater": "^3.9.0",
     "dotenv": "^6.0.0",
     "fs": "^0.0.1-security",
     "googleapis": "^32.0.0",
     "json-2-csv": "^2.2.0",
+    "jszip": "^2.6.1",
     "node-cron": "^1.2.1",
     "nodemailer": "^4.6.7",
     "podio-js": "^1.6.1",

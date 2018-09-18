@@ -9,6 +9,9 @@ const Podio = require('podio-js').api;
 const cron = require('node-cron');
 const Connection = require('tedious').Connection;
 const Request = require('tedious').Request;
+const JSZip = require('jszip');
+const Docxtemplater = require('docxtemplater');
+const path = require('path');
 
 
 //const fields = ['address','unit','zip','garea','larea','beds','baths','pool','wf','build','frclosure','sold_price','tax_value','land_value','build_value','phone_number_2','phone_number_1','owner_zip','owner_state','owner_country','owner_city','owner_address','owner'];
@@ -39,6 +42,8 @@ const ownerPhoneNumber1ValueResults = '#pagtag_table > tbody > tr:nth-child(5) >
 
 
 var thecsv = null;
+var buf = null;
+var buf2 = null;
 
 let {google} = require('googleapis');
 let OAuth2 = google.auth.OAuth2;
@@ -157,7 +162,8 @@ catch(err)
 	
 }
 
-//await page.waitForNavigation({waitUntil:'networkidle0'});
+await page.waitFor(2500);
+
 await page.focus(COUNTY_DROPDOWN, {delay:2000});
 
 await page.keyboard.press('ArrowDown',{delay:250});
@@ -233,7 +239,7 @@ await page.keyboard.down('Enter');
   
 
   //await page.keyboard.type(dateString),{delay:1000};
-  //await page.keyboard.type('20180601'),{delay:1000};
+  //await page.keyboard.type('20180827'),{delay:1000};
   await page.keyboard.type(dateFirstDayString),{delay:1000};
   
   //await page.click('#ext-gen394',{delay:2000});
@@ -241,18 +247,26 @@ await page.keyboard.down('Enter');
   
   //await page.keyboard.type('20180607'),{delay:1000};
   await page.keyboard.type(dateString),{delay:1000};
+
+  //<button type="button" id="ext-gen131" class=" x-btn-text icon" style="background-image: url(&quot;https://www.reifax.com/img/toolbar/search.png&quot;);">Search&nbsp;&nbsp; </button>
   
+  let SearchSelector = await page.evaluate(() => {
+    let elements = Array.from(document.getElementsByClassName(' x-btn-text icon'));
+      return elements[3].getAttribute("id");
+     });
+
+     SearchSelector = '#'+SearchSelector;
+     //console.log(SearchSelector);
+
   try
   {
-    //await page.click('#ext-gen93'),{delay:5000};
-    await page.click('#ext-gen131'),{delay:5000};
+    await page.click(SearchSelector.toString()),{delay:3000};
   }
   catch(err)
   {
 	  console.log(err);
-	  await page.click('#ext-gen130'),{delay:5000};
+	 // await page.click('#ext-gen130'),{delay:5000};
   }
-  
   
   
   try
@@ -268,6 +282,8 @@ await page.keyboard.down('Enter');
   }
 	   
   
+  console.log("Starting Lake");
+
    //let results = await page.evaluate((sel) => {
    //    let element = document.querySelector(sel);
    // return element? element.innerHTML:null;
@@ -287,6 +303,8 @@ await page.keyboard.down('Enter');
   
  
  var viewData = [];
+
+ var tempData = [];
  
  
  
@@ -675,8 +693,10 @@ await page.keyboard.down('Enter');
        //let element = document.querySelector(sel);
        //return element? element.innerHTML:null;
       //}, ownerCityValueResults);
+
+      State = [];
 	  
-	   for(let i=2; i< list_length; i++){
+	   for(let i=1; i< list_length; i++){
         href = await page.evaluate((l, sel) => {
                     let elements= Array.from(document.querySelectorAll(sel));
                     let anchor  = elements[l].getElementsByTagName('td')[9];
@@ -686,10 +706,22 @@ await page.keyboard.down('Enter');
                         return 'N/A';
                     }
                 }, i, '#pagtag_table');
+                State.push(href);
         //console.log('--------> ', href)
-	  }
-	  
-	  let ownerState_result = href;
+    }
+    
+    let ownerState_result = href;
+    
+      if(list_length == 3)
+      {
+         // console.log("ListLength=3");
+         ownerState_result = State[0];
+      }
+      else if(list_length == 4)
+      {
+        //console.log("ListLength=4");
+        ownerState_result = State[1];
+      }
 	  
 	   //let ownerState_result = await page.evaluate((sel) => {
        //let element = document.querySelector(sel);
@@ -724,11 +756,37 @@ await page.keyboard.down('Enter');
 	  var landValue = landValue_result.replace(',','');
     var buildValue = buildValue_result.replace(',','');
     
-    var OwnerOne = ownerName_result.split('&');
+
+    OwnerOne = ownerName_result.split('&');
+
+    
 	 
 	  var json = {'city':cityValue_result,'address':address_result,'unit':"",'zip':zip_result,'garea':gLiving,'larea':lArea,'beds':bed, 'baths':baths,'pool':pool_result,'wf':waterFront_result,'built':built_result,'frclosure':foreclosure_result,'sold_price':soldPrice,'tax_value':taxValue,'land_value':landValue,'build_value':buildValue,'owner_name':OwnerOne[0],'owner_address':ownerAddress_result,'owner_zip':ownerZip_result,'owner_city':ownerCity_result,'owner_state':ownerState_result,'owner_phone':ownerPhone_result};
      
-    var data = [ownerName_result,address_result +" ,"+ cityValue_result + " ," + zip_result]
+    var OwnerParts = OwnerOne[0].split(' ');
+
+    var OwnerFirstName = "";
+
+    var OwnerName = "";
+
+    if(OwnerParts.length >= 3)
+    {
+   
+        OwnerFirstName =  capitalizeFirst(OwnerParts[1]) + " " + capitalizeFirst(OwnerParts[2]);
+
+    }
+    else if(OwnerParts.length >= 2)
+    {
+        OwnerFirstName = capitalizeFirst(OwnerParts[1]);
+    }
+    
+
+    OwnerName = OwnerFirstName +" "+ capitalizeFirst(OwnerParts[0]);
+
+
+    var tempdatajson ={'owner_name':OwnerName,'address':address_result,'city':capitalizeFirst(cityValue_result),'owner_address':ownerAddress_result,'owner_city':ownerCity_result,'owner_state':ownerState_result,'owner_zip':ownerZip_result};
+
+    var data = [ownerName_result,address_result +" ,"+ cityValue_result + " ," + zip_result];
     var dataInserted;
      
     //console.log(data);
@@ -748,10 +806,11 @@ await page.keyboard.down('Enter');
     );
     await connection.execSql(request);
 
-     if(dataInserted > 0)
-     {
+    if(dataInserted > 0)
+    {
         viewData.push(json);
-     }
+        tempData.push(tempdatajson);
+    }
 	 
 	    var podioJson = {"fields":{"title":ownerName_result,"lead-source":sourceData,"lead-intake-date":intakeDate,"motivation":7,"status-of-lead":14,"next-action":15,"property-address":address_result +" ,"+ cityValue_result+" ,"+zip_result ,"owners-address":ownerAddress_result +" ,"+ ownerCity_result+" ,"+ownerZip_result,"estimated-value":{"value":buildValue,"currency":"USD"},"beds-2":bed,"baths-2":baths,"square-feet":lArea,"year-built-2":built_result,"property-taxes-assement":taxValue,"last-sale-price":soldPrice}};
 
@@ -761,7 +820,7 @@ await page.keyboard.down('Enter');
      
     
     
-      await request.on('done', function (rowCount, more, rows) {
+    await request.on('done', function (rowCount, more, rows) {
       dataInserted = rowCount;
 
 
@@ -826,19 +885,18 @@ await page.keyboard.down('Enter');
 
 
   
-  try
-  {
-    //await page.click('#ext-gen93'),{delay:5000};
-    await page.click('#ext-gen131',{delay:2000});
-  }
-  catch(err)
-  {
-	  console.log(err);
-	  await page.click('#ext-gen130',{delay:2000});
-  }
+try
+{
+  await page.click(SearchSelector.toString()),{delay:3000};
+}
+catch(err)
+{
+  console.log(err);
+ // await page.click('#ext-gen130'),{delay:5000};
+}
   
 
-  
+console.log("Starting Brevard");
   
   try
   {
@@ -1134,7 +1192,7 @@ await page.keyboard.down('Enter');
     // let element = document.querySelector(sel);
     // return element? element.innerHTML:null;
     //}, ownerNameValueResults);
-    ownerName_result = href;
+   // ownerName_result = Owner[1] + Owner[0];
 
     if(list_length == 3)
     {
@@ -1251,8 +1309,10 @@ await page.keyboard.down('Enter');
      //let element = document.querySelector(sel);
      //return element? element.innerHTML:null;
      //}, ownerCityValueResults);
+ 
+     State = [];
   
-   for(let i=2; i< list_length; i++){
+   for(let i=1; i< list_length; i++){
       href = await page.evaluate((l, sel) => {
                   let elements= Array.from(document.querySelectorAll(sel));
                   let anchor  = elements[l].getElementsByTagName('td')[9];
@@ -1262,10 +1322,23 @@ await page.keyboard.down('Enter');
                       return 'N/A';
                   }
               }, i, '#pagtag_table');
+              State.push(href);
       //console.log('--------> ', href)
   }
+
+  ownerState_result = href;
   
-    ownerState_result = href;
+    if(list_length == 3)
+    {
+       // console.log("ListLength=3");
+       ownerState_result = State[0];
+    }
+    else if(list_length == 4)
+    {
+      //console.log("ListLength=4");
+      ownerState_result = State[1];
+    }
+    
   
      //let ownerState_result = await page.evaluate((sel) => {
      //let element = document.querySelector(sel);
@@ -1294,15 +1367,42 @@ await page.keyboard.down('Enter');
  
  
   await page.click('#principal__resultTab',{delay:1000});
+
+  var OwnerOne = ownerName_result.split(';');
+
+  var FirstName = OwnerOne[0].split(',');
+
+  var ContainSecondName = false; 
+
+  var FinalName = "";
+
+  if(FirstName.length > 1)
+  {
+    ContainSecondName = true;
+  }
+
+  if(ContainSecondName)
+  {
+    FinalName = capitalizeFirst(FirstName[1])+" "+capitalizeFirst(FirstName[0]);
+  }
+  else
+  {
+    FinalName = capitalizeFirst(FirstName[0]);
+  }
  
   soldPrice = soldPrice_result.replace(',','');
   taxValue = taxValue_result.replace(',','');
   landValue = landValue_result.replace(',','');
   buildValue = buildValue_result.replace(',','');
+  ownerName = OwnerOne[0].replace(',','');
  
-  json = {'city':cityValue_result,'address':address_result,'unit':"",'zip':zip_result,'garea':gLiving,'larea':lArea,'beds':bed, 'baths':baths,'pool':pool_result,'wf':waterFront_result,'built':built_result,'frclosure':foreclosure_result,'sold_price':soldPrice,'tax_value':taxValue,'land_value':landValue,'build_value':buildValue,'owner_name':ownerName_result,'owner_address':ownerAddress_result,'owner_zip':ownerZip_result,'owner_city':ownerCity_result,'owner_state':ownerState_result,'owner_phone':ownerPhone_result};
+  json = {'city':cityValue_result,'address':address_result,'unit':"",'zip':zip_result,'garea':gLiving,'larea':lArea,'beds':bed, 'baths':baths,'pool':pool_result,'wf':waterFront_result,'built':built_result,'frclosure':foreclosure_result,'sold_price':soldPrice,'tax_value':taxValue,'land_value':landValue,'build_value':buildValue,'owner_name':ownerName,'owner_address':ownerAddress_result,'owner_zip':ownerZip_result,'owner_city':ownerCity_result,'owner_state':ownerState_result,'owner_phone':ownerPhone_result};
    
   data = [ownerName_result,address_result +" ,"+ cityValue_result + " ," + zip_result]
+
+  
+
+  tempdatajson = {'owner_name':FinalName,'address':address_result,'city':capitalizeFirst(cityValue_result),'owner_address':ownerAddress_result,'owner_city':ownerCity_result,'owner_state':ownerState_result,'owner_zip':ownerZip_result};
   
   dataInserted;
    
@@ -1324,6 +1424,9 @@ await page.keyboard.down('Enter');
    if(dataInserted > 0)
    {
       viewData.push(json);
+      tempData.push(tempdatajson);
+
+      //console.log(tempdatajson);
    }
  
    podioJson = {"fields":{"title":ownerName_result,"lead-source":sourceData,"lead-intake-date":intakeDate,"motivation":7,"status-of-lead":14,"next-action":15,"property-address":address_result +" ,"+ cityValue_result+" ,"+zip_result ,"owners-address":ownerAddress_result +" ,"+ ownerCity_result+" ,"+ownerZip_result,"estimated-value":{"value":buildValue,"currency":"USD"},"beds-2":bed,"baths-2":baths,"square-feet":lArea,"year-built-2":built_result,"property-taxes-assement":taxValue,"last-sale-price":soldPrice}};
@@ -1409,19 +1512,19 @@ await page.keyboard.down('Enter');
 
 
   
-  try
-  {
-    //await page.click('#ext-gen93'),{delay:5000};
-    await page.click('#ext-gen131',{delay:2000});
-  }
-  catch(err)
-  {
-	  console.log(err);
-	  await page.click('#ext-gen130',{delay:2000});
-  }
+try
+{
+  await page.click(SearchSelector.toString()),{delay:3000};
+}
+catch(err)
+{
+  console.log(err);
+ // await page.click('#ext-gen130'),{delay:5000};
+}
   
 
   
+console.log("Starting Polk");
   
   try
   {
@@ -1833,7 +1936,9 @@ await page.keyboard.down('Enter');
      //return element? element.innerHTML:null;
      //}, ownerCityValueResults);
   
-   for(let i=2; i< list_length; i++){
+    State = [];
+
+   for(let i=1; i< list_length; i++){
       href = await page.evaluate((l, sel) => {
                   let elements= Array.from(document.querySelectorAll(sel));
                   let anchor  = elements[l].getElementsByTagName('td')[9];
@@ -1843,10 +1948,22 @@ await page.keyboard.down('Enter');
                       return 'N/A';
                   }
               }, i, '#pagtag_table');
+              State.push(href);
       //console.log('--------> ', href)
   }
   
     ownerState_result = href;
+
+    if(list_length == 3)
+    {
+       // console.log("ListLength=3");
+       ownerState_result = State[0];
+    }
+    else if(list_length == 4)
+    {
+      //console.log("ListLength=4");
+      ownerState_result = State[1];
+    }
   
      //let ownerState_result = await page.evaluate((sel) => {
      //let element = document.querySelector(sel);
@@ -1875,15 +1992,44 @@ await page.keyboard.down('Enter');
  
  
   await page.click('#principal__resultTab',{delay:1000});
+
+  var OwnerOne = ownerName_result.split(';');
+  
+  var OwnerNoAmp = OwnerOne[0].split('&'); 
  
   soldPrice = soldPrice_result.replace(',','');
   taxValue = taxValue_result.replace(',','');
   landValue = landValue_result.replace(',','');
   buildValue = buildValue_result.replace(',','');
  
-  json = {'city':cityValue_result,'address':address_result,'unit':"",'zip':zip_result,'garea':gLiving,'larea':lArea,'beds':bed, 'baths':baths,'pool':pool_result,'wf':waterFront_result,'built':built_result,'frclosure':foreclosure_result,'sold_price':soldPrice,'tax_value':taxValue,'land_value':landValue,'build_value':buildValue,'owner_name':ownerName_result,'owner_address':ownerAddress_result,'owner_zip':ownerZip_result,'owner_city':ownerCity_result,'owner_state':ownerState_result,'owner_phone':ownerPhone_result};
+  json = {'city':cityValue_result,'address':address_result,'unit':"",'zip':zip_result,'garea':gLiving,'larea':lArea,'beds':bed, 'baths':baths,'pool':pool_result,'wf':waterFront_result,'built':built_result,'frclosure':foreclosure_result,'sold_price':soldPrice,'tax_value':taxValue,'land_value':landValue,'build_value':buildValue,'owner_name':OwnerNoAmp[0],'owner_address':ownerAddress_result,'owner_zip':ownerZip_result,'owner_city':ownerCity_result,'owner_state':ownerState_result,'owner_phone':ownerPhone_result};
    
-  data = [ownerName_result,address_result +" ,"+ cityValue_result + " ," + zip_result]
+  data = [ownerName_result,address_result +" ,"+ cityValue_result + " ," + zip_result];
+
+  //oName = capitalizeFirst(ownerName_result);
+
+  var OwnerParts = OwnerNoAmp[0].split(' ');
+
+    var OwnerFirstName = "";
+
+    var OwnerName = "";
+
+    if(OwnerParts.length >= 3)
+    {
+   
+        OwnerFirstName =  capitalizeFirst(OwnerParts[1]) + " " + capitalizeFirst(OwnerParts[2]);
+
+    }
+    else if(OwnerParts.length >= 2)
+    {
+        OwnerFirstName = capitalizeFirst(OwnerParts[1]);
+    }
+    
+
+    OwnerName = OwnerFirstName +" "+ capitalizeFirst(OwnerParts[0]);
+
+  tempdatajson = {'owner_name':OwnerName,'address':address_result,'city':capitalizeFirst(cityValue_result),'owner_address':ownerAddress_result,'owner_city':ownerCity_result,'owner_state':ownerState_result,'owner_zip':ownerZip_result};
+  
   
   dataInserted;
    
@@ -1902,9 +2048,10 @@ await page.keyboard.down('Enter');
   );
   await connection.execSql(request);
 
-   if(dataInserted > 0)
+  if(dataInserted > 0)
    {
       viewData.push(json);
+      tempData.push(tempdatajson);
    }
  
    podioJson = {"fields":{"title":ownerName_result,"lead-source":sourceData,"lead-intake-date":intakeDate,"motivation":7,"status-of-lead":14,"next-action":15,"property-address":address_result +" ,"+ cityValue_result+" ,"+zip_result ,"owners-address":ownerAddress_result +" ,"+ ownerCity_result+" ,"+ownerZip_result,"estimated-value":{"value":buildValue,"currency":"USD"},"beds-2":bed,"baths-2":baths,"square-feet":lArea,"year-built-2":built_result,"property-taxes-assement":taxValue,"last-sale-price":soldPrice}};
@@ -1988,19 +2135,19 @@ await page.keyboard.down('Enter');
 
 
   
-  try
-  {
-    //await page.click('#ext-gen93'),{delay:5000};
-    await page.click('#ext-gen131',{delay:2000});
-  }
-  catch(err)
-  {
-	  console.log(err);
-	  await page.click('#ext-gen130',{delay:2000});
-  }
+try
+{
+  await page.click(SearchSelector.toString()),{delay:3000};
+}
+catch(err)
+{
+  console.log(err);
+ // await page.click('#ext-gen130'),{delay:5000};
+}
   
 
   
+console.log("Starting Marion");
   
   try
   {
@@ -2412,7 +2559,9 @@ await page.keyboard.down('Enter');
      //return element? element.innerHTML:null;
      //}, ownerCityValueResults);
   
-   for(let i=2; i< list_length; i++){
+    State = [];
+
+   for(let i=1; i< list_length; i++){
       href = await page.evaluate((l, sel) => {
                   let elements= Array.from(document.querySelectorAll(sel));
                   let anchor  = elements[l].getElementsByTagName('td')[9];
@@ -2422,10 +2571,22 @@ await page.keyboard.down('Enter');
                       return 'N/A';
                   }
               }, i, '#pagtag_table');
+              State.push(href);
       //console.log('--------> ', href)
   }
   
     ownerState_result = href;
+
+    if(list_length == 3)
+    {
+       // console.log("ListLength=3");
+       ownerState_result = State[0];
+    }
+    else if(list_length == 4)
+    {
+      //console.log("ListLength=4");
+      ownerState_result = State[1];
+    }
   
      //let ownerState_result = await page.evaluate((sel) => {
      //let element = document.querySelector(sel);
@@ -2454,23 +2615,54 @@ await page.keyboard.down('Enter');
  
  
   await page.click('#principal__resultTab',{delay:1000});
+
+  OwnerOne = ownerName_result.split(';');
+  
+  var OwnerNoAmp = OwnerOne[0].split('&'); 
  
   soldPrice = soldPrice_result.replace(',','');
   taxValue = taxValue_result.replace(',','');
   landValue = landValue_result.replace(',','');
   buildValue = buildValue_result.replace(',','');
  
-  json = {'city':cityValue_result,'address':address_result,'unit':"",'zip':zip_result,'garea':gLiving,'larea':lArea,'beds':bed, 'baths':baths,'pool':pool_result,'wf':waterFront_result,'built':built_result,'frclosure':foreclosure_result,'sold_price':soldPrice,'tax_value':taxValue,'land_value':landValue,'build_value':buildValue,'owner_name':ownerName_result,'owner_address':ownerAddress_result,'owner_zip':ownerZip_result,'owner_city':ownerCity_result,'owner_state':ownerState_result,'owner_phone':ownerPhone_result};
+  json = {'city':cityValue_result,'address':address_result,'unit':"",'zip':zip_result,'garea':gLiving,'larea':lArea,'beds':bed, 'baths':baths,'pool':pool_result,'wf':waterFront_result,'built':built_result,'frclosure':foreclosure_result,'sold_price':soldPrice,'tax_value':taxValue,'land_value':landValue,'build_value':buildValue,'owner_name':OwnerNoAmp[0],'owner_address':ownerAddress_result,'owner_zip':ownerZip_result,'owner_city':ownerCity_result,'owner_state':ownerState_result,'owner_phone':ownerPhone_result};
    
   data = [ownerName_result,address_result +" ,"+ cityValue_result + " ," + zip_result]
   
   dataInserted;
+
+  //oName = capitalizeFirst(ownerName_result);
+
+  var OwnerParts = OwnerNoAmp[0].split(' ');
+
+    var OwnerFirstName = "";
+
+    var OwnerName = "";
+
+    if(OwnerParts.length >= 3)
+    {
+   
+        OwnerFirstName =  capitalizeFirst(OwnerParts[1]) + " " + capitalizeFirst(OwnerParts[2]);
+
+    }
+    else if(OwnerParts.length >= 2)
+    {
+        OwnerFirstName = capitalizeFirst(OwnerParts[1]);
+    }
+    
+
+    OwnerName = OwnerFirstName +" "+ capitalizeFirst(OwnerParts[0]);
+
+  
+
+  tempdatajson = {'owner_name':OwnerName,'address':address_result,'city':capitalizeFirst(cityValue_result),'owner_address':ownerAddress_result,'owner_city':ownerCity_result,'owner_state':ownerState_result,'owner_zip':ownerZip_result};
+  
    
   request = new Request("INSERT INTO Properties with (ROWLOCK) ([Ownername], [Address]) SELECT '"+ data[0].toString()+ "', '"+ data[1].toString()+ "' WHERE NOT EXISTS (SELECT * FROM dbo.Properties WHERE Address = '"+data[1].toString() +"');",
   function(err,rowCount)
   {
     if(err)
-    {
+     {
        console.log(err);
       }
       //console.log(rowCount + ' row(s) returned');
@@ -2484,6 +2676,7 @@ await page.keyboard.down('Enter');
   if(dataInserted > 0)
   {
       viewData.push(json);
+      tempData.push(tempdatajson);
   }
  
    podioJson = {"fields":{"title":ownerName_result,"lead-source":sourceData,"lead-intake-date":intakeDate,"motivation":7,"status-of-lead":14,"next-action":15,"property-address":address_result +" ,"+ cityValue_result+" ,"+zip_result ,"owners-address":ownerAddress_result +" ,"+ ownerCity_result+" ,"+ownerZip_result,"estimated-value":{"value":buildValue,"currency":"USD"},"beds-2":bed,"baths-2":baths,"square-feet":lArea,"year-built-2":built_result,"property-taxes-assement":taxValue,"last-sale-price":soldPrice}};
@@ -2567,18 +2760,18 @@ await page.keyboard.down('Enter');
 
 
   
-  try
-  {
-    //await page.click('#ext-gen93'),{delay:5000};
-    await page.click('#ext-gen131',{delay:2000});
-  }
-  catch(err)
-  {
-	  console.log(err);
-	  await page.click('#ext-gen130',{delay:2000});
-  }
+try
+{
+  await page.click(SearchSelector.toString()),{delay:3000};
+}
+catch(err)
+{
+  console.log(err);
+ // await page.click('#ext-gen130'),{delay:5000};
+}
   
 
+console.log("Starting Volusia");
   
   
   try
@@ -2990,8 +3183,10 @@ await page.keyboard.down('Enter');
      //let element = document.querySelector(sel);
      //return element? element.innerHTML:null;
      //}, ownerCityValueResults);
+
+     State = [];
   
-   for(let i=2; i< list_length; i++){
+   for(let i=1; i< list_length; i++){
       href = await page.evaluate((l, sel) => {
                   let elements= Array.from(document.querySelectorAll(sel));
                   let anchor  = elements[l].getElementsByTagName('td')[9];
@@ -3001,15 +3196,29 @@ await page.keyboard.down('Enter');
                       return 'N/A';
                   }
               }, i, '#pagtag_table');
+              State.push(href);
       //console.log('--------> ', href)
   }
   
     ownerState_result = href;
+
+    if(list_length == 3)
+    {
+       // console.log("ListLength=3");
+       ownerState_result = State[0];
+    }
+    else if(list_length == 4)
+    {
+      //console.log("ListLength=4");
+      ownerState_result = State[1];
+    }
   
      //let ownerState_result = await page.evaluate((sel) => {
      //let element = document.querySelector(sel);
      //return element? element.innerHTML:null;
      //}, ownerStateValueResults);
+
+  
   
     for(let i=2; i< list_length; i++){
       href = await page.evaluate((l, sel) => {
@@ -3021,6 +3230,7 @@ await page.keyboard.down('Enter');
                       return 'N/A';
                   }
               }, i, '#pagtag_table');
+              
       //console.log('--------> ', href)
   }
   
@@ -3033,16 +3243,45 @@ await page.keyboard.down('Enter');
  
  
   await page.click('#principal__resultTab',{delay:1000});
+
+  OwnerOne = ownerName_result.split(';');
+  
+  var OwnerNoAmp = OwnerOne[0].split('&'); 
  
   soldPrice = soldPrice_result.replace(',','');
   taxValue = taxValue_result.replace(',','');
   landValue = landValue_result.replace(',','');
   buildValue = buildValue_result.replace(',','');
  
-  json = {'city':cityValue_result,'address':address_result,'unit':"",'zip':zip_result,'garea':gLiving,'larea':lArea,'beds':bed, 'baths':baths,'pool':pool_result,'wf':waterFront_result,'built':built_result,'frclosure':foreclosure_result,'sold_price':soldPrice,'tax_value':taxValue,'land_value':landValue,'build_value':buildValue,'owner_name':ownerName_result,'owner_address':ownerAddress_result,'owner_zip':ownerZip_result,'owner_city':ownerCity_result,'owner_state':ownerState_result,'owner_phone':ownerPhone_result};
+  json = {'city':cityValue_result,'address':address_result,'unit':"",'zip':zip_result,'garea':gLiving,'larea':lArea,'beds':bed, 'baths':baths,'pool':pool_result,'wf':waterFront_result,'built':built_result,'frclosure':foreclosure_result,'sold_price':soldPrice,'tax_value':taxValue,'land_value':landValue,'build_value':buildValue,'owner_name':OwnerNoAmp[0],'owner_address':ownerAddress_result,'owner_zip':ownerZip_result,'owner_city':ownerCity_result,'owner_state':ownerState_result,'owner_phone':ownerPhone_result};
    
-  data = [ownerName_result,address_result +" ,"+ cityValue_result + " ," + zip_result]
+  data = [ownerName_result,address_result +" ,"+ cityValue_result + " ," + zip_result];
   dataInserted;
+
+  //oName = capitalizeFirst(ownerName_result);
+
+  var OwnerParts = OwnerNoAmp[0].split(' ');
+
+  var OwnerFirstName = "";
+
+  var OwnerName = "";
+
+  if(OwnerParts.length >= 3)
+  {
+ 
+      OwnerFirstName =  capitalizeFirst(OwnerParts[1]) + " " + capitalizeFirst(OwnerParts[2]);
+
+  }
+  else if(OwnerParts.length >= 2)
+  {
+      OwnerFirstName = capitalizeFirst(OwnerParts[1]);
+  }
+  
+
+  OwnerName = OwnerFirstName +" "+ capitalizeFirst(OwnerParts[0]);
+
+  tempdatajson = {'owner_name':OwnerName,'address':address_result,'city':capitalizeFirst(cityValue_result),'owner_address':ownerAddress_result,'owner_city':ownerCity_result,'owner_state':ownerState_result,'owner_zip':ownerZip_result};
+  
    
   request = new Request("INSERT INTO Properties with (ROWLOCK) ([Ownername], [Address]) SELECT '"+ data[0].toString()+ "', '"+ data[1].toString()+ "' WHERE NOT EXISTS (SELECT * FROM dbo.Properties WHERE Address = '"+data[1].toString() +"');",
   function(err,rowCount)
@@ -3062,6 +3301,635 @@ await page.keyboard.down('Enter');
    if(dataInserted > 0)
    {
       viewData.push(json);
+      tempData.push(tempdatajson);
+   }
+ 
+   podioJson = {"fields":{"title":ownerName_result,"lead-source":sourceData,"lead-intake-date":intakeDate,"motivation":7,"status-of-lead":14,"next-action":15,"property-address":address_result +" ,"+ cityValue_result+" ,"+zip_result ,"owners-address":ownerAddress_result +" ,"+ ownerCity_result+" ,"+ownerZip_result,"estimated-value":{"value":buildValue,"currency":"USD"},"beds-2":bed,"baths-2":baths,"square-feet":lArea,"year-built-2":built_result,"property-taxes-assement":taxValue,"last-sale-price":soldPrice}};
+
+    //console.log(podioJson);
+    //console.log(intakeDate);
+
+   
+  
+  
+    await request.on('done', function (rowCount, more, rows) {
+    dataInserted = rowCount;
+
+
+   });
+  
+  
+  //console.log(dataInserted);
+  if(dataInserted > 0)
+  {
+    insertPODIOItem(podioJson);
+  }
+ 
+}
+
+} 
+
+//Seminole
+try
+{
+	await page.click('#principal__searchTab',{delay:2000});
+}
+catch(err)
+ {
+ 	console.log(err);
+} 
+
+//await page.waitForNavigation({waitUntil:'networkidle0'});
+await page.click("#ext-gen201", {delay:2000});
+
+await page.keyboard.press('ArrowUp',{delay:250});
+await page.keyboard.press('ArrowUp',{delay:250});
+await page.keyboard.press('ArrowUp',{delay:250});
+await page.keyboard.press('ArrowUp',{delay:250});
+await page.keyboard.press('ArrowUp',{delay:250});
+await page.keyboard.press('ArrowUp',{delay:250});
+await page.keyboard.press('ArrowUp',{delay:250});
+//await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+// await page.keyboard.press('ArrowDown',{delay:250});
+
+await page.keyboard.down('Enter'); 
+
+
+
+  
+try
+{
+  await page.click(SearchSelector.toString()),{delay:3000};
+}
+catch(err)
+{
+  console.log(err);
+ // await page.click('#ext-gen130'),{delay:5000};
+}
+  
+
+console.log("Starting Seminole");
+  
+  
+  try
+  {
+	  await page.waitForSelector('#result_orderby_data');
+  }
+  catch(error2)
+  {
+	   console.log(error2);
+     
+     //sendZeroResultsEmail();
+	   //await browser.close();
+  } 
+
+  await page.waitFor(4000);
+
+  //#ext-gen1897 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select
+  pageSelector = await page.evaluate((sel) => {
+    let elements = Array.from( document.getElementsByClassName('x-panel-body x-panel-body-noheader x-panel-body-noborder'));
+      return elements[4].getAttribute("id");
+     }, '#BasicResult');
+
+     pageNumberOrder = pageNumberOrderSelector.replace("INDEX",pageSelector);
+     pageNumberAdvance = pageNumberAdvanceSelector.replace("INDEX",pageSelector);
+
+  
+  
+   //console.log(pageSelector);
+
+  pageNumber = await page.evaluate((sel) => {
+ let elements = Array.from(document.querySelectorAll(sel));
+  return elements.length;
+}, pageNumberOrder);
+  //#ext-gen4734 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select > option:nth-child(1)
+  //#ext-gen602 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select > option:nth-child(1)
+  //#ext-gen786 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select > option:nth-child(1)
+  //#ext-gen541 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select
+
+ 
+  pageNumber = pageNumber-1; 
+
+ for (let i = 0; i <= pageNumber ; i++) 
+{
+
+  if(i > 0)
+  {
+      //#ext-gen786 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)
+      //await page.click('#ext-gen525 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)');
+      //await page.click('#ext-gen602 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)');
+      //#ext-gen4734 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)
+      await page.focus(pageNumberAdvance, {delay:1000});
+      await page.click(pageNumberAdvance);
+      await page.waitForSelector('#result_orderby_data');
+  }
+
+
+  boxResult1  = await page.evaluate((sel) => {
+        let elements = Array.from(document.querySelectorAll(sel));
+        return elements.length;
+  }, '#box_result_0');
+  //console.log(boxResult1);
+
+  boxResult2  = await page.evaluate((sel) => {
+          let elements = Array.from(document.querySelectorAll(sel));
+            return elements.length;
+  }, '#box_result_1');
+  //console.log(boxResult2);
+
+  boxResult3  = await page.evaluate((sel) => {
+          let elements = Array.from(document.querySelectorAll(sel));
+            return elements.length;
+  }, '#box_result_2');
+  //console.log(boxResult3);
+
+  boxResult4  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+           return elements.length;
+  }, '#box_result_3');
+  //console.log(boxResult4);
+
+  boxResult5  = await page.evaluate((sel) => {
+       let elements = Array.from(document.querySelectorAll(sel));
+         return elements.length;
+  }, '#box_result_4');
+  //console.log(boxResult5);
+
+  boxResult6  = await page.evaluate((sel) => {
+          let elements = Array.from(document.querySelectorAll(sel));
+            return elements.length;
+  }, '#box_result_5');
+  //console.log(boxResult6);
+
+  boxResult7  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+           return elements.length;
+  }, '#box_result_6');
+  //console.log(boxResult7);
+
+  boxResult8  = await page.evaluate((sel) => {
+          let elements = Array.from(document.querySelectorAll(sel));
+          return elements.length;
+  }, '#box_result_7');
+  //console.log(boxResult8);
+
+  boxResult9  = await page.evaluate((sel) => {
+          let elements = Array.from(document.querySelectorAll(sel));
+           return elements.length;
+  }, '#box_result_8');
+  //console.log(boxResult9);
+
+  boxResult10  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+           return elements.length;
+  }, '#box_result_9');
+  //console.log(boxResult10);
+
+  boxNumbers = (boxResult1+boxResult2+boxResult3+boxResult4+boxResult5+boxResult6+boxResult7+boxResult8+boxResult9+boxResult10);
+  boxNumbers  = boxNumbers -1;
+
+  for (let i = 0; i <= boxNumbers ; i++) 
+  {
+
+    let boxSelector = boxResults.replace("INDEX", i);
+    let bedBathSelector = bedBathResults.replace("INDEX", i);
+    let grossAreaSelector = grossAreaResults.replace("INDEX", i);
+    let livingAreaSelector = livingAreaResults.replace("INDEX", i);
+    let poolSelector = poolResults.replace("INDEX", i);
+    let waterFrontSelector = waterFrontResults.replace("INDEX",i);
+    let builtSelector = builtResults.replace("INDEX",i);
+    let foreclosureSelector = foreclosureResults.replace("INDEX",i);
+    
+    let box_result = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
+      return element? element.innerHTML:null;
+      }, boxSelector);
+  
+    let bedBath_result = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
+      return element? element.innerHTML:null;
+      }, bedBathSelector);
+  
+    let grossArea_result = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, grossAreaSelector);
+  
+    let livingArea_result = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, livingAreaSelector);
+  
+    let pool_result = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, poolSelector);
+  
+    let waterFront_result = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, waterFrontSelector);
+  
+    let built_result = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, builtSelector);
+  
+    let foreclosure_result = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, foreclosureSelector);
+  
+  res = box_result.split(",");
+  
+  
+ //console.log(res);  
+ 
+ //var addr = res[0].split(" ");
+ 
+ //var address = addr[32] +  ' ' + addr[33] + ' ' + addr[34];
+ 
+ //console.log(address);
+
+
+// var zip = res[2].replace(/ /g, '');
+ 
+ //console.log(zip);
+ 
+ //console.log(bedBath_result);
+ 
+ temp = bedBath_result.split("/");
+ 
+ bed = temp[0];
+ 
+ content = bed.toString().replace(/\t/g, '').split('\n');
+ 
+ //console.log(content);
+ 
+ bed = content[1];
+ 
+ //console.log(bed);
+ 
+ baths = temp[1];
+ 
+ //console.log(baths);
+ 
+ grossLivingTemp = grossArea_result.toString().replace(/\t/g, '').split('\n');
+ 
+ gLiving = grossLivingTemp[1];
+ 
+ //console.log(gLiving);
+ 
+ livingTemp = livingArea_result.toString().replace(/\t/g, '').split('\n');
+ 
+ lArea = livingTemp[1];
+ 
+ 
+ await page.click(boxSelector);
+ 
+ await page.waitForSelector('#psummary_data_div > div > h1:nth-child(4)',{delay:1000});
+ 
+  address_result = await page.evaluate((sel) => {
+  let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, addressResults);
+ 
+ 
+  zip_result = await page.evaluate((sel) => {
+  let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, zipResults);
+ 
+ 
+  soldPrice_result = await page.evaluate((sel) => {
+  let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, soldPriceResults);
+ 
+  taxValue_result = await page.evaluate((sel) => {
+  let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, taxValueResults);
+ 
+  landValue_result = await page.evaluate((sel) => {
+  let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, landValueResults);
+  
+  buildValue_result = await page.evaluate((sel) => {
+  let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, buildValueResults);
+  
+  cityValue_result = await page.evaluate((sel) => {
+  let element = document.querySelector(sel);
+     return element? element.innerHTML:null;
+    }, cityValueResults);
+  
+  list_length  = await page.evaluate((sel) => {
+  let elements = Array.from(document.querySelectorAll(sel));
+    return elements.length;
+  }, '#pagtag_table');
+  //console.log(list_length);
+  
+  href = 'N/A';
+    
+  Owner = [];
+  //#pagtag_table > tbody > tr:nth-child(1) > td:nth-child(2)
+    
+  for(let i=1; i< list_length; i++){
+       href = await page.evaluate((l, sel) => {
+                  let elements= Array.from(document.querySelectorAll(sel));
+                  let anchor  = elements[l].getElementsByTagName('td')[1];
+                  //let name = elements[l].getElementsByTagName('td')[1];
+                  if(anchor)
+                  {
+                      //console.log('TestOwner:',name.innerHTML);
+                      //Owner.push(anchor.innerHTML);
+                      return anchor.innerHTML;
+                  }
+                  else
+                  {
+                      //Owner.push('N/A');
+                      return 'N/A';
+                  }
+              }, i, '#pagtag_table');
+      //console.log('OwnerName--------> ', href)
+      Owner.push(href);
+  }
+  
+  
+    //let ownerName_result = await page.evaluate((sel) => {
+    // let element = document.querySelector(sel);
+    // return element? element.innerHTML:null;
+    //}, ownerNameValueResults);
+    ownerName_result = href;
+
+    if(list_length == 3)
+    {
+       // console.log("ListLength=3");
+      ownerName_result = Owner[0];
+    }
+    else if(list_length == 4)
+    {
+      //console.log("ListLength=4");
+        ownerName_result = Owner[1];
+    }
+    //console.log(ownerName_result);
+  
+  //console.log('Owner: '+ownerName_result.toString());
+  Address = [];
+  
+  for(let i=1; i< list_length; i++){
+      href = await page.evaluate((l, sel) => {
+      let elements= Array.from(document.querySelectorAll(sel));
+      let anchor  = elements[l].getElementsByTagName('td')[3];
+                  if(anchor){
+                      return anchor.innerHTML;
+                  }else{
+                      return 'N/A';
+                  }
+              }, i, '#pagtag_table');
+      //console.log('--------> ', href)
+      Address.push(href);
+    }
+    
+   
+  
+    ownerAddress_result = href;
+    
+    if(list_length == 3)
+    {
+       // console.log("ListLength=3");
+       ownerAddress_result = Address[0];
+    }
+    else if(list_length == 4)
+    {
+      //console.log("ListLength=4");
+      ownerAddress_result = Address[1];
+    }
+  
+  // let ownerAddress_result = await page.evaluate((sel) => {
+     //let element = document.querySelector(sel);
+     //return element? element.innerHTML:null;
+    //}, ownerNameValueResults);
+
+   Zip = [];
+  
+   for(let i=1; i< list_length; i++){
+      href = await page.evaluate((l, sel) => {
+                  let elements= Array.from(document.querySelectorAll(sel));
+                  let anchor  = elements[l].getElementsByTagName('td')[7];
+                  if(anchor){
+                      return anchor.innerHTML;
+                  }else{
+                      return 'N/A';
+                  }
+              }, i, '#pagtag_table');
+              Zip.push(href);
+      //console.log('--------> ', href)
+  }
+  
+    ownerZip_result = href;
+    
+    if(list_length == 3)
+    {
+       // console.log("ListLength=3");
+       ownerZip_result = Zip[0];
+    }
+    else if(list_length == 4)
+    {
+      //console.log("ListLength=4");
+      ownerZip_result = Zip[1];
+    }
+  
+    // let ownerZip_result = await page.evaluate((sel) => {
+    // let element = document.querySelector(sel);
+    // return element? element.innerHTML:null;
+    //}, ownerZipCodeValueResults);
+   City = [];
+  
+   for(let i=1; i< list_length; i++){
+      href = await page.evaluate((l, sel) => {
+                  let elements= Array.from(document.querySelectorAll(sel));
+                  let anchor  = elements[l].getElementsByTagName('td')[5];
+                  if(anchor){
+                      return anchor.innerHTML;
+                  }else{
+                      return 'N/A';
+                  }
+              }, i, '#pagtag_table');
+              City.push(href);
+      //console.log('--------> ', href)
+  }
+  
+    ownerCity_result = href;
+    
+    if(list_length == 3)
+    {
+       // console.log("ListLength=3");
+       ownerCity_result = City[0];
+    }
+    else if(list_length == 4)
+    {
+      //console.log("ListLength=4");
+      ownerCity_result = City[1];
+    }
+  
+     //let ownerCity_result = await page.evaluate((sel) => {
+     //let element = document.querySelector(sel);
+     //return element? element.innerHTML:null;
+     //}, ownerCityValueResults);
+
+     State = [];
+  
+   for(let i=1; i< list_length; i++){
+      href = await page.evaluate((l, sel) => {
+                  let elements= Array.from(document.querySelectorAll(sel));
+                  let anchor  = elements[l].getElementsByTagName('td')[9];
+                  if(anchor){
+                      return anchor.innerHTML;
+                  }else{
+                      return 'N/A';
+                  }
+              }, i, '#pagtag_table');
+              State.push(href);
+      //console.log('--------> ', href)
+  }
+  
+    ownerState_result = href;
+
+    if(list_length == 3)
+    {
+       // console.log("ListLength=3");
+       ownerState_result = State[0];
+    }
+    else if(list_length == 4)
+    {
+      //console.log("ListLength=4");
+      ownerState_result = State[1];
+    }
+  
+     //let ownerState_result = await page.evaluate((sel) => {
+     //let element = document.querySelector(sel);
+     //return element? element.innerHTML:null;
+     //}, ownerStateValueResults);
+
+  
+  
+    for(let i=2; i< list_length; i++){
+      href = await page.evaluate((l, sel) => {
+                  let elements= Array.from(document.querySelectorAll(sel));
+                  let anchor  = elements[l].getElementsByTagName('td')[13];
+                  if(anchor){
+                      return anchor.innerHTML;
+                  }else{
+                      return 'N/A';
+                  }
+              }, i, '#pagtag_table');
+              
+      //console.log('--------> ', href)
+  }
+  
+  ownerPhone_result = href;
+  
+    // let ownerPhone_result = await page.evaluate((sel) => {
+    // let element = document.querySelector(sel);
+    // return element? element.innerHTML:"N/A";
+    //}, ownerPhoneNumber1ValueResults);
+ 
+ 
+  await page.click('#principal__resultTab',{delay:1000});
+
+  //OwnerOne = ownerName_result.split(';');
+  
+  //var OwnerNoAmp = OwnerOne[0].split('&'); 
+ 
+  soldPrice = soldPrice_result.replace(',','');
+  taxValue = taxValue_result.replace(',','');
+  landValue = landValue_result.replace(',','');
+  buildValue = buildValue_result.replace(',','');
+
+  var OwnerOne = ownerName_result.split(';');
+
+
+  var FirstName = OwnerOne[0].split(',');
+
+  var ContainSecondName = false; 
+
+  var FinalName = "";
+
+  if(FirstName.length > 1)
+  {
+    ContainSecondName = true;
+  }
+
+  if(ContainSecondName)
+  {
+    FinalName = (FirstName[1].charAt(1).toUpperCase() + FirstName[1].slice(2).toLowerCase())+" "+capitalizeFirst(FirstName[0]);
+  }
+  else
+  {
+    FinalName = capitalizeFirst(FirstName[0]);
+  }
+ 
+  json = {'city':cityValue_result,'address':address_result,'unit':"",'zip':zip_result,'garea':gLiving,'larea':lArea,'beds':bed, 'baths':baths,'pool':pool_result,'wf':waterFront_result,'built':built_result,'frclosure':foreclosure_result,'sold_price':soldPrice,'tax_value':taxValue,'land_value':landValue,'build_value':buildValue,'owner_name':FinalName,'owner_address':ownerAddress_result,'owner_zip':ownerZip_result,'owner_city':ownerCity_result,'owner_state':ownerState_result,'owner_phone':ownerPhone_result};
+   
+  data = [ownerName_result,address_result +" ,"+ cityValue_result + " ," + zip_result];
+  dataInserted;
+
+  
+
+  tempdatajson = {'owner_name':FinalName,'address':address_result,'city':capitalizeFirst(cityValue_result),'owner_address':ownerAddress_result,'owner_city':ownerCity_result,'owner_state':ownerState_result,'owner_zip':ownerZip_result};
+  
+   
+  request = new Request("INSERT INTO Properties with (ROWLOCK) ([Ownername], [Address]) SELECT '"+ data[0].toString()+ "', '"+ data[1].toString()+ "' WHERE NOT EXISTS (SELECT * FROM dbo.Properties WHERE Address = '"+data[1].toString() +"');",
+  function(err,rowCount)
+  {
+    if(err)
+    {
+       console.log(err);
+      }
+      //console.log(rowCount + ' row(s) returned');
+      dataInserted = rowCount;
+  }
+   
+
+  );
+  await connection.execSql(request);
+
+   if(dataInserted > 0)
+   {
+      viewData.push(json);
+      tempData.push(tempdatajson);
    }
  
    podioJson = {"fields":{"title":ownerName_result,"lead-source":sourceData,"lead-intake-date":intakeDate,"motivation":7,"status-of-lead":14,"next-action":15,"property-address":address_result +" ,"+ cityValue_result+" ,"+zip_result ,"owners-address":ownerAddress_result +" ,"+ ownerCity_result+" ,"+ownerZip_result,"estimated-value":{"value":buildValue,"currency":"USD"},"beds-2":bed,"baths-2":baths,"square-feet":lArea,"year-built-2":built_result,"property-taxes-assement":taxValue,"last-sale-price":soldPrice}};
@@ -3091,7 +3959,11 @@ await page.keyboard.down('Enter');
 
 
 
-	var fileName = dateFirstDayString + ' to ' + dateString + ' LP.csv';
+  var fileName = dateFirstDayString + ' to ' + dateString + ' LP.csv';
+  
+  var fileNameLetterOne = dateFirstDayString + ' to ' + dateString + ' LP Letter 1.docx';
+
+  var fileNameLetterTwo = dateFirstDayString + ' to ' + dateString + ' LP Letter 2.docx';
 
 
 
@@ -3107,6 +3979,67 @@ await page.keyboard.down('Enter');
 	    thecsv = csv;    
       });
     }; 
+
+    var template = fs.readFileSync(path.resolve(__dirname,'lis_pendons_template.docx'),'binary');
+    var zip = new JSZip(template);
+
+    var doc = new Docxtemplater();
+    //doc.setOptions({paragraphLoop: true});
+    doc.loadZip(zip);
+
+    var loopData = {'letters':tempData};
+
+    //console.log(loopData)
+
+    doc.setData(loopData);
+
+    try{
+        doc.render();
+    }
+    catch(error){
+        var e = {
+          message: error.message,
+          name: error.name,
+          stack: error.stack,
+          properties:error.properties,
+        }
+        console.log(JSON.stringify({error:e}));
+        throw error;
+    }
+
+    buf = doc.getZip().generate({type:'nodebuffer'});
+
+    await fs.writeFileSync(path.resolve(__dirname,fileNameLetterOne),buf);
+
+    var template2 = fs.readFileSync(path.resolve(__dirname,'lis_pendons_template2.docx'),'binary');
+    var zip2 = new JSZip(template2);
+
+    var doc2 = new Docxtemplater();
+    doc2.loadZip(zip2);
+
+    var loopData2 = {'letters':tempData};
+
+    //console.log(loopData)
+
+    doc2.setData(loopData2);
+
+    try{
+        doc2.render();
+    }
+    catch(error){
+        var e = {
+          message: error.message,
+          name: error.name,
+          stack: error.stack,
+          properties:error.properties,
+        }
+        console.log(JSON.stringify({error:e}));
+        throw error;
+    }
+
+    buf2 = doc2.getZip().generate({type:'nodebuffer'});
+
+    await fs.writeFileSync(path.resolve(__dirname,fileNameLetterTwo),buf2);
 
 await converter.json2csv(viewData, json2csvCallback);
   
@@ -3181,18 +4114,20 @@ await converter.json2csv(viewData, json2csvCallback);
   await page.waitFor(2000);
   if(viewData.length == 0)
   {
-      sendZeroResultsEmail();
-  }
-  else
-  {
-      sendTheEmail(fileName);
-  }
+   sendZeroResultsEmail();
+ }
+ else
+ {
+      await sendTheEmail(fileName,fileNameLetterOne,fileNameLetterTwo);
+ }
 
   await page.waitFor(1500);
 
 
 //console.log(Date.now());
   await browser.close();
+
+  await connection.close();
 
   //await getREIFaxProbate();
 
@@ -3994,14 +4929,14 @@ const res = await this.page.evaluate(() =>
 //});
 
 await page.waitFor(2000);
-if(viewData.length == 0)
-{
-    sendZeroResultsEmailProbate();
-}
-else
-{
-    sendTheEmailProbate(fileName);
-}
+//if(viewData.length == 0)
+//{
+//    sendZeroResultsEmailProbate();
+//}
+//else
+//{
+//    sendTheEmailProbate(fileName);
+//}
 
 await page.waitFor(1500);
 
@@ -4138,7 +5073,7 @@ var smtpTransport = nodemailer.createTransport({
 
 
 
-function sendTheEmail(fileName)
+function sendTheEmail(fileName,fileNameLetterOne,fileNameLetterTwo)
 {
 	
 // Set the refresh token
@@ -4184,8 +5119,11 @@ var mailOptions = {
   generateTextFromHTML: true,
   html: "<b>REIFAX From the machines!</b>",
   attachments: [{   filename: fileName,// file on disk as an attachment
-					content: thecsv
-				}]
+					content: thecsv }
+        , {filename: fileNameLetterOne,
+          content:  buf }
+          , {filename: fileNameLetterTwo,
+            content:  buf2 }]
 };
 
 smtpTransport.sendMail(mailOptions, function(error, response) {
@@ -4430,6 +5368,37 @@ function queryDatabase(item)
      connection.execSql(request);
    }
 
+   function capitalizeFirst(string)
+   {
+     return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+   }
+
+   function FlipAroundFirstName(string)
+   {
+
+    var OwnerParts = string.split(' ');
+
+    var OwnerFirstName = "";
+
+    var OwnerName = "";
+
+    if(OwnerParts.length >= 3)
+    {
+   
+        OwnerFirstName =  capitalizeFirst(OwnerParts[1]) + " " + capitalizeFirst(OwnerParts[2]);
+
+    }
+    else if(OwnerParts.length >= 2)
+    {
+        OwnerFirstName = capitalizeFirst(OwnerPart[1]);
+    }
+    
+
+    OwnerName = OwnerFirstName +" "+ capitalizeFirst(OwnerParts[0]);
+
+    return OwnerName
+
+   }
 
 
 getREIFaxData();
