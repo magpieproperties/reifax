@@ -159,10 +159,9 @@ try
 catch(err)
 {
 	console.log(err);
-	
 }
 
-await page.waitFor(2500);
+await page.waitFor(5000);
 
 await page.focus(COUNTY_DROPDOWN, {delay:2000});
 
@@ -233,19 +232,12 @@ await page.keyboard.down('Enter');
   const sourceData = formatSource(d);
   //console.log(dateString);
   
-  //await page.click('#ext-gen392',{delay:2000});
-  
   await page.click('#ext-gen439',{delay:2000});
   
-
-  //await page.keyboard.type(dateString),{delay:1000};
-  //await page.keyboard.type('20180827'),{delay:1000};
   await page.keyboard.type(dateFirstDayString),{delay:1000};
   
-  //await page.click('#ext-gen394',{delay:2000});
   await page.click('#ext-gen441',{delay:2000});
   
-  //await page.keyboard.type('20180607'),{delay:1000};
   await page.keyboard.type(dateString),{delay:1000};
 
   //<button type="button" id="ext-gen131" class=" x-btn-text icon" style="background-image: url(&quot;https://www.reifax.com/img/toolbar/search.png&quot;);">Search&nbsp;&nbsp; </button>
@@ -260,7 +252,7 @@ await page.keyboard.down('Enter');
 
   try
   {
-    await page.click(SearchSelector.toString()),{delay:3000};
+    await page.click(SearchSelector.toString()),{delay:4000};
   }
   catch(err)
   {
@@ -276,7 +268,6 @@ await page.keyboard.down('Enter');
   catch(error2)
   {
 	   console.log(error2);
-     
      //sendZeroResultsEmail();
 	   //await browser.close();
   }
@@ -284,39 +275,30 @@ await page.keyboard.down('Enter');
   
   console.log("Starting Lake");
 
-   //let results = await page.evaluate((sel) => {
-   //    let element = document.querySelector(sel);
-   // return element? element.innerHTML:null;
-   //   }, '#ext-gen525 > div > div:nth-child(1) > table > tbody > tr > td:nth-child(2)');
-
-   // var res = results.split(" ");
-	
-   // var queryPropertieCount = res[19];
-	
-   //let pageSelector = await page.evaluate((sel) => {
-    //let elements = Array.from(document.getElementsByClassName('x-panel-body x-panel-body-noheader x-panel-body-noborder'));
-    //  return elements[4].getAttribute("id");
-    // }, '#BasicResult');
-
-    // console.log(pageSelector);
- 
-  
  
  var viewData = [];
 
  var tempData = [];
  
- 
- 
+ let pageSelector = await page.evaluate(() => {
+  let elements = Array.from( document.getElementsByClassName('x-panel-body x-panel-body-noheader x-panel-body-noborder'));
+    return elements[4].getAttribute("id");
+   });
+
+
+ //console.log(pageSelector);
+
+ let pageNumberOrderSelector = '#INDEX > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select > option';
+ let pageNumberAdvanceSelector = '#INDEX > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)';
+ let pageNumberOrder = pageNumberOrderSelector.replace("INDEX",pageSelector);
+ let pageNumberAdvance = pageNumberAdvanceSelector.replace("INDEX",pageSelector);
+
+
  let pageNumber = await page.evaluate((sel) => {
 		let elements = Array.from(document.querySelectorAll(sel));
 		return elements.length;
-  }, '#ext-gen541 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select > option');
+  }, pageNumberOrder);
  
-    //#ext-gen541 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select
-    //#ext-gen17372 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select > option:nth-child(1)
-    //#ext-gen541 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)
-    //console.log(pageNumber);
    
   pageNumber = pageNumber-1;
  
@@ -324,17 +306,11 @@ await page.keyboard.down('Enter');
   {
  
     if(i > 0)
-    {
-        //#ext-gen541 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)
-        //#ext-gen725 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)
-       //#ext-gen541 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)
-       //const pageSelector = '#ext-gen541 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select > option:nth-child(INDEX)'; 
-       //let pageSelector2 = pageSelector.replace("INDEX",(i+1));
-       await page.focus('#ext-gen541 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)', {delay:1000});
-       await page.click('#ext-gen541 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)');
-        //await page.click('#ext-gen541 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select > option:nth-child(2)');
-        //await page.click('#ext-gen725 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)');
-        await page.waitForSelector('#result_orderby_data');
+    { 
+       await page.focus(pageNumberAdvance, {delay:1000});
+       await page.click(pageNumberAdvance);
+       
+       await page.waitForSelector('#result_orderby_data');
     }
  
  
@@ -887,7 +863,7 @@ await page.keyboard.down('Enter');
   
 try
 {
-  await page.click(SearchSelector.toString()),{delay:3000};
+  await page.click(SearchSelector.toString()),{delay:4000};
 }
 catch(err)
 {
@@ -904,8 +880,7 @@ console.log("Starting Brevard");
   }
   catch(error2)
   {
-	   console.log(error2);
-     
+	   console.log(error2);  
      //sendZeroResultsEmail();
 	   //await browser.close();
   } 
@@ -920,8 +895,8 @@ console.log("Starting Brevard");
   
    //console.log(pageSelector);
 
-   let pageNumberOrderSelector = '#INDEX > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select > option';
-   let pageNumberAdvanceSelector = '#INDEX > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)';
+   //let pageNumberOrderSelector = '#INDEX > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select > option';
+   //let pageNumberAdvanceSelector = '#INDEX > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)';
    let pageNumberOrder = pageNumberOrderSelector.replace("INDEX",pageSelector);
    let pageNumberAdvance = pageNumberAdvanceSelector.replace("INDEX",pageSelector);
 
@@ -930,11 +905,7 @@ console.log("Starting Brevard");
  let elements = Array.from(document.querySelectorAll(sel));
   return elements.length;
 }, pageNumberOrder);
-  //#ext-gen4734 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select > option:nth-child(1)
-  //#ext-gen602 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select > option:nth-child(1)
-  //#ext-gen786 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select > option:nth-child(1)
-  //#ext-gen541 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select
-
+  
   //console.log(pageNumber2);
  
   pageNumber = pageNumber-1; 
@@ -944,10 +915,6 @@ console.log("Starting Brevard");
 
   if(i > 0)
   {
-      //#ext-gen786 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)
-      //await page.click('#ext-gen525 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)');
-      //await page.click('#ext-gen602 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)');
-      //#ext-gen4734 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)
       await page.focus(pageNumberAdvance, {delay:1000});
       await page.click(pageNumberAdvance);
       await page.waitForSelector('#result_orderby_data');
@@ -1514,7 +1481,7 @@ await page.keyboard.down('Enter');
   
 try
 {
-  await page.click(SearchSelector.toString()),{delay:3000};
+  await page.click(SearchSelector.toString()),{delay:4000};
 }
 catch(err)
 {
@@ -1533,14 +1500,13 @@ console.log("Starting Polk");
   catch(error2)
   {
 	   console.log(error2);
-     
      //sendZeroResultsEmail();
 	   //await browser.close();
   } 
 
   await page.waitFor(4000);
 
-  //#ext-gen1897 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select
+  
   pageSelector = await page.evaluate(() => {
     let elements = Array.from( document.getElementsByClassName('x-panel-body x-panel-body-noheader x-panel-body-noborder'));
       return elements[4].getAttribute("id");
@@ -1549,19 +1515,13 @@ console.log("Starting Polk");
      pageNumberOrder = pageNumberOrderSelector.replace("INDEX",pageSelector);
      pageNumberAdvance = pageNumberAdvanceSelector.replace("INDEX",pageSelector);
 
-  
-  
    //console.log(pageSelector);
 
   pageNumber = await page.evaluate((sel) => {
  let elements = Array.from(document.querySelectorAll(sel));
   return elements.length;
 }, pageNumberOrder);
-  //#ext-gen4734 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select > option:nth-child(1)
-  //#ext-gen602 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select > option:nth-child(1)
-  //#ext-gen786 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select > option:nth-child(1)
-  //#ext-gen541 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select
-
+  
  
   pageNumber = pageNumber-1; 
 
@@ -1570,10 +1530,6 @@ console.log("Starting Polk");
 
   if(i > 0)
   {
-      //#ext-gen786 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)
-      //await page.click('#ext-gen525 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)');
-      //await page.click('#ext-gen602 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)');
-      //#ext-gen4734 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)
       await page.focus(pageNumberAdvance, {delay:1000});
       await page.click(pageNumberAdvance);
       await page.waitForSelector('#result_orderby_data');
@@ -2077,7 +2033,7 @@ console.log("Starting Polk");
  
 }
 
-} 
+}//end of Polk
 
 //Marion
 try
@@ -2137,7 +2093,7 @@ await page.keyboard.down('Enter');
   
 try
 {
-  await page.click(SearchSelector.toString()),{delay:3000};
+  await page.click(SearchSelector.toString()),{delay:4000};
 }
 catch(err)
 {
@@ -2145,7 +2101,7 @@ catch(err)
  // await page.click('#ext-gen130'),{delay:5000};
 }
   
-
+await page.waitFor(3000);
   
 console.log("Starting Marion");
   
@@ -2156,14 +2112,12 @@ console.log("Starting Marion");
   catch(error2)
   {
 	   console.log(error2);
-     
      //sendZeroResultsEmail();
 	   //await browser.close();
   } 
 
   await page.waitFor(4000);
 
-  //#ext-gen1897 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select
   pageSelector = await page.evaluate(() => {
     let elements = Array.from( document.getElementsByClassName('x-panel-body x-panel-body-noheader x-panel-body-noborder'));
       return elements[4].getAttribute("id");
@@ -2180,12 +2134,7 @@ console.log("Starting Marion");
  let elements = Array.from(document.querySelectorAll(sel));
   return elements.length;
 }, pageNumberOrder);
-  //#ext-gen4734 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select > option:nth-child(1)
-  //#ext-gen602 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select > option:nth-child(1)
-  //#ext-gen786 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select > option:nth-child(1)
-  //#ext-gen541 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select
-
- 
+  
   pageNumber = pageNumber-1; 
 
  for (let i = 0; i <= pageNumber ; i++) 
@@ -2193,10 +2142,6 @@ console.log("Starting Marion");
 
   if(i > 0)
   {
-      //#ext-gen786 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)
-      //await page.click('#ext-gen525 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)');
-      //await page.click('#ext-gen602 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)');
-      //#ext-gen4734 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)
       await page.focus(pageNumberAdvance, {delay:1000});
       await page.click(pageNumberAdvance);
       await page.waitForSelector('#result_orderby_data');
@@ -2702,7 +2647,7 @@ console.log("Starting Marion");
  
 }
 
-} 
+}//end of Marion 
 
 //Volusia
 try
@@ -2762,7 +2707,7 @@ await page.keyboard.down('Enter');
   
 try
 {
-  await page.click(SearchSelector.toString()),{delay:3000};
+  await page.click(SearchSelector.toString()),{delay:4000};
 }
 catch(err)
 {
@@ -2781,14 +2726,12 @@ console.log("Starting Volusia");
   catch(error2)
   {
 	   console.log(error2);
-     
      //sendZeroResultsEmail();
 	   //await browser.close();
   } 
 
   await page.waitFor(4000);
 
-  //#ext-gen1897 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select
   pageSelector = await page.evaluate((sel) => {
     let elements = Array.from( document.getElementsByClassName('x-panel-body x-panel-body-noheader x-panel-body-noborder'));
       return elements[4].getAttribute("id");
@@ -2805,12 +2748,8 @@ console.log("Starting Volusia");
  let elements = Array.from(document.querySelectorAll(sel));
   return elements.length;
 }, pageNumberOrder);
-  //#ext-gen4734 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select > option:nth-child(1)
-  //#ext-gen602 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select > option:nth-child(1)
-  //#ext-gen786 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select > option:nth-child(1)
-  //#ext-gen541 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select
-
  
+
   pageNumber = pageNumber-1; 
 
  for (let i = 0; i <= pageNumber ; i++) 
@@ -2818,10 +2757,6 @@ console.log("Starting Volusia");
 
   if(i > 0)
   {
-      //#ext-gen786 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)
-      //await page.click('#ext-gen525 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)');
-      //await page.click('#ext-gen602 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)');
-      //#ext-gen4734 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)
       await page.focus(pageNumberAdvance, {delay:1000});
       await page.click(pageNumberAdvance);
       await page.waitForSelector('#result_orderby_data');
@@ -3327,7 +3262,7 @@ console.log("Starting Volusia");
  
 }
 
-} 
+}//end of Volusia
 
 //Seminole
 try
