@@ -887,7 +887,7 @@ console.log("Starting Brevard");
 
   await page.waitFor(4000);
 
-    let pageSelector = await page.evaluate(() => {
+    pageSelector = await page.evaluate(() => {
     let elements = Array.from( document.getElementsByClassName('x-panel-body x-panel-body-noheader x-panel-body-noborder'));
       return elements[4].getAttribute("id");
      });
@@ -897,8 +897,8 @@ console.log("Starting Brevard");
 
    //let pageNumberOrderSelector = '#INDEX > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select > option';
    //let pageNumberAdvanceSelector = '#INDEX > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)';
-   let pageNumberOrder = pageNumberOrderSelector.replace("INDEX",pageSelector);
-   let pageNumberAdvance = pageNumberAdvanceSelector.replace("INDEX",pageSelector);
+   pageNumberOrder = pageNumberOrderSelector.replace("INDEX",pageSelector);
+   pageNumberAdvance = pageNumberAdvanceSelector.replace("INDEX",pageSelector);
 
 
   pageNumber = await page.evaluate((sel) => {
