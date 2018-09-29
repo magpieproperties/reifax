@@ -7085,7 +7085,7 @@ var smtpTransport = nodemailer.createTransport({
 
 var mailOptions = {
   from: process.env.GMAIL_USERNAME,
-  to: "Kornarmy@gmail.com, mfilson148@gmail.com",
+  to: "Kornarmy@gmail.com, mfilson148@gmail.com, list@divlink.com",
   subject: "REIFAX LP SIX Counties",
   generateTextFromHTML: true,
   html: "<b>REIFAX From the machines!</b>",
