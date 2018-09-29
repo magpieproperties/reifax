@@ -18,27 +18,33 @@ const path = require('path');
 const fields = ['address','unit','zip','garea','larea','beds','baths','pool','wf','build','frclosure','sold_price','tax_value','land_value','build_value'];
 
 
-const boxResults = '#box_result_INDEX > td > #title_result > a';
+//const boxResults = '#box_result_INDEX > td > #title_result > a';
+const boxResults =  '#INDEX > div:nth-child(INDEX_2) > table > tbody > tr > td.x-grid3-col.x-grid3-cell.x-grid3-td-3 > div';
 const zipResults = '#pagtag_table > tbody > tr:nth-child(3) > td:nth-child(2)';
 const addressResults = '#pagtag_table > tbody > tr:nth-child(1) > td:nth-child(2)';
-const bedBathResults = '#content_result_INDEX > div:nth-child(2) > table > tbody > tr:nth-child(4) > td:nth-child(2)';
-const grossAreaResults = '#content_result_INDEX > div:nth-child(2) > table > tbody > tr:nth-child(3) > td:nth-child(4)';
-const livingAreaResults = '#content_result_INDEX > div:nth-child(2) > table > tbody > tr:nth-child(2) > td:nth-child(4)';
-const poolResults = '#content_result_INDEX > div:nth-child(2) > table > tbody > tr:nth-child(6) > td:nth-child(4)';
-const waterFrontResults = '#content_result_INDEX > div:nth-child(2) > table > tbody > tr:nth-child(5) > td:nth-child(4)';
-const builtResults = '#content_result_INDEX > div:nth-child(2) > table > tbody > tr:nth-child(5) > td:nth-child(2)';
-const foreclosureResults ='#content_result_INDEX > div:nth-child(2) > table > tbody > tr:nth-child(1) > td:nth-child(6)';
+const bathResults = '#INDEX > div:nth-child(INDEX_2) > table > tbody > tr > td.x-grid3-col.x-grid3-cell.x-grid3-td-9 > div';
+const bedResults =  '#INDEX > div:nth-child(INDEX_2) > table > tbody > tr > td.x-grid3-col.x-grid3-cell.x-grid3-td-8 > div';
+//const bedBathResults = '#content_result_INDEX > div:nth-child(2) > table > tbody > tr:nth-child(4) > td:nth-child(2)';
+
+// const grossAreaResults = '#content_result_INDEX > div:nth-child(2) > table > tbody > tr:nth-child(3) > td:nth-child(4)';
+const grossAreaResults = '#INDEX > div:nth-child(INDEX_2) > table > tbody > tr > td.x-grid3-col.x-grid3-cell.x-grid3-td-6 > div';
+//const livingAreaResults = '#content_result_INDEX > div:nth-child(2) > table > tbody > tr:nth-child(2) > td:nth-child(4)';
+const livingAreaResults = '#INDEX > div:nth-child(INDEX_2) > table > tbody > tr > td.x-grid3-col.x-grid3-cell.x-grid3-td-7 > div';
+//const poolResults = '#content_result_INDEX > div:nth-child(2) > table > tbody > tr:nth-child(6) > td:nth-child(4)';
+const poolResults = '#INDEX > div:nth-child(INDEX_2) > table > tbody > tr > td.x-grid3-col.x-grid3-cell.x-grid3-td-10 > div';
+//const waterFrontResults = '#content_result_INDEX > div:nth-child(2) > table > tbody > tr:nth-child(5) > td:nth-child(4)';
+const waterFrontResults = '#INDEX > div:nth-child(INDEX_2) > table > tbody > tr > td.x-grid3-col.x-grid3-cell.x-grid3-td-11 > div';
+//const builtResults = '#content_result_INDEX > div:nth-child(2) > table > tbody > tr:nth-child(5) > td:nth-child(2)';
+const builtResults = '#INDEX > div:nth-child(INDEX_2) > table > tbody > tr > td.x-grid3-col.x-grid3-cell.x-grid3-td-12 > div';
+//const foreclosureResults ='#content_result_INDEX > div:nth-child(2) > table > tbody > tr:nth-child(1) > td:nth-child(6)';
+const foreclosureResults ='#INDEX > div:nth-child(INDEX_2) > table > tbody > tr > td.x-grid3-col.x-grid3-cell.x-grid3-td-13 > div';
+
+
 const soldPriceResults = '#pagtag_table > tbody > tr:nth-child(13) > td:nth-child(4)';
 const taxValueResults = '#pagtag_table > tbody > tr:nth-child(11) > td:nth-child(4)';
 const landValueResults = '#pagtag_table > tbody > tr:nth-child(11) > td:nth-child(2)';
 const buildValueResults = '#pagtag_table > tbody > tr:nth-child(10) > td:nth-child(2)';
 const cityValueResults = '#pagtag_table > tbody > tr:nth-child(2) > td:nth-child(2)';
-const ownerNameValueResults = '#pagtag_table > tbody > tr:nth-child(1) > td:nth-child(2)';
-const ownerAddressValueResults = '#pagtag_table > tbody > tr:nth-child(2) > td:nth-child(2)';
-const ownerZipCodeValueResults = '#pagtag_table > tbody > tr:nth-child(3) > td:nth-child(2)';
-const ownerCityValueResults = '#pagtag_table > tbody > tr:nth-child(2) > td:nth-child(4)';
-const ownerStateValueResults = '#pagtag_table > tbody > tr:nth-child(3) > td:nth-child(4)';
-const ownerPhoneNumber1ValueResults = '#pagtag_table > tbody > tr:nth-child(5) > td:nth-child(2)';
 
 
 var thecsv = null;
@@ -103,14 +109,9 @@ await page.setUserAgent('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHT
 const EMAIL_USERNAME_SELECTOR = '#inputEmail';
 const PASSWORD_SELECTOR = '#inputPassword';
 const SIGNIN_BUTTON_SELECTOR = '#submitButton';
-
-
-const ADVANCED_BUTTON_SELECTOR = '#ext-comp-1031__searchTabAdv';
-const ADVANCED_BUTTON_SELECTOR2 = '#ext-comp-1032__searchTabAdv';
 const COUNTY_DROPDOWN = '#ncounty';
 const FORECLOSURE = '#nforeclosure';
-const FORECLOSURE_BUTTON = '#ext-gen130';
-const FILEDATE_BETWEEN = '#ext-gen391';
+
 
 
 await page.goto('https://www.reifax.com/login/index.php?logPrincipal=true',{waitUntil: 'networkidle2'});
@@ -149,8 +150,10 @@ await page.waitForSelector('#ext-gen58');
 
 await page.click('#ext-gen29');
 
+
 await page.waitForSelector('#principal__searchTab');
 
+await page.waitFor(3000);
 
 try
 {
@@ -263,7 +266,8 @@ await page.keyboard.down('Enter');
   
   try
   {
-	  await page.waitForSelector('#result_orderby_asc');
+    // await page.waitForSelector('#result_orderby_asc');
+    await page.waitForSelector('#templateCombo');
   }
   catch(error2)
   {
@@ -275,18 +279,72 @@ await page.keyboard.down('Enter');
   
   console.log("Starting Lake");
 
+  await page.waitFor(4000);
+
  
  var viewData = [];
 
  var tempData = [];
+
+//  <div class="xtb-text" id="ext-comp-1126">of 2</div>
  
- let pageSelector = await page.evaluate(() => {
-  let elements = Array.from( document.getElementsByClassName('x-panel-body x-panel-body-noheader x-panel-body-noborder'));
-    return elements[4].getAttribute("id");
+//  let pageSelector = await page.evaluate(() => {
+//   let elements = Array.from( document.getElementsByClassName('x-panel-body x-panel-body-noheader x-panel-body-noborder'));
+//     return elements[4].getAttribute("id");
+//    });
+
+let pageSelector = await page.evaluate(() => {
+  let elements = Array.from(document.getElementsByClassName('xtb-text'));
+    return elements[1].getAttribute("id");
+   });
+ //console.log(pageSelector);
+
+ pageSelector = '#'+pageSelector;
+
+ let pageNumber = await page.evaluate((sel) => {
+  let element = document.querySelector(sel);
+    return element? element.innerHTML:null;
+    }, pageSelector);
+
+//  let pageNumber = await page.evaluate((sel) => {
+//   let elements = Array.from(document.querySelectorAll(sel));
+//   return elements.length;
+// }, ('#'+pageSelector));
+
+pageNumber = pageNumber.replace('of ','');
+
+//console.log(pageNumber);
+
+let pageTotal = await page.evaluate(() => {
+  let elements = Array.from(document.getElementsByClassName('xtb-text'));
+    return elements[3].getAttribute("id");
+   });
+ //console.log(pageSelector);
+
+ pageTotal = '#'+pageTotal;
+
+ let pgTotal = await page.evaluate((sel) => {
+  let element = document.querySelector(sel);
+    return element? element.innerHTML:null;
+    }, pageTotal);
+
+//  let pageNumber = await page.evaluate((sel) => {
+//   let elements = Array.from(document.querySelectorAll(sel));
+//   return elements.length;
+// }, ('#'+pageSelector));
+
+//pageNumber = pageNumber.replace('of ','');
+
+console.log(pgTotal);
+
+//<button type="button" id="ext-gen608" class=" x-btn-text x-tbar-page-next">&nbsp;</button>
+
+let pageNumberAdvanceId = await page.evaluate(() => {
+  let elements = Array.from(document.getElementsByClassName(' x-btn-text x-tbar-page-next'));
+    return elements[0].getAttribute("id");
    });
 
-
- //console.log(pageSelector);
+   pageNumberAdvanceId = '#'+pageNumberAdvanceId;
 
  let pageNumberOrderSelector = '#INDEX > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select > option';
  let pageNumberAdvanceSelector = '#INDEX > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)';
@@ -294,110 +352,440 @@ await page.keyboard.down('Enter');
  let pageNumberAdvance = pageNumberAdvanceSelector.replace("INDEX",pageSelector);
 
 
- let pageNumber = await page.evaluate((sel) => {
-		let elements = Array.from(document.querySelectorAll(sel));
-		return elements.length;
-  }, pageNumberOrder);
- 
-   
-  pageNumber = pageNumber-1;
+//  let pageNumber = await page.evaluate((sel) => {
+// 		let elements = Array.from(document.querySelectorAll(sel));
+// 		return elements.length;
+//   }, pageNumberOrder);
+
+let pageGridId = await page.evaluate(() => {
+  let elements = Array.from(document.getElementsByClassName('x-grid3-body'));
+    return elements[0].getAttribute("id");
+   });
+
+//console.log(pageGridId);
+
+let pageGridSelector = ' #INDEX > div:nth-child(INDEX_2) > table > tbody > tr > td.x-grid3-col.x-grid3-cell.x-grid3-td-1 > div > div > div'
+let pageGridOne = pageGridSelector.replace("INDEX",pageGridId);
+let pageGridOneRow1 = pageGridOne.replace("INDEX_2","1");
+let pageGridOneRow2 = pageGridOne.replace("INDEX_2","2");
+let pageGridOneRow3 = pageGridOne.replace("INDEX_2","3");
+let pageGridOneRow4 = pageGridOne.replace("INDEX_2","4");
+let pageGridOneRow5 = pageGridOne.replace("INDEX_2","5");
+let pageGridOneRow6 = pageGridOne.replace("INDEX_2","6");
+let pageGridOneRow7 = pageGridOne.replace("INDEX_2","7");
+let pageGridOneRow8 = pageGridOne.replace("INDEX_2","8");
+let pageGridOneRow9 = pageGridOne.replace("INDEX_2","9");
+let pageGridOneRow10 = pageGridOne.replace("INDEX_2","10");
+let pageGridOneRow11 = pageGridOne.replace("INDEX_2","11");
+let pageGridOneRow12 = pageGridOne.replace("INDEX_2","12");
+let pageGridOneRow13 = pageGridOne.replace("INDEX_2","13");
+let pageGridOneRow14 = pageGridOne.replace("INDEX_2","14");
+let pageGridOneRow15 = pageGridOne.replace("INDEX_2","15");
+let pageGridOneRow16 = pageGridOne.replace("INDEX_2","16");
+let pageGridOneRow17 = pageGridOne.replace("INDEX_2","17");
+let pageGridOneRow18 = pageGridOne.replace("INDEX_2","18");
+let pageGridOneRow19 = pageGridOne.replace("INDEX_2","19");
+let pageGridOneRow20 = pageGridOne.replace("INDEX_2","20");
+let pageGridOneRow21 = pageGridOne.replace("INDEX_2","21");
+let pageGridOneRow22 = pageGridOne.replace("INDEX_2","22");
+let pageGridOneRow23 = pageGridOne.replace("INDEX_2","23");
+let pageGridOneRow24 = pageGridOne.replace("INDEX_2","24");
+let pageGridOneRow25 = pageGridOne.replace("INDEX_2","25");
+let pageGridOneRow26 = pageGridOne.replace("INDEX_2","26");
+let pageGridOneRow27 = pageGridOne.replace("INDEX_2","27");
+let pageGridOneRow28 = pageGridOne.replace("INDEX_2","28");
+let pageGridOneRow29 = pageGridOne.replace("INDEX_2","29");
+let pageGridOneRow30 = pageGridOne.replace("INDEX_2","30");
+let pageGridOneRow31 = pageGridOne.replace("INDEX_2","31");
+let pageGridOneRow32 = pageGridOne.replace("INDEX_2","32");
+let pageGridOneRow33 = pageGridOne.replace("INDEX_2","33");
+let pageGridOneRow34 = pageGridOne.replace("INDEX_2","34");
+let pageGridOneRow35 = pageGridOne.replace("INDEX_2","35");
+let pageGridOneRow36 = pageGridOne.replace("INDEX_2","36");
+let pageGridOneRow37 = pageGridOne.replace("INDEX_2","37");
+let pageGridOneRow38 = pageGridOne.replace("INDEX_2","38");
+let pageGridOneRow39 = pageGridOne.replace("INDEX_2","39");
+let pageGridOneRow40 = pageGridOne.replace("INDEX_2","40");
+let pageGridOneRow41 = pageGridOne.replace("INDEX_2","41");
+let pageGridOneRow42 = pageGridOne.replace("INDEX_2","42");
+let pageGridOneRow43 = pageGridOne.replace("INDEX_2","43");
+let pageGridOneRow44 = pageGridOne.replace("INDEX_2","44");
+let pageGridOneRow45 = pageGridOne.replace("INDEX_2","45");
+let pageGridOneRow46 = pageGridOne.replace("INDEX_2","46");
+let pageGridOneRow47 = pageGridOne.replace("INDEX_2","47");
+let pageGridOneRow48 = pageGridOne.replace("INDEX_2","48");
+let pageGridOneRow49 = pageGridOne.replace("INDEX_2","49");
+let pageGridOneRow50 = pageGridOne.replace("INDEX_2","50");
+
+
+
+
+   pageNumber = pageNumber-1;
  
   for (let i = 0; i <= pageNumber ; i++) 
   {
  
     if(i > 0)
     { 
-       await page.focus(pageNumberAdvance, {delay:1000});
-       await page.click(pageNumberAdvance);
-       
-       await page.waitForSelector('#result_orderby_data');
+       await page.focus(pageNumberAdvanceId, {delay:1000});
+       await page.click(pageNumberAdvanceId,{delay:4000});
+       await page.waitFor(2000);
+       //await page.waitForSelector('#result_orderby_data');
     }
  
- 
+
     let boxResult1  = await page.evaluate((sel) => {
           let elements = Array.from(document.querySelectorAll(sel));
           return elements.length;
-		}, '#box_result_0');
+		}, pageGridOneRow1);
 		//console.log(boxResult1);
   
     let boxResult2  = await page.evaluate((sel) => {
             let elements = Array.from(document.querySelectorAll(sel));
               return elements.length;
-		}, '#box_result_1');
+		}, pageGridOneRow2);
 		//console.log(boxResult2);
 	
     let boxResult3  = await page.evaluate((sel) => {
             let elements = Array.from(document.querySelectorAll(sel));
               return elements.length;
-		}, '#box_result_2');
+		}, pageGridOneRow3);
 		//console.log(boxResult3);
 	
     let boxResult4  = await page.evaluate((sel) => {
            let elements = Array.from(document.querySelectorAll(sel));
              return elements.length;
-		}, '#box_result_3');
+		}, pageGridOneRow4);
 		//console.log(boxResult4);
 	
     let boxResult5  = await page.evaluate((sel) => {
          let elements = Array.from(document.querySelectorAll(sel));
            return elements.length;
-		}, '#box_result_4');
+		}, pageGridOneRow5);
 		//console.log(boxResult5);
 	
     let boxResult6  = await page.evaluate((sel) => {
             let elements = Array.from(document.querySelectorAll(sel));
               return elements.length;
-		}, '#box_result_5');
+		}, pageGridOneRow6);
 		//console.log(boxResult6);
 	
     let boxResult7  = await page.evaluate((sel) => {
            let elements = Array.from(document.querySelectorAll(sel));
              return elements.length;
-		}, '#box_result_6');
+		}, pageGridOneRow7);
 		//console.log(boxResult7);
   
     let boxResult8  = await page.evaluate((sel) => {
             let elements = Array.from(document.querySelectorAll(sel));
             return elements.length;
-	  }, '#box_result_7');
+	  }, pageGridOneRow8);
 		//console.log(boxResult8);
 	
     let boxResult9  = await page.evaluate((sel) => {
             let elements = Array.from(document.querySelectorAll(sel));
              return elements.length;
-		}, '#box_result_8');
+		}, pageGridOneRow9);
 		//console.log(boxResult9);
 	
     let boxResult10  = await page.evaluate((sel) => {
            let elements = Array.from(document.querySelectorAll(sel));
              return elements.length;
-	  }, '#box_result_9');
-		//console.log(boxResult10);
+	  }, pageGridOneRow10);
+    //console.log(boxResult10);
+    
+    let boxResult11  = await page.evaluate((sel) => {
+      let elements = Array.from(document.querySelectorAll(sel));
+      return elements.length;
+    }, pageGridOneRow11);
+    //console.log(boxResult1);
+
+    let boxResult12  = await page.evaluate((sel) => {
+            let elements = Array.from(document.querySelectorAll(sel));
+              return elements.length;
+    }, pageGridOneRow12);
+    //console.log(boxResult2);
+
+    let boxResult13  = await page.evaluate((sel) => {
+            let elements = Array.from(document.querySelectorAll(sel));
+              return elements.length;
+    }, pageGridOneRow13);
+    //console.log(boxResult3);
+
+    let boxResult14  = await page.evaluate((sel) => {
+          let elements = Array.from(document.querySelectorAll(sel));
+            return elements.length;
+    }, pageGridOneRow14);
+    //console.log(boxResult4);
+
+    let boxResult15  = await page.evaluate((sel) => {
+        let elements = Array.from(document.querySelectorAll(sel));
+          return elements.length;
+    }, pageGridOneRow15);
+    //console.log(boxResult5);
+
+    let boxResult16  = await page.evaluate((sel) => {
+            let elements = Array.from(document.querySelectorAll(sel));
+              return elements.length;
+    }, pageGridOneRow16);
+    //console.log(boxResult6);
+
+    let boxResult17  = await page.evaluate((sel) => {
+          let elements = Array.from(document.querySelectorAll(sel));
+            return elements.length;
+    }, pageGridOneRow17);
+    //console.log(boxResult7);
+
+    let boxResult18  = await page.evaluate((sel) => {
+            let elements = Array.from(document.querySelectorAll(sel));
+            return elements.length;
+    }, pageGridOneRow18);
+    //console.log(boxResult8);
+
+    let boxResult19  = await page.evaluate((sel) => {
+            let elements = Array.from(document.querySelectorAll(sel));
+            return elements.length;
+    }, pageGridOneRow19);
+    //console.log(boxResult9);
+
+    let boxResult20  = await page.evaluate((sel) => {
+          let elements = Array.from(document.querySelectorAll(sel));
+            return elements.length;
+    }, pageGridOneRow20);
+    //console.log(boxResult10);
+
+    let boxResult21  = await page.evaluate((sel) => {
+      let elements = Array.from(document.querySelectorAll(sel));
+      return elements.length;
+    }, pageGridOneRow21);
+    //console.log(boxResult1);
+
+    let boxResult22  = await page.evaluate((sel) => {
+        let elements = Array.from(document.querySelectorAll(sel));
+          return elements.length;
+    }, pageGridOneRow22);
+    //console.log(boxResult2);
+
+    let boxResult23  = await page.evaluate((sel) => {
+        let elements = Array.from(document.querySelectorAll(sel));
+          return elements.length;
+    }, pageGridOneRow23);
+    //console.log(boxResult3);
+
+    let boxResult24  = await page.evaluate((sel) => {
+      let elements = Array.from(document.querySelectorAll(sel));
+        return elements.length;
+    }, pageGridOneRow24);
+    //console.log(boxResult4);
+
+    let boxResult25  = await page.evaluate((sel) => {
+    let elements = Array.from(document.querySelectorAll(sel));
+      return elements.length;
+    }, pageGridOneRow25);
+    //console.log(boxResult5);
+
+    let boxResult26  = await page.evaluate((sel) => {
+        let elements = Array.from(document.querySelectorAll(sel));
+          return elements.length;
+    }, pageGridOneRow26);
+    //console.log(boxResult6);
+
+    let boxResult27  = await page.evaluate((sel) => {
+      let elements = Array.from(document.querySelectorAll(sel));
+        return elements.length;
+    }, pageGridOneRow27);
+    //console.log(boxResult7);
+
+    let boxResult28  = await page.evaluate((sel) => {
+        let elements = Array.from(document.querySelectorAll(sel));
+        return elements.length;
+    }, pageGridOneRow28);
+    //console.log(boxResult8);
+
+    let boxResult29  = await page.evaluate((sel) => {
+        let elements = Array.from(document.querySelectorAll(sel));
+        return elements.length;
+    }, pageGridOneRow29);
+    //console.log(boxResult9);
+
+    let boxResult30  = await page.evaluate((sel) => {
+      let elements = Array.from(document.querySelectorAll(sel));
+        return elements.length;
+    }, pageGridOneRow30);
+    //console.log(boxResult30);
+
+    let boxResult31  = await page.evaluate((sel) => {
+      let elements = Array.from(document.querySelectorAll(sel));
+      return elements.length;
+    }, pageGridOneRow31);
+    //console.log(boxResult1);
+
+    let boxResult32  = await page.evaluate((sel) => {
+        let elements = Array.from(document.querySelectorAll(sel));
+          return elements.length;
+    }, pageGridOneRow32);
+    //console.log(boxResult2);
+
+    let boxResult33  = await page.evaluate((sel) => {
+        let elements = Array.from(document.querySelectorAll(sel));
+          return elements.length;
+    }, pageGridOneRow33);
+    //console.log(boxResult3);
+
+    let boxResult34  = await page.evaluate((sel) => {
+      let elements = Array.from(document.querySelectorAll(sel));
+        return elements.length;
+    }, pageGridOneRow34);
+    //console.log(boxResult4);
+
+    let boxResult35  = await page.evaluate((sel) => {
+    let elements = Array.from(document.querySelectorAll(sel));
+      return elements.length;
+    }, pageGridOneRow35);
+    //console.log(boxResult5);
+
+    let boxResult36  = await page.evaluate((sel) => {
+        let elements = Array.from(document.querySelectorAll(sel));
+          return elements.length;
+    }, pageGridOneRow36);
+    //console.log(boxResult6);
+
+    let boxResult37  = await page.evaluate((sel) => {
+      let elements = Array.from(document.querySelectorAll(sel));
+        return elements.length;
+    }, pageGridOneRow37);
+    //console.log(boxResult7);
+
+    let boxResult38  = await page.evaluate((sel) => {
+        let elements = Array.from(document.querySelectorAll(sel));
+        return elements.length;
+    }, pageGridOneRow38);
+    //console.log(boxResult8);
+
+    let boxResult39  = await page.evaluate((sel) => {
+        let elements = Array.from(document.querySelectorAll(sel));
+        return elements.length;
+    }, pageGridOneRow39);
+    //console.log(boxResult9);
+
+    let boxResult40  = await page.evaluate((sel) => {
+      let elements = Array.from(document.querySelectorAll(sel));
+        return elements.length;
+    }, pageGridOneRow40);
+    //console.log(boxResult10);
+
+    let boxResult41  = await page.evaluate((sel) => {
+      let elements = Array.from(document.querySelectorAll(sel));
+      return elements.length;
+    }, pageGridOneRow41);
+    //console.log(boxResult1);
+
+    let boxResult42  = await page.evaluate((sel) => {
+        let elements = Array.from(document.querySelectorAll(sel));
+          return elements.length;
+    }, pageGridOneRow42);
+    //console.log(boxResult2);
+
+    let boxResult43  = await page.evaluate((sel) => {
+        let elements = Array.from(document.querySelectorAll(sel));
+          return elements.length;
+    }, pageGridOneRow43);
+    //console.log(boxResult3);
+
+    let boxResult44  = await page.evaluate((sel) => {
+      let elements = Array.from(document.querySelectorAll(sel));
+        return elements.length;
+    }, pageGridOneRow44);
+    //console.log(boxResult4);
+
+    let boxResult45  = await page.evaluate((sel) => {
+    let elements = Array.from(document.querySelectorAll(sel));
+      return elements.length;
+    }, pageGridOneRow45);
+    //console.log(boxResult5);
+
+    let boxResult46  = await page.evaluate((sel) => {
+        let elements = Array.from(document.querySelectorAll(sel));
+          return elements.length;
+    }, pageGridOneRow46);
+    //console.log(boxResult6);
+
+    let boxResult47  = await page.evaluate((sel) => {
+      let elements = Array.from(document.querySelectorAll(sel));
+        return elements.length;
+    }, pageGridOneRow47);
+    //console.log(boxResult7);
+
+    let boxResult48  = await page.evaluate((sel) => {
+        let elements = Array.from(document.querySelectorAll(sel));
+        return elements.length;
+    }, pageGridOneRow48);
+    //console.log(boxResult8);
+
+    let boxResult49  = await page.evaluate((sel) => {
+        let elements = Array.from(document.querySelectorAll(sel));
+        return elements.length;
+    }, pageGridOneRow49);
+    //console.log(boxResult9);
+
+    let boxResult50  = await page.evaluate((sel) => {
+      let elements = Array.from(document.querySelectorAll(sel));
+        return elements.length;
+    }, pageGridOneRow50);
+    //console.log(boxResult10);
   
-    let boxNumbers = (boxResult1+boxResult2+boxResult3+boxResult4+boxResult5+boxResult6+boxResult7+boxResult8+boxResult9+boxResult10);
+    let boxNumbers = (boxResult1+boxResult2+boxResult3+boxResult4+boxResult5+boxResult6+boxResult7+boxResult8+boxResult9+boxResult10+
+      boxResult11+boxResult12+boxResult13+boxResult14+boxResult15+boxResult16+boxResult17+boxResult18+boxResult19+boxResult20+
+      boxResult21+boxResult22+boxResult23+boxResult24+boxResult25+boxResult26+boxResult27+boxResult28+boxResult29+boxResult30+
+      boxResult31+boxResult32+boxResult33+boxResult34+boxResult35+boxResult36+boxResult37+boxResult38+boxResult39+boxResult40+
+      boxResult41+boxResult42+boxResult43+boxResult44+boxResult45+boxResult46+boxResult47+boxResult48+boxResult49+boxResult50
+    );
     boxNumbers  = boxNumbers -1;
-  
+    //console.log(boxNumbers);
     for (let i = 0; i <= boxNumbers ; i++) 
     {
 
-	    let boxSelector = boxResults.replace("INDEX", i);
-      let bedBathSelector = bedBathResults.replace("INDEX", i);
-      let grossAreaSelector = grossAreaResults.replace("INDEX", i);
-      let livingAreaSelector = livingAreaResults.replace("INDEX", i);
-      let poolSelector = poolResults.replace("INDEX", i);
-      let waterFrontSelector = waterFrontResults.replace("INDEX",i);
-      let builtSelector = builtResults.replace("INDEX",i);
-      let foreclosureSelector = foreclosureResults.replace("INDEX",i);
+      let boxSelector = boxResults.replace("INDEX_2", (i+1));
+      boxSelector = boxSelector.replace("INDEX",pageGridId);
+      //console.log(boxSelector);
+      let bedSelector = bedResults.replace("INDEX_2",(i+1));
+      bedSelector = bedSelector.replace("INDEX",pageGridId);
+      //console.log(bedSelector);
+      let bathSelector = bathResults.replace("INDEX_2",(i+1));
+      bathSelector = bathSelector.replace("INDEX",pageGridId);
+      //console.log(bathSelector);
+      let grossAreaSelector = grossAreaResults.replace("INDEX_2", (i+1));
+      grossAreaSelector = grossAreaSelector.replace("INDEX",pageGridId);
+      // console.log(grossAreaSelector);
+      let livingAreaSelector = livingAreaResults.replace("INDEX_2", (i+1));
+      livingAreaSelector = livingAreaSelector.replace("INDEX",pageGridId);
+
+      let poolSelector = poolResults.replace("INDEX_2", (i+1));
+      poolSelector = poolSelector.replace("INDEX",pageGridId);
+
+      let waterFrontSelector = waterFrontResults.replace("INDEX_2", (i+1));
+      waterFrontSelector = waterFrontSelector.replace("INDEX",pageGridId);
+
+      let builtSelector = builtResults.replace("INDEX_2", (i+1));
+      builtSelector = builtSelector.replace("INDEX",pageGridId);
+
+      let foreclosureSelector = foreclosureResults.replace("INDEX_2", (i+1));
+      foreclosureSelector = foreclosureSelector.replace("INDEX",pageGridId);
       
       let box_result = await page.evaluate((sel) => {
       let element = document.querySelector(sel);
         return element? element.innerHTML:null;
         }, boxSelector);
 	  
-      let bedBath_result = await page.evaluate((sel) => {
+      let bed_result = await page.evaluate((sel) => {
       let element = document.querySelector(sel);
         return element? element.innerHTML:null;
-        }, bedBathSelector);
+        }, bedSelector);
+
+      let bath_result = await page.evaluate((sel) => {
+      let element = document.querySelector(sel);
+        return element? element.innerHTML:null;
+        }, bathSelector);
 	  
 	    let grossArea_result = await page.evaluate((sel) => {
       let element = document.querySelector(sel);
@@ -429,54 +817,24 @@ await page.keyboard.down('Enter');
        return element? element.innerHTML:null;
       }, foreclosureSelector);
 	  
-	  res = box_result.split(",");
+    //res = box_result.split(",");
+    
+    res = box_result;
 	  
 	  
-	 //console.log(res);  
 	 
-	 //var addr = res[0].split(" ");
+   
+   var gLiving = grossArea_result;
 	 
-	 //var address = addr[32] +  ' ' + addr[33] + ' ' + addr[34];
 	 
-	 //console.log(address);
-	
-	
-	// var zip = res[2].replace(/ /g, '');
-	 
-	 //console.log(zip);
-	 
-	 //console.log(bedBath_result);
-	 
-	 var temp = bedBath_result.split("/");
-	 
-	 var bed = temp[0];
-	 
-	 var content = bed.toString().replace(/\t/g, '').split('\n');
-	 
-	 //console.log(content);
-	 
-	 bed = content[1];
-	 
-	 //console.log(bed);
-	 
-	 var baths = temp[1];
-	 
-	 //console.log(baths);
-	 
-	 var grossLivingTemp = grossArea_result.toString().replace(/\t/g, '').split('\n');
-	 
-	 var gLiving = grossLivingTemp[1];
-	 
-	 //console.log(gLiving);
-	 
-	 var livingTemp = livingArea_result.toString().replace(/\t/g, '').split('\n');
-	 
-	 var lArea = livingTemp[1];
+   var lArea = livingArea_result;
 	 
 	 
 	 await page.click(boxSelector);
 	 
-	 await page.waitForSelector('#psummary_data_div > div > h1:nth-child(4)',{delay:1000});
+   //await page.waitForSelector('#psummary_data_div > div > h1:nth-child(4)',{delay:1000});
+   
+    await page.waitFor(1000);
 	 
 	  let address_result = await page.evaluate((sel) => {
     let element = document.querySelector(sel);
@@ -492,27 +850,27 @@ await page.keyboard.down('Enter');
 	 
 	  let soldPrice_result = await page.evaluate((sel) => {
     let element = document.querySelector(sel);
-       return element? element.innerHTML:null;
+       return element? element.innerHTML:"0";
       }, soldPriceResults);
 	 
 	  let taxValue_result = await page.evaluate((sel) => {
     let element = document.querySelector(sel);
-       return element? element.innerHTML:null;
+       return element? element.innerHTML:"0";
       }, taxValueResults);
 	 
 	  let landValue_result = await page.evaluate((sel) => {
     let element = document.querySelector(sel);
-       return element? element.innerHTML:null;
+       return element? element.innerHTML:"0";
       }, landValueResults);
 	  
 	  let buildValue_result = await page.evaluate((sel) => {
     let element = document.querySelector(sel);
-       return element? element.innerHTML:null;
+       return element? element.innerHTML:"0";
       }, buildValueResults);
 	  
 	  let cityValue_result = await page.evaluate((sel) => {
     let element = document.querySelector(sel);
-       return element? element.innerHTML:null;
+       return element? element.innerHTML:"0";
       }, cityValueResults);
 	  
 	  let list_length  = await page.evaluate((sel) => {
@@ -726,8 +1084,9 @@ await page.keyboard.down('Enter');
 	 
 	 
 	  await page.click('#principal__resultTab',{delay:1000});
-	 
-	  var soldPrice = soldPrice_result.replace(',','');
+  
+    
+    var soldPrice = soldPrice_result.replace(',',''); 
 	  var taxValue = taxValue_result.replace(',','');
 	  var landValue = landValue_result.replace(',','');
     var buildValue = buildValue_result.replace(',','');
@@ -737,7 +1096,7 @@ await page.keyboard.down('Enter');
 
     
 	 
-	  var json = {'city':cityValue_result,'address':address_result,'unit':"",'zip':zip_result,'garea':gLiving,'larea':lArea,'beds':bed, 'baths':baths,'pool':pool_result,'wf':waterFront_result,'built':built_result,'frclosure':foreclosure_result,'sold_price':soldPrice,'tax_value':taxValue,'land_value':landValue,'build_value':buildValue,'owner_name':OwnerOne[0],'owner_address':ownerAddress_result,'owner_zip':ownerZip_result,'owner_city':ownerCity_result,'owner_state':ownerState_result,'owner_phone':ownerPhone_result};
+	  var json = {'city':cityValue_result,'address':address_result,'unit':"",'zip':zip_result,'garea':gLiving,'larea':lArea,'beds':bed_result, 'baths':bath_result,'pool':pool_result,'wf':waterFront_result,'built':built_result,'frclosure':foreclosure_result,'sold_price':soldPrice,'tax_value':taxValue,'land_value':landValue,'build_value':buildValue,'owner_name':OwnerOne[0],'owner_address':ownerAddress_result,'owner_zip':ownerZip_result,'owner_city':ownerCity_result,'owner_state':ownerState_result,'owner_phone':ownerPhone_result};
      
     var OwnerParts = OwnerOne[0].split(' ');
 
@@ -788,7 +1147,7 @@ await page.keyboard.down('Enter');
         tempData.push(tempdatajson);
     }
 	 
-	    var podioJson = {"fields":{"title":ownerName_result,"lead-source":sourceData,"lead-intake-date":intakeDate,"motivation":7,"status-of-lead":14,"next-action":15,"property-address":address_result +" ,"+ cityValue_result+" ,"+zip_result ,"owners-address":ownerAddress_result +" ,"+ ownerCity_result+" ,"+ownerZip_result,"estimated-value":{"value":buildValue,"currency":"USD"},"beds-2":bed,"baths-2":baths,"square-feet":lArea,"year-built-2":built_result,"property-taxes-assement":taxValue,"last-sale-price":soldPrice}};
+	    var podioJson = {"fields":{"title":ownerName_result,"lead-source":sourceData,"lead-intake-date":intakeDate,"motivation":7,"status-of-lead":14,"next-action":15,"property-address":address_result +" ,"+ cityValue_result+" ,"+zip_result ,"owners-address":ownerAddress_result +" ,"+ ownerCity_result+" ,"+ownerZip_result,"estimated-value":{"value":buildValue,"currency":"USD"},"beds-2":bed_result,"baths-2":bath_result,"square-feet":lArea,"year-built-2":built_result,"property-taxes-assement":taxValue,"last-sale-price":soldPrice}};
 
 	    //console.log(podioJson);
       //console.log(intakeDate);
@@ -803,7 +1162,7 @@ await page.keyboard.down('Enter');
      });
     
     
-    //console.log(dataInserted);
+    // //console.log(dataInserted);
     if(dataInserted > 0)
     {
       insertPODIOItem(podioJson);
@@ -873,10 +1232,13 @@ catch(err)
   
 
 console.log("Starting Brevard");
+
+   await page.waitFor(3000);
   
   try
   {
-	  await page.waitForSelector('#result_orderby_data');
+    //await page.waitForSelector('#result_orderby_data');
+    await page.waitForSelector('#templateCombo');
   }
   catch(error2)
   {
@@ -888,25 +1250,120 @@ console.log("Starting Brevard");
   await page.waitFor(4000);
 
     pageSelector = await page.evaluate(() => {
-    let elements = Array.from( document.getElementsByClassName('x-panel-body x-panel-body-noheader x-panel-body-noborder'));
-      return elements[4].getAttribute("id");
+    let elements = Array.from(document.getElementsByClassName('xtb-text'));
+      return elements[1].getAttribute("id");
+     });
+   //console.log(pageSelector);
+  
+   pageSelector = '#'+pageSelector;
+  
+    pageNumber = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
+      return element? element.innerHTML:null;
+      }, pageSelector);
+  
+  //  let pageNumber = await page.evaluate((sel) => {
+  //   let elements = Array.from(document.querySelectorAll(sel));
+  //   return elements.length;
+  // }, ('#'+pageSelector));
+  
+  pageNumber = pageNumber.replace('of ','');
+  
+  //console.log(pageNumber);
+  
+    pageTotal = await page.evaluate(() => {
+    let elements = Array.from(document.getElementsByClassName('xtb-text'));
+      return elements[3].getAttribute("id");
+     });
+   //console.log(pageSelector);
+  
+   pageTotal = '#'+pageTotal;
+  
+   pgTotal = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
+      return element? element.innerHTML:null;
+      }, pageTotal);
+  
+  //  let pageNumber = await page.evaluate((sel) => {
+  //   let elements = Array.from(document.querySelectorAll(sel));
+  //   return elements.length;
+  // }, ('#'+pageSelector));
+  
+  //pageNumber = pageNumber.replace('of ','');
+  
+    console.log(pgTotal);
+  
+    pageNumberAdvanceId = await page.evaluate(() => {
+    let elements = Array.from(document.getElementsByClassName(' x-btn-text x-tbar-page-next'));
+      return elements[0].getAttribute("id");
      });
   
+     pageNumberAdvanceId = '#'+pageNumberAdvanceId;
+
   
-   //console.log(pageSelector);
-
-   //let pageNumberOrderSelector = '#INDEX > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select > option';
-   //let pageNumberAdvanceSelector = '#INDEX > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)';
-   pageNumberOrder = pageNumberOrderSelector.replace("INDEX",pageSelector);
-   pageNumberAdvance = pageNumberAdvanceSelector.replace("INDEX",pageSelector);
-
-
-  pageNumber = await page.evaluate((sel) => {
- let elements = Array.from(document.querySelectorAll(sel));
-  return elements.length;
-}, pageNumberOrder);
   
-  //console.log(pageNumber2);
+    pageGridId = await page.evaluate(() => {
+    let elements = Array.from(document.getElementsByClassName('x-grid3-body'));
+      return elements[0].getAttribute("id");
+     });
+  
+  //console.log(pageGridId);
+  
+   pageGridSelector = ' #INDEX > div:nth-child(INDEX_2) > table > tbody > tr > td.x-grid3-col.x-grid3-cell.x-grid3-td-1 > div > div > div'
+   pageGridOne = pageGridSelector.replace("INDEX",pageGridId);
+   pageGridOneRow1 = pageGridOne.replace("INDEX_2","1");
+   pageGridOneRow2 = pageGridOne.replace("INDEX_2","2");
+   pageGridOneRow3 = pageGridOne.replace("INDEX_2","3");
+   pageGridOneRow4 = pageGridOne.replace("INDEX_2","4");
+   pageGridOneRow5 = pageGridOne.replace("INDEX_2","5");
+   pageGridOneRow6 = pageGridOne.replace("INDEX_2","6");
+   pageGridOneRow7 = pageGridOne.replace("INDEX_2","7");
+   pageGridOneRow8 = pageGridOne.replace("INDEX_2","8");
+   pageGridOneRow9 = pageGridOne.replace("INDEX_2","9");
+   pageGridOneRow10 = pageGridOne.replace("INDEX_2","10");
+   pageGridOneRow11 = pageGridOne.replace("INDEX_2","11");
+   pageGridOneRow12 = pageGridOne.replace("INDEX_2","12");
+   pageGridOneRow13 = pageGridOne.replace("INDEX_2","13");
+   pageGridOneRow14 = pageGridOne.replace("INDEX_2","14");
+   pageGridOneRow15 = pageGridOne.replace("INDEX_2","15");
+   pageGridOneRow16 = pageGridOne.replace("INDEX_2","16");
+   pageGridOneRow17 = pageGridOne.replace("INDEX_2","17");
+   pageGridOneRow18 = pageGridOne.replace("INDEX_2","18");
+   pageGridOneRow19 = pageGridOne.replace("INDEX_2","19");
+   pageGridOneRow20 = pageGridOne.replace("INDEX_2","20");
+   pageGridOneRow21 = pageGridOne.replace("INDEX_2","21");
+   pageGridOneRow22 = pageGridOne.replace("INDEX_2","22");
+   pageGridOneRow23 = pageGridOne.replace("INDEX_2","23");
+   pageGridOneRow24 = pageGridOne.replace("INDEX_2","24");
+   pageGridOneRow25 = pageGridOne.replace("INDEX_2","25");
+   pageGridOneRow26 = pageGridOne.replace("INDEX_2","26");
+   pageGridOneRow27 = pageGridOne.replace("INDEX_2","27");
+   pageGridOneRow28 = pageGridOne.replace("INDEX_2","28");
+   pageGridOneRow29 = pageGridOne.replace("INDEX_2","29");
+   pageGridOneRow30 = pageGridOne.replace("INDEX_2","30");
+   pageGridOneRow31 = pageGridOne.replace("INDEX_2","31");
+   pageGridOneRow32 = pageGridOne.replace("INDEX_2","32");
+   pageGridOneRow33 = pageGridOne.replace("INDEX_2","33");
+   pageGridOneRow34 = pageGridOne.replace("INDEX_2","34");
+   pageGridOneRow35 = pageGridOne.replace("INDEX_2","35");
+   pageGridOneRow36 = pageGridOne.replace("INDEX_2","36");
+   pageGridOneRow37 = pageGridOne.replace("INDEX_2","37");
+   pageGridOneRow38 = pageGridOne.replace("INDEX_2","38");
+   pageGridOneRow39 = pageGridOne.replace("INDEX_2","39");
+   pageGridOneRow40 = pageGridOne.replace("INDEX_2","40");
+   pageGridOneRow41 = pageGridOne.replace("INDEX_2","41");
+   pageGridOneRow42 = pageGridOne.replace("INDEX_2","42");
+   pageGridOneRow43 = pageGridOne.replace("INDEX_2","43");
+   pageGridOneRow44 = pageGridOne.replace("INDEX_2","44");
+   pageGridOneRow45 = pageGridOne.replace("INDEX_2","45");
+   pageGridOneRow46 = pageGridOne.replace("INDEX_2","46");
+   pageGridOneRow47 = pageGridOne.replace("INDEX_2","47");
+   pageGridOneRow48 = pageGridOne.replace("INDEX_2","48");
+   pageGridOneRow49 = pageGridOne.replace("INDEX_2","49");
+   pageGridOneRow50 = pageGridOne.replace("INDEX_2","50");
+  
+  
+  
  
   pageNumber = pageNumber-1; 
 
@@ -915,96 +1372,366 @@ console.log("Starting Brevard");
 
   if(i > 0)
   {
-      await page.focus(pageNumberAdvance, {delay:1000});
-      await page.click(pageNumberAdvance);
-      await page.waitForSelector('#result_orderby_data');
-  }
+    await page.focus(pageNumberAdvanceId, {delay:1000});
+    await page.click(pageNumberAdvanceId,{delay:4000});
+    await page.waitFor(2000);
+    
+    //await page.waitForSelector('#result_orderby_data');
+ }
 
 
-  boxResult1  = await page.evaluate((sel) => {
-        let elements = Array.from(document.querySelectorAll(sel));
-        return elements.length;
-  }, '#box_result_0');
-  //console.log(boxResult1);
+ let boxResult1  = await page.evaluate((sel) => {
+       let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow1);
+ //console.log(boxResult1);
 
-  boxResult2  = await page.evaluate((sel) => {
-          let elements = Array.from(document.querySelectorAll(sel));
-            return elements.length;
-  }, '#box_result_1');
-  //console.log(boxResult2);
-
-  boxResult3  = await page.evaluate((sel) => {
-          let elements = Array.from(document.querySelectorAll(sel));
-            return elements.length;
-  }, '#box_result_2');
-  //console.log(boxResult3);
-
-  boxResult4  = await page.evaluate((sel) => {
+ let boxResult2  = await page.evaluate((sel) => {
          let elements = Array.from(document.querySelectorAll(sel));
            return elements.length;
-  }, '#box_result_3');
-  //console.log(boxResult4);
+ }, pageGridOneRow2);
+ //console.log(boxResult2);
 
-  boxResult5  = await page.evaluate((sel) => {
+ let boxResult3  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+           return elements.length;
+ }, pageGridOneRow3);
+ //console.log(boxResult3);
+
+ let boxResult4  = await page.evaluate((sel) => {
+        let elements = Array.from(document.querySelectorAll(sel));
+          return elements.length;
+ }, pageGridOneRow4);
+ //console.log(boxResult4);
+
+ let boxResult5  = await page.evaluate((sel) => {
+      let elements = Array.from(document.querySelectorAll(sel));
+        return elements.length;
+ }, pageGridOneRow5);
+ //console.log(boxResult5);
+
+ let boxResult6  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+           return elements.length;
+ }, pageGridOneRow6);
+ //console.log(boxResult6);
+
+ let boxResult7  = await page.evaluate((sel) => {
+        let elements = Array.from(document.querySelectorAll(sel));
+          return elements.length;
+ }, pageGridOneRow7);
+ //console.log(boxResult7);
+
+ let boxResult8  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+         return elements.length;
+ }, pageGridOneRow8);
+ //console.log(boxResult8);
+
+ let boxResult9  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+          return elements.length;
+ }, pageGridOneRow9);
+ //console.log(boxResult9);
+
+ let boxResult10  = await page.evaluate((sel) => {
+        let elements = Array.from(document.querySelectorAll(sel));
+          return elements.length;
+ }, pageGridOneRow10);
+ //console.log(boxResult10);
+ 
+ let boxResult11  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+   return elements.length;
+ }, pageGridOneRow11);
+ //console.log(boxResult1);
+
+ let boxResult12  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+           return elements.length;
+ }, pageGridOneRow12);
+ //console.log(boxResult2);
+
+ let boxResult13  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+           return elements.length;
+ }, pageGridOneRow13);
+ //console.log(boxResult3);
+
+ let boxResult14  = await page.evaluate((sel) => {
        let elements = Array.from(document.querySelectorAll(sel));
          return elements.length;
-  }, '#box_result_4');
-  //console.log(boxResult5);
+ }, pageGridOneRow14);
+ //console.log(boxResult4);
 
-  boxResult6  = await page.evaluate((sel) => {
-          let elements = Array.from(document.querySelectorAll(sel));
-            return elements.length;
-  }, '#box_result_5');
-  //console.log(boxResult6);
+ let boxResult15  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow15);
+ //console.log(boxResult5);
 
-  boxResult7  = await page.evaluate((sel) => {
+ let boxResult16  = await page.evaluate((sel) => {
          let elements = Array.from(document.querySelectorAll(sel));
            return elements.length;
-  }, '#box_result_6');
-  //console.log(boxResult7);
+ }, pageGridOneRow16);
+ //console.log(boxResult6);
 
-  boxResult8  = await page.evaluate((sel) => {
-          let elements = Array.from(document.querySelectorAll(sel));
-          return elements.length;
-  }, '#box_result_7');
-  //console.log(boxResult8);
+ let boxResult17  = await page.evaluate((sel) => {
+       let elements = Array.from(document.querySelectorAll(sel));
+         return elements.length;
+ }, pageGridOneRow17);
+ //console.log(boxResult7);
 
-  boxResult9  = await page.evaluate((sel) => {
-          let elements = Array.from(document.querySelectorAll(sel));
-           return elements.length;
-  }, '#box_result_8');
-  //console.log(boxResult9);
-
-  boxResult10  = await page.evaluate((sel) => {
+ let boxResult18  = await page.evaluate((sel) => {
          let elements = Array.from(document.querySelectorAll(sel));
-           return elements.length;
-  }, '#box_result_9');
-  //console.log(boxResult10);
+         return elements.length;
+ }, pageGridOneRow18);
+ //console.log(boxResult8);
 
-  boxNumbers = (boxResult1+boxResult2+boxResult3+boxResult4+boxResult5+boxResult6+boxResult7+boxResult8+boxResult9+boxResult10);
-  boxNumbers  = boxNumbers -1;
+ let boxResult19  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+         return elements.length;
+ }, pageGridOneRow19);
+ //console.log(boxResult9);
 
-  for (let i = 0; i <= boxNumbers ; i++) 
-  {
+ let boxResult20  = await page.evaluate((sel) => {
+       let elements = Array.from(document.querySelectorAll(sel));
+         return elements.length;
+ }, pageGridOneRow20);
+ //console.log(boxResult10);
 
-    let boxSelector = boxResults.replace("INDEX", i);
-    let bedBathSelector = bedBathResults.replace("INDEX", i);
-    let grossAreaSelector = grossAreaResults.replace("INDEX", i);
-    let livingAreaSelector = livingAreaResults.replace("INDEX", i);
-    let poolSelector = poolResults.replace("INDEX", i);
-    let waterFrontSelector = waterFrontResults.replace("INDEX",i);
-    let builtSelector = builtResults.replace("INDEX",i);
-    let foreclosureSelector = foreclosureResults.replace("INDEX",i);
+ let boxResult21  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+   return elements.length;
+ }, pageGridOneRow21);
+ //console.log(boxResult1);
+
+ let boxResult22  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow22);
+ //console.log(boxResult2);
+
+ let boxResult23  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow23);
+ //console.log(boxResult3);
+
+ let boxResult24  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow24);
+ //console.log(boxResult4);
+
+ let boxResult25  = await page.evaluate((sel) => {
+ let elements = Array.from(document.querySelectorAll(sel));
+   return elements.length;
+ }, pageGridOneRow25);
+ //console.log(boxResult5);
+
+ let boxResult26  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow26);
+ //console.log(boxResult6);
+
+ let boxResult27  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow27);
+ //console.log(boxResult7);
+
+ let boxResult28  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow28);
+ //console.log(boxResult8);
+
+ let boxResult29  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow29);
+ //console.log(boxResult9);
+
+ let boxResult30  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow30);
+ //console.log(boxResult10);
+
+ let boxResult31  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+   return elements.length;
+ }, pageGridOneRow31);
+ //console.log(boxResult1);
+
+ let boxResult32  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow32);
+ //console.log(boxResult2);
+
+ let boxResult33  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow33);
+ //console.log(boxResult3);
+
+ let boxResult34  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow34);
+ //console.log(boxResult4);
+
+ let boxResult35  = await page.evaluate((sel) => {
+ let elements = Array.from(document.querySelectorAll(sel));
+   return elements.length;
+ }, pageGridOneRow35);
+ //console.log(boxResult5);
+
+ let boxResult36  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow36);
+ //console.log(boxResult6);
+
+ let boxResult37  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow37);
+ //console.log(boxResult7);
+
+ let boxResult38  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow38);
+ //console.log(boxResult8);
+
+ let boxResult39  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow39);
+ //console.log(boxResult9);
+
+ let boxResult40  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow40);
+ //console.log(boxResult10);
+
+ let boxResult41  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+   return elements.length;
+ }, pageGridOneRow41);
+ //console.log(boxResult1);
+
+ let boxResult42  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow42);
+ //console.log(boxResult2);
+
+ let boxResult43  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow43);
+ //console.log(boxResult3);
+
+ let boxResult44  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow44);
+ //console.log(boxResult4);
+
+ let boxResult45  = await page.evaluate((sel) => {
+ let elements = Array.from(document.querySelectorAll(sel));
+   return elements.length;
+ }, pageGridOneRow45);
+ //console.log(boxResult5);
+
+ let boxResult46  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow46);
+ //console.log(boxResult6);
+
+ let boxResult47  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow47);
+ //console.log(boxResult7);
+
+ let boxResult48  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow48);
+ //console.log(boxResult8);
+
+ let boxResult49  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow49);
+ //console.log(boxResult9);
+
+ let boxResult50  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow50);
+ //console.log(boxResult10);
+
+ let boxNumbers = (boxResult1+boxResult2+boxResult3+boxResult4+boxResult5+boxResult6+boxResult7+boxResult8+boxResult9+boxResult10+
+   boxResult11+boxResult12+boxResult13+boxResult14+boxResult15+boxResult16+boxResult17+boxResult18+boxResult19+boxResult20+
+   boxResult21+boxResult22+boxResult23+boxResult24+boxResult25+boxResult26+boxResult27+boxResult28+boxResult29+boxResult30+
+   boxResult31+boxResult32+boxResult33+boxResult34+boxResult35+boxResult36+boxResult37+boxResult38+boxResult39+boxResult40+
+   boxResult41+boxResult42+boxResult43+boxResult44+boxResult45+boxResult46+boxResult47+boxResult48+boxResult49+boxResult50
+ );
+ boxNumbers  = boxNumbers -1;
+
+ for (let i = 0; i <= boxNumbers ; i++) 
+ {
+
+   let boxSelector = boxResults.replace("INDEX_2", (i+1));
+   boxSelector = boxSelector.replace("INDEX",pageGridId);
+   //console.log(boxSelector);
+   let bedSelector = bedResults.replace("INDEX_2",(i+1));
+   bedSelector = bedSelector.replace("INDEX",pageGridId);
+   //console.log(bedSelector);
+   let bathSelector = bathResults.replace("INDEX_2",(i+1));
+   bathSelector = bathSelector.replace("INDEX",pageGridId);
+   //console.log(bathSelector);
+   let grossAreaSelector = grossAreaResults.replace("INDEX_2", (i+1));
+   grossAreaSelector = grossAreaSelector.replace("INDEX",pageGridId);
+   // console.log(grossAreaSelector);
+   let livingAreaSelector = livingAreaResults.replace("INDEX_2", (i+1));
+   livingAreaSelector = livingAreaSelector.replace("INDEX",pageGridId);
+
+   let poolSelector = poolResults.replace("INDEX_2", (i+1));
+   poolSelector = poolSelector.replace("INDEX",pageGridId);
+
+   let waterFrontSelector = waterFrontResults.replace("INDEX_2", (i+1));
+   waterFrontSelector = waterFrontSelector.replace("INDEX",pageGridId);
+
+   let builtSelector = builtResults.replace("INDEX_2", (i+1));
+   builtSelector = builtSelector.replace("INDEX",pageGridId);
+
+   let foreclosureSelector = foreclosureResults.replace("INDEX_2", (i+1));
+   foreclosureSelector = foreclosureSelector.replace("INDEX",pageGridId);
     
     let box_result = await page.evaluate((sel) => {
     let element = document.querySelector(sel);
       return element? element.innerHTML:null;
       }, boxSelector);
   
-    let bedBath_result = await page.evaluate((sel) => {
+    let bed_result = await page.evaluate((sel) => {
+     let element = document.querySelector(sel);
+          return element? element.innerHTML:null;
+    }, bedSelector);
+  
+    let bath_result = await page.evaluate((sel) => {
     let element = document.querySelector(sel);
       return element? element.innerHTML:null;
-      }, bedBathSelector);
+      }, bathSelector);
   
     let grossArea_result = await page.evaluate((sel) => {
     let element = document.querySelector(sel);
@@ -1036,54 +1763,21 @@ console.log("Starting Brevard");
      return element? element.innerHTML:null;
     }, foreclosureSelector);
   
-  res = box_result.split(",");
-  
-  
- //console.log(res);  
- 
- //var addr = res[0].split(" ");
- 
- //var address = addr[32] +  ' ' + addr[33] + ' ' + addr[34];
- 
- //console.log(address);
-
-
-// var zip = res[2].replace(/ /g, '');
- 
- //console.log(zip);
- 
- //console.log(bedBath_result);
- 
- temp = bedBath_result.split("/");
- 
- bed = temp[0];
- 
- content = bed.toString().replace(/\t/g, '').split('\n');
- 
- //console.log(content);
- 
- bed = content[1];
- 
- //console.log(bed);
- 
- baths = temp[1];
- 
- //console.log(baths);
- 
- grossLivingTemp = grossArea_result.toString().replace(/\t/g, '').split('\n');
- 
- gLiving = grossLivingTemp[1];
- 
- //console.log(gLiving);
- 
- livingTemp = livingArea_result.toString().replace(/\t/g, '').split('\n');
- 
- lArea = livingTemp[1];
+    res = box_result;
+	  
+	  
+   
+    var gLiving = grossArea_result;
+    
+    
+    var lArea = livingArea_result;
  
  
  await page.click(boxSelector);
  
- await page.waitForSelector('#psummary_data_div > div > h1:nth-child(4)',{delay:1000});
+// await page.waitForSelector('#psummary_data_div > div > h1:nth-child(4)',{delay:1000});
+
+    await page.waitFor(1000);
  
   address_result = await page.evaluate((sel) => {
   let element = document.querySelector(sel);
@@ -1099,27 +1793,27 @@ console.log("Starting Brevard");
  
   soldPrice_result = await page.evaluate((sel) => {
   let element = document.querySelector(sel);
-     return element? element.innerHTML:null;
+     return element? element.innerHTML:"0";
     }, soldPriceResults);
  
   taxValue_result = await page.evaluate((sel) => {
   let element = document.querySelector(sel);
-     return element? element.innerHTML:null;
+     return element? element.innerHTML:"0";
     }, taxValueResults);
  
   landValue_result = await page.evaluate((sel) => {
   let element = document.querySelector(sel);
-     return element? element.innerHTML:null;
+     return element? element.innerHTML:"0";
     }, landValueResults);
   
   buildValue_result = await page.evaluate((sel) => {
   let element = document.querySelector(sel);
-     return element? element.innerHTML:null;
+     return element? element.innerHTML:"0";
     }, buildValueResults);
   
   cityValue_result = await page.evaluate((sel) => {
   let element = document.querySelector(sel);
-     return element? element.innerHTML:null;
+     return element? element.innerHTML:"0";
     }, cityValueResults);
   
   list_length  = await page.evaluate((sel) => {
@@ -1363,7 +2057,7 @@ console.log("Starting Brevard");
   buildValue = buildValue_result.replace(',','');
   ownerName = OwnerOne[0].replace(',','');
  
-  json = {'city':cityValue_result,'address':address_result,'unit':"",'zip':zip_result,'garea':gLiving,'larea':lArea,'beds':bed, 'baths':baths,'pool':pool_result,'wf':waterFront_result,'built':built_result,'frclosure':foreclosure_result,'sold_price':soldPrice,'tax_value':taxValue,'land_value':landValue,'build_value':buildValue,'owner_name':ownerName,'owner_address':ownerAddress_result,'owner_zip':ownerZip_result,'owner_city':ownerCity_result,'owner_state':ownerState_result,'owner_phone':ownerPhone_result};
+  json = {'city':cityValue_result,'address':address_result,'unit':"",'zip':zip_result,'garea':gLiving,'larea':lArea,'beds':bed_result, 'baths':bath_result,'pool':pool_result,'wf':waterFront_result,'built':built_result,'frclosure':foreclosure_result,'sold_price':soldPrice,'tax_value':taxValue,'land_value':landValue,'build_value':buildValue,'owner_name':ownerName,'owner_address':ownerAddress_result,'owner_zip':ownerZip_result,'owner_city':ownerCity_result,'owner_state':ownerState_result,'owner_phone':ownerPhone_result};
    
   data = [ownerName_result,address_result +" ,"+ cityValue_result + " ," + zip_result]
 
@@ -1396,7 +2090,7 @@ console.log("Starting Brevard");
       //console.log(tempdatajson);
    }
  
-   podioJson = {"fields":{"title":ownerName_result,"lead-source":sourceData,"lead-intake-date":intakeDate,"motivation":7,"status-of-lead":14,"next-action":15,"property-address":address_result +" ,"+ cityValue_result+" ,"+zip_result ,"owners-address":ownerAddress_result +" ,"+ ownerCity_result+" ,"+ownerZip_result,"estimated-value":{"value":buildValue,"currency":"USD"},"beds-2":bed,"baths-2":baths,"square-feet":lArea,"year-built-2":built_result,"property-taxes-assement":taxValue,"last-sale-price":soldPrice}};
+   podioJson = {"fields":{"title":ownerName_result,"lead-source":sourceData,"lead-intake-date":intakeDate,"motivation":7,"status-of-lead":14,"next-action":15,"property-address":address_result +" ,"+ cityValue_result+" ,"+zip_result ,"owners-address":ownerAddress_result +" ,"+ ownerCity_result+" ,"+ownerZip_result,"estimated-value":{"value":buildValue,"currency":"USD"},"beds-2":bed_result,"baths-2":bath_result,"square-feet":lArea,"year-built-2":built_result,"property-taxes-assement":taxValue,"last-sale-price":soldPrice}};
 
     //console.log(podioJson);
     //console.log(intakeDate);
@@ -1411,7 +2105,7 @@ console.log("Starting Brevard");
    });
   
   
-  //console.log(dataInserted);
+  // //console.log(dataInserted);
   if(dataInserted > 0)
   {
     insertPODIOItem(podioJson);
@@ -1421,7 +2115,9 @@ console.log("Starting Brevard");
 
 } 
 
-//Polk
+
+
+//Marion
 try
 {
 	await page.click('#principal__searchTab',{delay:2000});
@@ -1430,6 +2126,7 @@ catch(err)
  {
  	console.log(err);
 } 
+
 
 //await page.waitForNavigation({waitUntil:'networkidle0'});
 await page.click("#ext-gen201", {delay:2000});
@@ -1491,11 +2188,14 @@ catch(err)
   
 
   
-console.log("Starting Polk");
+console.log("Starting Marion");
   
+await page.waitFor(3000);
+
   try
   {
-	  await page.waitForSelector('#result_orderby_data');
+    // await page.waitForSelector('#result_orderby_data');
+    await page.waitForSelector('#templateCombo');
   }
   catch(error2)
   {
@@ -1506,21 +2206,120 @@ console.log("Starting Polk");
 
   await page.waitFor(4000);
 
-  
-  pageSelector = await page.evaluate(() => {
-    let elements = Array.from( document.getElementsByClassName('x-panel-body x-panel-body-noheader x-panel-body-noborder'));
-      return elements[4].getAttribute("id");
+    pageSelector = await page.evaluate(() => {
+    let elements = Array.from(document.getElementsByClassName('xtb-text'));
+      return elements[1].getAttribute("id");
      });
-
-     pageNumberOrder = pageNumberOrderSelector.replace("INDEX",pageSelector);
-     pageNumberAdvance = pageNumberAdvanceSelector.replace("INDEX",pageSelector);
-
    //console.log(pageSelector);
+  
+   pageSelector = '#'+pageSelector;
+  
+    pageNumber = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
+      return element? element.innerHTML:null;
+      }, pageSelector);
+  
+  //  let pageNumber = await page.evaluate((sel) => {
+  //   let elements = Array.from(document.querySelectorAll(sel));
+  //   return elements.length;
+  // }, ('#'+pageSelector));
+  
+  pageNumber = pageNumber.replace('of ','');
+  
+  //console.log(pageNumber);
+  
+    pageTotal = await page.evaluate(() => {
+    let elements = Array.from(document.getElementsByClassName('xtb-text'));
+      return elements[3].getAttribute("id");
+     });
+   //console.log(pageSelector);
+  
+   pageTotal = '#'+pageTotal;
+  
+   pgTotal = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
+      return element? element.innerHTML:null;
+      }, pageTotal);
+  
+  //  let pageNumber = await page.evaluate((sel) => {
+  //   let elements = Array.from(document.querySelectorAll(sel));
+  //   return elements.length;
+  // }, ('#'+pageSelector));
+  
+  //pageNumber = pageNumber.replace('of ','');
+  
+    console.log(pgTotal);
+  
+    pageNumberAdvanceId = await page.evaluate(() => {
+    let elements = Array.from(document.getElementsByClassName(' x-btn-text x-tbar-page-next'));
+      return elements[0].getAttribute("id");
+     });
+  
+     pageNumberAdvanceId = '#'+pageNumberAdvanceId;
 
-  pageNumber = await page.evaluate((sel) => {
- let elements = Array.from(document.querySelectorAll(sel));
-  return elements.length;
-}, pageNumberOrder);
+  
+  
+    pageGridId = await page.evaluate(() => {
+    let elements = Array.from(document.getElementsByClassName('x-grid3-body'));
+      return elements[0].getAttribute("id");
+     });
+  
+  //console.log(pageGridId);
+  
+   pageGridSelector = ' #INDEX > div:nth-child(INDEX_2) > table > tbody > tr > td.x-grid3-col.x-grid3-cell.x-grid3-td-1 > div > div > div'
+   pageGridOne = pageGridSelector.replace("INDEX",pageGridId);
+   pageGridOneRow1 = pageGridOne.replace("INDEX_2","1");
+   pageGridOneRow2 = pageGridOne.replace("INDEX_2","2");
+   pageGridOneRow3 = pageGridOne.replace("INDEX_2","3");
+   pageGridOneRow4 = pageGridOne.replace("INDEX_2","4");
+   pageGridOneRow5 = pageGridOne.replace("INDEX_2","5");
+   pageGridOneRow6 = pageGridOne.replace("INDEX_2","6");
+   pageGridOneRow7 = pageGridOne.replace("INDEX_2","7");
+   pageGridOneRow8 = pageGridOne.replace("INDEX_2","8");
+   pageGridOneRow9 = pageGridOne.replace("INDEX_2","9");
+   pageGridOneRow10 = pageGridOne.replace("INDEX_2","10");
+   pageGridOneRow11 = pageGridOne.replace("INDEX_2","11");
+   pageGridOneRow12 = pageGridOne.replace("INDEX_2","12");
+   pageGridOneRow13 = pageGridOne.replace("INDEX_2","13");
+   pageGridOneRow14 = pageGridOne.replace("INDEX_2","14");
+   pageGridOneRow15 = pageGridOne.replace("INDEX_2","15");
+   pageGridOneRow16 = pageGridOne.replace("INDEX_2","16");
+   pageGridOneRow17 = pageGridOne.replace("INDEX_2","17");
+   pageGridOneRow18 = pageGridOne.replace("INDEX_2","18");
+   pageGridOneRow19 = pageGridOne.replace("INDEX_2","19");
+   pageGridOneRow20 = pageGridOne.replace("INDEX_2","20");
+   pageGridOneRow21 = pageGridOne.replace("INDEX_2","21");
+   pageGridOneRow22 = pageGridOne.replace("INDEX_2","22");
+   pageGridOneRow23 = pageGridOne.replace("INDEX_2","23");
+   pageGridOneRow24 = pageGridOne.replace("INDEX_2","24");
+   pageGridOneRow25 = pageGridOne.replace("INDEX_2","25");
+   pageGridOneRow26 = pageGridOne.replace("INDEX_2","26");
+   pageGridOneRow27 = pageGridOne.replace("INDEX_2","27");
+   pageGridOneRow28 = pageGridOne.replace("INDEX_2","28");
+   pageGridOneRow29 = pageGridOne.replace("INDEX_2","29");
+   pageGridOneRow30 = pageGridOne.replace("INDEX_2","30");
+   pageGridOneRow31 = pageGridOne.replace("INDEX_2","31");
+   pageGridOneRow32 = pageGridOne.replace("INDEX_2","32");
+   pageGridOneRow33 = pageGridOne.replace("INDEX_2","33");
+   pageGridOneRow34 = pageGridOne.replace("INDEX_2","34");
+   pageGridOneRow35 = pageGridOne.replace("INDEX_2","35");
+   pageGridOneRow36 = pageGridOne.replace("INDEX_2","36");
+   pageGridOneRow37 = pageGridOne.replace("INDEX_2","37");
+   pageGridOneRow38 = pageGridOne.replace("INDEX_2","38");
+   pageGridOneRow39 = pageGridOne.replace("INDEX_2","39");
+   pageGridOneRow40 = pageGridOne.replace("INDEX_2","40");
+   pageGridOneRow41 = pageGridOne.replace("INDEX_2","41");
+   pageGridOneRow42 = pageGridOne.replace("INDEX_2","42");
+   pageGridOneRow43 = pageGridOne.replace("INDEX_2","43");
+   pageGridOneRow44 = pageGridOne.replace("INDEX_2","44");
+   pageGridOneRow45 = pageGridOne.replace("INDEX_2","45");
+   pageGridOneRow46 = pageGridOne.replace("INDEX_2","46");
+   pageGridOneRow47 = pageGridOne.replace("INDEX_2","47");
+   pageGridOneRow48 = pageGridOne.replace("INDEX_2","48");
+   pageGridOneRow49 = pageGridOne.replace("INDEX_2","49");
+   pageGridOneRow50 = pageGridOne.replace("INDEX_2","50");
+  
+  
   
  
   pageNumber = pageNumber-1; 
@@ -1530,96 +2329,366 @@ console.log("Starting Polk");
 
   if(i > 0)
   {
-      await page.focus(pageNumberAdvance, {delay:1000});
-      await page.click(pageNumberAdvance);
-      await page.waitForSelector('#result_orderby_data');
-  }
+    await page.focus(pageNumberAdvanceId, {delay:1000});
+    await page.click(pageNumberAdvanceId,{delay:4000});
+    await page.waitFor(2000);
+    
+    //await page.waitForSelector('#result_orderby_data');
+ }
 
 
-  boxResult1  = await page.evaluate((sel) => {
-        let elements = Array.from(document.querySelectorAll(sel));
-        return elements.length;
-  }, '#box_result_0');
-  //console.log(boxResult1);
+ let boxResult1  = await page.evaluate((sel) => {
+       let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow1);
+ //console.log(boxResult1);
 
-  boxResult2  = await page.evaluate((sel) => {
-          let elements = Array.from(document.querySelectorAll(sel));
-            return elements.length;
-  }, '#box_result_1');
-  //console.log(boxResult2);
-
-  boxResult3  = await page.evaluate((sel) => {
-          let elements = Array.from(document.querySelectorAll(sel));
-            return elements.length;
-  }, '#box_result_2');
-  //console.log(boxResult3);
-
-  boxResult4  = await page.evaluate((sel) => {
+ let boxResult2  = await page.evaluate((sel) => {
          let elements = Array.from(document.querySelectorAll(sel));
            return elements.length;
-  }, '#box_result_3');
-  //console.log(boxResult4);
+ }, pageGridOneRow2);
+ //console.log(boxResult2);
 
-  boxResult5  = await page.evaluate((sel) => {
+ let boxResult3  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+           return elements.length;
+ }, pageGridOneRow3);
+ //console.log(boxResult3);
+
+ let boxResult4  = await page.evaluate((sel) => {
+        let elements = Array.from(document.querySelectorAll(sel));
+          return elements.length;
+ }, pageGridOneRow4);
+ //console.log(boxResult4);
+
+ let boxResult5  = await page.evaluate((sel) => {
+      let elements = Array.from(document.querySelectorAll(sel));
+        return elements.length;
+ }, pageGridOneRow5);
+ //console.log(boxResult5);
+
+ let boxResult6  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+           return elements.length;
+ }, pageGridOneRow6);
+ //console.log(boxResult6);
+
+ let boxResult7  = await page.evaluate((sel) => {
+        let elements = Array.from(document.querySelectorAll(sel));
+          return elements.length;
+ }, pageGridOneRow7);
+ //console.log(boxResult7);
+
+ let boxResult8  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+         return elements.length;
+ }, pageGridOneRow8);
+ //console.log(boxResult8);
+
+ let boxResult9  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+          return elements.length;
+ }, pageGridOneRow9);
+ //console.log(boxResult9);
+
+ let boxResult10  = await page.evaluate((sel) => {
+        let elements = Array.from(document.querySelectorAll(sel));
+          return elements.length;
+ }, pageGridOneRow10);
+ //console.log(boxResult10);
+ 
+ let boxResult11  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+   return elements.length;
+ }, pageGridOneRow11);
+ //console.log(boxResult1);
+
+ let boxResult12  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+           return elements.length;
+ }, pageGridOneRow12);
+ //console.log(boxResult2);
+
+ let boxResult13  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+           return elements.length;
+ }, pageGridOneRow13);
+ //console.log(boxResult3);
+
+ let boxResult14  = await page.evaluate((sel) => {
        let elements = Array.from(document.querySelectorAll(sel));
          return elements.length;
-  }, '#box_result_4');
-  //console.log(boxResult5);
+ }, pageGridOneRow14);
+ //console.log(boxResult4);
 
-  boxResult6  = await page.evaluate((sel) => {
-          let elements = Array.from(document.querySelectorAll(sel));
-            return elements.length;
-  }, '#box_result_5');
-  //console.log(boxResult6);
+ let boxResult15  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow15);
+ //console.log(boxResult5);
 
-  boxResult7  = await page.evaluate((sel) => {
+ let boxResult16  = await page.evaluate((sel) => {
          let elements = Array.from(document.querySelectorAll(sel));
            return elements.length;
-  }, '#box_result_6');
-  //console.log(boxResult7);
+ }, pageGridOneRow16);
+ //console.log(boxResult6);
 
-  boxResult8  = await page.evaluate((sel) => {
-          let elements = Array.from(document.querySelectorAll(sel));
-          return elements.length;
-  }, '#box_result_7');
-  //console.log(boxResult8);
+ let boxResult17  = await page.evaluate((sel) => {
+       let elements = Array.from(document.querySelectorAll(sel));
+         return elements.length;
+ }, pageGridOneRow17);
+ //console.log(boxResult7);
 
-  boxResult9  = await page.evaluate((sel) => {
-          let elements = Array.from(document.querySelectorAll(sel));
-           return elements.length;
-  }, '#box_result_8');
-  //console.log(boxResult9);
-
-  boxResult10  = await page.evaluate((sel) => {
+ let boxResult18  = await page.evaluate((sel) => {
          let elements = Array.from(document.querySelectorAll(sel));
-           return elements.length;
-  }, '#box_result_9');
-  //console.log(boxResult10);
+         return elements.length;
+ }, pageGridOneRow18);
+ //console.log(boxResult8);
 
-  boxNumbers = (boxResult1+boxResult2+boxResult3+boxResult4+boxResult5+boxResult6+boxResult7+boxResult8+boxResult9+boxResult10);
-  boxNumbers  = boxNumbers -1;
+ let boxResult19  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+         return elements.length;
+ }, pageGridOneRow19);
+ //console.log(boxResult9);
 
-  for (let i = 0; i <= boxNumbers ; i++) 
-  {
+ let boxResult20  = await page.evaluate((sel) => {
+       let elements = Array.from(document.querySelectorAll(sel));
+         return elements.length;
+ }, pageGridOneRow20);
+ //console.log(boxResult10);
 
-    let boxSelector = boxResults.replace("INDEX", i);
-    let bedBathSelector = bedBathResults.replace("INDEX", i);
-    let grossAreaSelector = grossAreaResults.replace("INDEX", i);
-    let livingAreaSelector = livingAreaResults.replace("INDEX", i);
-    let poolSelector = poolResults.replace("INDEX", i);
-    let waterFrontSelector = waterFrontResults.replace("INDEX",i);
-    let builtSelector = builtResults.replace("INDEX",i);
-    let foreclosureSelector = foreclosureResults.replace("INDEX",i);
+ let boxResult21  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+   return elements.length;
+ }, pageGridOneRow21);
+ //console.log(boxResult1);
+
+ let boxResult22  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow22);
+ //console.log(boxResult2);
+
+ let boxResult23  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow23);
+ //console.log(boxResult3);
+
+ let boxResult24  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow24);
+ //console.log(boxResult4);
+
+ let boxResult25  = await page.evaluate((sel) => {
+ let elements = Array.from(document.querySelectorAll(sel));
+   return elements.length;
+ }, pageGridOneRow25);
+ //console.log(boxResult5);
+
+ let boxResult26  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow26);
+ //console.log(boxResult6);
+
+ let boxResult27  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow27);
+ //console.log(boxResult7);
+
+ let boxResult28  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow28);
+ //console.log(boxResult8);
+
+ let boxResult29  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow29);
+ //console.log(boxResult9);
+
+ let boxResult30  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow30);
+ //console.log(boxResult10);
+
+ let boxResult31  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+   return elements.length;
+ }, pageGridOneRow31);
+ //console.log(boxResult1);
+
+ let boxResult32  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow32);
+ //console.log(boxResult2);
+
+ let boxResult33  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow33);
+ //console.log(boxResult3);
+
+ let boxResult34  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow34);
+ //console.log(boxResult4);
+
+ let boxResult35  = await page.evaluate((sel) => {
+ let elements = Array.from(document.querySelectorAll(sel));
+   return elements.length;
+ }, pageGridOneRow35);
+ //console.log(boxResult5);
+
+ let boxResult36  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow36);
+ //console.log(boxResult6);
+
+ let boxResult37  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow37);
+ //console.log(boxResult7);
+
+ let boxResult38  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow38);
+ //console.log(boxResult8);
+
+ let boxResult39  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow39);
+ //console.log(boxResult9);
+
+ let boxResult40  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow40);
+ //console.log(boxResult10);
+
+ let boxResult41  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+   return elements.length;
+ }, pageGridOneRow41);
+ //console.log(boxResult1);
+
+ let boxResult42  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow42);
+ //console.log(boxResult2);
+
+ let boxResult43  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow43);
+ //console.log(boxResult3);
+
+ let boxResult44  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow44);
+ //console.log(boxResult4);
+
+ let boxResult45  = await page.evaluate((sel) => {
+ let elements = Array.from(document.querySelectorAll(sel));
+   return elements.length;
+ }, pageGridOneRow45);
+ //console.log(boxResult5);
+
+ let boxResult46  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow46);
+ //console.log(boxResult6);
+
+ let boxResult47  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow47);
+ //console.log(boxResult7);
+
+ let boxResult48  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow48);
+ //console.log(boxResult8);
+
+ let boxResult49  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow49);
+ //console.log(boxResult9);
+
+ let boxResult50  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow50);
+ //console.log(boxResult10);
+
+ let boxNumbers = (boxResult1+boxResult2+boxResult3+boxResult4+boxResult5+boxResult6+boxResult7+boxResult8+boxResult9+boxResult10+
+   boxResult11+boxResult12+boxResult13+boxResult14+boxResult15+boxResult16+boxResult17+boxResult18+boxResult19+boxResult20+
+   boxResult21+boxResult22+boxResult23+boxResult24+boxResult25+boxResult26+boxResult27+boxResult28+boxResult29+boxResult30+
+   boxResult31+boxResult32+boxResult33+boxResult34+boxResult35+boxResult36+boxResult37+boxResult38+boxResult39+boxResult40+
+   boxResult41+boxResult42+boxResult43+boxResult44+boxResult45+boxResult46+boxResult47+boxResult48+boxResult49+boxResult50
+ );
+ boxNumbers  = boxNumbers -1;
+
+ for (let i = 0; i <= boxNumbers ; i++) 
+ {
+
+   let boxSelector = boxResults.replace("INDEX_2", (i+1));
+   boxSelector = boxSelector.replace("INDEX",pageGridId);
+   //console.log(boxSelector);
+   let bedSelector = bedResults.replace("INDEX_2",(i+1));
+   bedSelector = bedSelector.replace("INDEX",pageGridId);
+   //console.log(bedSelector);
+   let bathSelector = bathResults.replace("INDEX_2",(i+1));
+   bathSelector = bathSelector.replace("INDEX",pageGridId);
+   //console.log(bathSelector);
+   let grossAreaSelector = grossAreaResults.replace("INDEX_2", (i+1));
+   grossAreaSelector = grossAreaSelector.replace("INDEX",pageGridId);
+   // console.log(grossAreaSelector);
+   let livingAreaSelector = livingAreaResults.replace("INDEX_2", (i+1));
+   livingAreaSelector = livingAreaSelector.replace("INDEX",pageGridId);
+
+   let poolSelector = poolResults.replace("INDEX_2", (i+1));
+   poolSelector = poolSelector.replace("INDEX",pageGridId);
+
+   let waterFrontSelector = waterFrontResults.replace("INDEX_2", (i+1));
+   waterFrontSelector = waterFrontSelector.replace("INDEX",pageGridId);
+
+   let builtSelector = builtResults.replace("INDEX_2", (i+1));
+   builtSelector = builtSelector.replace("INDEX",pageGridId);
+
+   let foreclosureSelector = foreclosureResults.replace("INDEX_2", (i+1));
+   foreclosureSelector = foreclosureSelector.replace("INDEX",pageGridId);
     
     let box_result = await page.evaluate((sel) => {
     let element = document.querySelector(sel);
       return element? element.innerHTML:null;
       }, boxSelector);
   
-    let bedBath_result = await page.evaluate((sel) => {
+    let bed_result = await page.evaluate((sel) => {
+     let element = document.querySelector(sel);
+          return element? element.innerHTML:null;
+    }, bedSelector);
+  
+    let bath_result = await page.evaluate((sel) => {
     let element = document.querySelector(sel);
       return element? element.innerHTML:null;
-      }, bedBathSelector);
+      }, bathSelector);
   
     let grossArea_result = await page.evaluate((sel) => {
     let element = document.querySelector(sel);
@@ -1651,54 +2720,22 @@ console.log("Starting Polk");
      return element? element.innerHTML:null;
     }, foreclosureSelector);
   
-  res = box_result.split(",");
+    res = box_result;
+	  
+	  
+    
+    
+    var gLiving = grossArea_result;
   
-  
- //console.log(res);  
- 
- //var addr = res[0].split(" ");
- 
- //var address = addr[32] +  ' ' + addr[33] + ' ' + addr[34];
- 
- //console.log(address);
-
-
-// var zip = res[2].replace(/ /g, '');
- 
- //console.log(zip);
- 
- //console.log(bedBath_result);
- 
- temp = bedBath_result.split("/");
- 
- bed = temp[0];
- 
- content = bed.toString().replace(/\t/g, '').split('\n');
- 
- //console.log(content);
- 
- bed = content[1];
- 
- //console.log(bed);
- 
- baths = temp[1];
- 
- //console.log(baths);
- 
- grossLivingTemp = grossArea_result.toString().replace(/\t/g, '').split('\n');
- 
- gLiving = grossLivingTemp[1];
- 
- //console.log(gLiving);
- 
- livingTemp = livingArea_result.toString().replace(/\t/g, '').split('\n');
- 
- lArea = livingTemp[1];
+    
+    var lArea = livingArea_result;
  
  
  await page.click(boxSelector);
  
- await page.waitForSelector('#psummary_data_div > div > h1:nth-child(4)',{delay:1000});
+// await page.waitForSelector('#psummary_data_div > div > h1:nth-child(4)',{delay:1000});
+
+    await page.waitFor(1000);
  
   address_result = await page.evaluate((sel) => {
   let element = document.querySelector(sel);
@@ -1714,27 +2751,27 @@ console.log("Starting Polk");
  
   soldPrice_result = await page.evaluate((sel) => {
   let element = document.querySelector(sel);
-     return element? element.innerHTML:null;
+     return element? element.innerHTML:"0";
     }, soldPriceResults);
  
   taxValue_result = await page.evaluate((sel) => {
   let element = document.querySelector(sel);
-     return element? element.innerHTML:null;
+     return element? element.innerHTML:"0";
     }, taxValueResults);
  
   landValue_result = await page.evaluate((sel) => {
   let element = document.querySelector(sel);
-     return element? element.innerHTML:null;
+     return element? element.innerHTML:"0";
     }, landValueResults);
   
   buildValue_result = await page.evaluate((sel) => {
   let element = document.querySelector(sel);
-     return element? element.innerHTML:null;
+     return element? element.innerHTML:"0";
     }, buildValueResults);
   
   cityValue_result = await page.evaluate((sel) => {
   let element = document.querySelector(sel);
-     return element? element.innerHTML:null;
+     return element? element.innerHTML:"0";
     }, cityValueResults);
   
   list_length  = await page.evaluate((sel) => {
@@ -1958,7 +2995,7 @@ console.log("Starting Polk");
   landValue = landValue_result.replace(',','');
   buildValue = buildValue_result.replace(',','');
  
-  json = {'city':cityValue_result,'address':address_result,'unit':"",'zip':zip_result,'garea':gLiving,'larea':lArea,'beds':bed, 'baths':baths,'pool':pool_result,'wf':waterFront_result,'built':built_result,'frclosure':foreclosure_result,'sold_price':soldPrice,'tax_value':taxValue,'land_value':landValue,'build_value':buildValue,'owner_name':OwnerNoAmp[0],'owner_address':ownerAddress_result,'owner_zip':ownerZip_result,'owner_city':ownerCity_result,'owner_state':ownerState_result,'owner_phone':ownerPhone_result};
+  json = {'city':cityValue_result,'address':address_result,'unit':"",'zip':zip_result,'garea':gLiving,'larea':lArea,'beds':bed_result, 'baths':bath_result,'pool':pool_result,'wf':waterFront_result,'built':built_result,'frclosure':foreclosure_result,'sold_price':soldPrice,'tax_value':taxValue,'land_value':landValue,'build_value':buildValue,'owner_name':OwnerNoAmp[0],'owner_address':ownerAddress_result,'owner_zip':ownerZip_result,'owner_city':ownerCity_result,'owner_state':ownerState_result,'owner_phone':ownerPhone_result};
    
   data = [ownerName_result,address_result +" ,"+ cityValue_result + " ," + zip_result];
 
@@ -2010,7 +3047,7 @@ console.log("Starting Polk");
       tempData.push(tempdatajson);
    }
  
-   podioJson = {"fields":{"title":ownerName_result,"lead-source":sourceData,"lead-intake-date":intakeDate,"motivation":7,"status-of-lead":14,"next-action":15,"property-address":address_result +" ,"+ cityValue_result+" ,"+zip_result ,"owners-address":ownerAddress_result +" ,"+ ownerCity_result+" ,"+ownerZip_result,"estimated-value":{"value":buildValue,"currency":"USD"},"beds-2":bed,"baths-2":baths,"square-feet":lArea,"year-built-2":built_result,"property-taxes-assement":taxValue,"last-sale-price":soldPrice}};
+   podioJson = {"fields":{"title":ownerName_result,"lead-source":sourceData,"lead-intake-date":intakeDate,"motivation":7,"status-of-lead":14,"next-action":15,"property-address":address_result +" ,"+ cityValue_result+" ,"+zip_result ,"owners-address":ownerAddress_result +" ,"+ ownerCity_result+" ,"+ownerZip_result,"estimated-value":{"value":buildValue,"currency":"USD"},"beds-2":bed_result,"baths-2":bath_result,"square-feet":lArea,"year-built-2":built_result,"property-taxes-assement":taxValue,"last-sale-price":soldPrice}};
 
     //console.log(podioJson);
     //console.log(intakeDate);
@@ -2025,7 +3062,7 @@ console.log("Starting Polk");
    });
   
   
-  //console.log(dataInserted);
+  // //console.log(dataInserted);
   if(dataInserted > 0)
   {
     insertPODIOItem(podioJson);
@@ -2033,9 +3070,9 @@ console.log("Starting Polk");
  
 }
 
-}//end of Polk
+}//end of Marion
 
-//Marion
+//Polk
 try
 {
 	await page.click('#principal__searchTab',{delay:2000});
@@ -2103,11 +3140,12 @@ catch(err)
   
 await page.waitFor(3000);
   
-console.log("Starting Marion");
+console.log("Starting Polk");
   
   try
   {
-	  await page.waitForSelector('#result_orderby_data');
+    // await page.waitForSelector('#result_orderby_data');
+    await page.waitForSelector('#templateCombo');
   }
   catch(error2)
   {
@@ -2118,22 +3156,119 @@ console.log("Starting Marion");
 
   await page.waitFor(4000);
 
-  pageSelector = await page.evaluate(() => {
-    let elements = Array.from( document.getElementsByClassName('x-panel-body x-panel-body-noheader x-panel-body-noborder'));
-      return elements[4].getAttribute("id");
+    pageSelector = await page.evaluate(() => {
+    let elements = Array.from(document.getElementsByClassName('xtb-text'));
+      return elements[1].getAttribute("id");
      });
-
-     pageNumberOrder = pageNumberOrderSelector.replace("INDEX",pageSelector);
-     pageNumberAdvance = pageNumberAdvanceSelector.replace("INDEX",pageSelector);
-
-  
-  
    //console.log(pageSelector);
+  
+   pageSelector = '#'+pageSelector;
+  
+    pageNumber = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
+      return element? element.innerHTML:null;
+      }, pageSelector);
+  
+  //  let pageNumber = await page.evaluate((sel) => {
+  //   let elements = Array.from(document.querySelectorAll(sel));
+  //   return elements.length;
+  // }, ('#'+pageSelector));
+  
+  pageNumber = pageNumber.replace('of ','');
+  
+  //console.log(pageNumber);
+  
+    pageTotal = await page.evaluate(() => {
+    let elements = Array.from(document.getElementsByClassName('xtb-text'));
+      return elements[3].getAttribute("id");
+     });
+   //console.log(pageSelector);
+  
+   pageTotal = '#'+pageTotal;
+  
+   pgTotal = await page.evaluate((sel) => {
+    let element = document.querySelector(sel);
+      return element? element.innerHTML:null;
+      }, pageTotal);
+  
+  //  let pageNumber = await page.evaluate((sel) => {
+  //   let elements = Array.from(document.querySelectorAll(sel));
+  //   return elements.length;
+  // }, ('#'+pageSelector));
+  
+  //pageNumber = pageNumber.replace('of ','');
+  
+    console.log(pgTotal);
+  
+    pageNumberAdvanceId = await page.evaluate(() => {
+    let elements = Array.from(document.getElementsByClassName(' x-btn-text x-tbar-page-next'));
+      return elements[0].getAttribute("id");
+     });
+  
+     pageNumberAdvanceId = '#'+pageNumberAdvanceId;
 
-  pageNumber = await page.evaluate((sel) => {
- let elements = Array.from(document.querySelectorAll(sel));
-  return elements.length;
-}, pageNumberOrder);
+  
+  
+    pageGridId = await page.evaluate(() => {
+    let elements = Array.from(document.getElementsByClassName('x-grid3-body'));
+      return elements[0].getAttribute("id");
+     });
+  
+  //console.log(pageGridId);
+  
+   pageGridSelector = ' #INDEX > div:nth-child(INDEX_2) > table > tbody > tr > td.x-grid3-col.x-grid3-cell.x-grid3-td-1 > div > div > div'
+   pageGridOne = pageGridSelector.replace("INDEX",pageGridId);
+   pageGridOneRow1 = pageGridOne.replace("INDEX_2","1");
+   pageGridOneRow2 = pageGridOne.replace("INDEX_2","2");
+   pageGridOneRow3 = pageGridOne.replace("INDEX_2","3");
+   pageGridOneRow4 = pageGridOne.replace("INDEX_2","4");
+   pageGridOneRow5 = pageGridOne.replace("INDEX_2","5");
+   pageGridOneRow6 = pageGridOne.replace("INDEX_2","6");
+   pageGridOneRow7 = pageGridOne.replace("INDEX_2","7");
+   pageGridOneRow8 = pageGridOne.replace("INDEX_2","8");
+   pageGridOneRow9 = pageGridOne.replace("INDEX_2","9");
+   pageGridOneRow10 = pageGridOne.replace("INDEX_2","10");
+   pageGridOneRow11 = pageGridOne.replace("INDEX_2","11");
+   pageGridOneRow12 = pageGridOne.replace("INDEX_2","12");
+   pageGridOneRow13 = pageGridOne.replace("INDEX_2","13");
+   pageGridOneRow14 = pageGridOne.replace("INDEX_2","14");
+   pageGridOneRow15 = pageGridOne.replace("INDEX_2","15");
+   pageGridOneRow16 = pageGridOne.replace("INDEX_2","16");
+   pageGridOneRow17 = pageGridOne.replace("INDEX_2","17");
+   pageGridOneRow18 = pageGridOne.replace("INDEX_2","18");
+   pageGridOneRow19 = pageGridOne.replace("INDEX_2","19");
+   pageGridOneRow20 = pageGridOne.replace("INDEX_2","20");
+   pageGridOneRow21 = pageGridOne.replace("INDEX_2","21");
+   pageGridOneRow22 = pageGridOne.replace("INDEX_2","22");
+   pageGridOneRow23 = pageGridOne.replace("INDEX_2","23");
+   pageGridOneRow24 = pageGridOne.replace("INDEX_2","24");
+   pageGridOneRow25 = pageGridOne.replace("INDEX_2","25");
+   pageGridOneRow26 = pageGridOne.replace("INDEX_2","26");
+   pageGridOneRow27 = pageGridOne.replace("INDEX_2","27");
+   pageGridOneRow28 = pageGridOne.replace("INDEX_2","28");
+   pageGridOneRow29 = pageGridOne.replace("INDEX_2","29");
+   pageGridOneRow30 = pageGridOne.replace("INDEX_2","30");
+   pageGridOneRow31 = pageGridOne.replace("INDEX_2","31");
+   pageGridOneRow32 = pageGridOne.replace("INDEX_2","32");
+   pageGridOneRow33 = pageGridOne.replace("INDEX_2","33");
+   pageGridOneRow34 = pageGridOne.replace("INDEX_2","34");
+   pageGridOneRow35 = pageGridOne.replace("INDEX_2","35");
+   pageGridOneRow36 = pageGridOne.replace("INDEX_2","36");
+   pageGridOneRow37 = pageGridOne.replace("INDEX_2","37");
+   pageGridOneRow38 = pageGridOne.replace("INDEX_2","38");
+   pageGridOneRow39 = pageGridOne.replace("INDEX_2","39");
+   pageGridOneRow40 = pageGridOne.replace("INDEX_2","40");
+   pageGridOneRow41 = pageGridOne.replace("INDEX_2","41");
+   pageGridOneRow42 = pageGridOne.replace("INDEX_2","42");
+   pageGridOneRow43 = pageGridOne.replace("INDEX_2","43");
+   pageGridOneRow44 = pageGridOne.replace("INDEX_2","44");
+   pageGridOneRow45 = pageGridOne.replace("INDEX_2","45");
+   pageGridOneRow46 = pageGridOne.replace("INDEX_2","46");
+   pageGridOneRow47 = pageGridOne.replace("INDEX_2","47");
+   pageGridOneRow48 = pageGridOne.replace("INDEX_2","48");
+   pageGridOneRow49 = pageGridOne.replace("INDEX_2","49");
+   pageGridOneRow50 = pageGridOne.replace("INDEX_2","50");
+  
   
   pageNumber = pageNumber-1; 
 
@@ -2142,96 +3277,366 @@ console.log("Starting Marion");
 
   if(i > 0)
   {
-      await page.focus(pageNumberAdvance, {delay:1000});
-      await page.click(pageNumberAdvance);
-      await page.waitForSelector('#result_orderby_data');
-  }
+    await page.focus(pageNumberAdvanceId, {delay:1000});
+    await page.click(pageNumberAdvanceId,{delay:4000});
+    await page.waitFor(2000);
+    
+    //await page.waitForSelector('#result_orderby_data');
+ }
 
 
-  boxResult1  = await page.evaluate((sel) => {
-        let elements = Array.from(document.querySelectorAll(sel));
-        return elements.length;
-  }, '#box_result_0');
-  //console.log(boxResult1);
+ let boxResult1  = await page.evaluate((sel) => {
+       let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow1);
+ //console.log(boxResult1);
 
-  boxResult2  = await page.evaluate((sel) => {
-          let elements = Array.from(document.querySelectorAll(sel));
-            return elements.length;
-  }, '#box_result_1');
-  //console.log(boxResult2);
-
-  boxResult3  = await page.evaluate((sel) => {
-          let elements = Array.from(document.querySelectorAll(sel));
-            return elements.length;
-  }, '#box_result_2');
-  //console.log(boxResult3);
-
-  boxResult4  = await page.evaluate((sel) => {
+ let boxResult2  = await page.evaluate((sel) => {
          let elements = Array.from(document.querySelectorAll(sel));
            return elements.length;
-  }, '#box_result_3');
-  //console.log(boxResult4);
+ }, pageGridOneRow2);
+ //console.log(boxResult2);
 
-  boxResult5  = await page.evaluate((sel) => {
+ let boxResult3  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+           return elements.length;
+ }, pageGridOneRow3);
+ //console.log(boxResult3);
+
+ let boxResult4  = await page.evaluate((sel) => {
+        let elements = Array.from(document.querySelectorAll(sel));
+          return elements.length;
+ }, pageGridOneRow4);
+ //console.log(boxResult4);
+
+ let boxResult5  = await page.evaluate((sel) => {
+      let elements = Array.from(document.querySelectorAll(sel));
+        return elements.length;
+ }, pageGridOneRow5);
+ //console.log(boxResult5);
+
+ let boxResult6  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+           return elements.length;
+ }, pageGridOneRow6);
+ //console.log(boxResult6);
+
+ let boxResult7  = await page.evaluate((sel) => {
+        let elements = Array.from(document.querySelectorAll(sel));
+          return elements.length;
+ }, pageGridOneRow7);
+ //console.log(boxResult7);
+
+ let boxResult8  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+         return elements.length;
+ }, pageGridOneRow8);
+ //console.log(boxResult8);
+
+ let boxResult9  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+          return elements.length;
+ }, pageGridOneRow9);
+ //console.log(boxResult9);
+
+ let boxResult10  = await page.evaluate((sel) => {
+        let elements = Array.from(document.querySelectorAll(sel));
+          return elements.length;
+ }, pageGridOneRow10);
+ //console.log(boxResult10);
+ 
+ let boxResult11  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+   return elements.length;
+ }, pageGridOneRow11);
+ //console.log(boxResult1);
+
+ let boxResult12  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+           return elements.length;
+ }, pageGridOneRow12);
+ //console.log(boxResult2);
+
+ let boxResult13  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+           return elements.length;
+ }, pageGridOneRow13);
+ //console.log(boxResult3);
+
+ let boxResult14  = await page.evaluate((sel) => {
        let elements = Array.from(document.querySelectorAll(sel));
          return elements.length;
-  }, '#box_result_4');
-  //console.log(boxResult5);
+ }, pageGridOneRow14);
+ //console.log(boxResult4);
 
-  boxResult6  = await page.evaluate((sel) => {
-          let elements = Array.from(document.querySelectorAll(sel));
-            return elements.length;
-  }, '#box_result_5');
-  //console.log(boxResult6);
+ let boxResult15  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow15);
+ //console.log(boxResult5);
 
-  boxResult7  = await page.evaluate((sel) => {
+ let boxResult16  = await page.evaluate((sel) => {
          let elements = Array.from(document.querySelectorAll(sel));
            return elements.length;
-  }, '#box_result_6');
-  //console.log(boxResult7);
+ }, pageGridOneRow16);
+ //console.log(boxResult6);
 
-  boxResult8  = await page.evaluate((sel) => {
-          let elements = Array.from(document.querySelectorAll(sel));
-          return elements.length;
-  }, '#box_result_7');
-  //console.log(boxResult8);
+ let boxResult17  = await page.evaluate((sel) => {
+       let elements = Array.from(document.querySelectorAll(sel));
+         return elements.length;
+ }, pageGridOneRow17);
+ //console.log(boxResult7);
 
-  boxResult9  = await page.evaluate((sel) => {
-          let elements = Array.from(document.querySelectorAll(sel));
-           return elements.length;
-  }, '#box_result_8');
-  //console.log(boxResult9);
-
-  boxResult10  = await page.evaluate((sel) => {
+ let boxResult18  = await page.evaluate((sel) => {
          let elements = Array.from(document.querySelectorAll(sel));
-           return elements.length;
-  }, '#box_result_9');
-  //console.log(boxResult10);
+         return elements.length;
+ }, pageGridOneRow18);
+ //console.log(boxResult8);
 
-  boxNumbers = (boxResult1+boxResult2+boxResult3+boxResult4+boxResult5+boxResult6+boxResult7+boxResult8+boxResult9+boxResult10);
-  boxNumbers  = boxNumbers -1;
+ let boxResult19  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+         return elements.length;
+ }, pageGridOneRow19);
+ //console.log(boxResult9);
 
-  for (let i = 0; i <= boxNumbers ; i++) 
-  {
+ let boxResult20  = await page.evaluate((sel) => {
+       let elements = Array.from(document.querySelectorAll(sel));
+         return elements.length;
+ }, pageGridOneRow20);
+ //console.log(boxResult10);
 
-    let boxSelector = boxResults.replace("INDEX", i);
-    let bedBathSelector = bedBathResults.replace("INDEX", i);
-    let grossAreaSelector = grossAreaResults.replace("INDEX", i);
-    let livingAreaSelector = livingAreaResults.replace("INDEX", i);
-    let poolSelector = poolResults.replace("INDEX", i);
-    let waterFrontSelector = waterFrontResults.replace("INDEX",i);
-    let builtSelector = builtResults.replace("INDEX",i);
-    let foreclosureSelector = foreclosureResults.replace("INDEX",i);
+ let boxResult21  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+   return elements.length;
+ }, pageGridOneRow21);
+ //console.log(boxResult1);
+
+ let boxResult22  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow22);
+ //console.log(boxResult2);
+
+ let boxResult23  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow23);
+ //console.log(boxResult3);
+
+ let boxResult24  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow24);
+ //console.log(boxResult4);
+
+ let boxResult25  = await page.evaluate((sel) => {
+ let elements = Array.from(document.querySelectorAll(sel));
+   return elements.length;
+ }, pageGridOneRow25);
+ //console.log(boxResult5);
+
+ let boxResult26  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow26);
+ //console.log(boxResult6);
+
+ let boxResult27  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow27);
+ //console.log(boxResult7);
+
+ let boxResult28  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow28);
+ //console.log(boxResult8);
+
+ let boxResult29  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow29);
+ //console.log(boxResult9);
+
+ let boxResult30  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow30);
+ //console.log(boxResult10);
+
+ let boxResult31  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+   return elements.length;
+ }, pageGridOneRow31);
+ //console.log(boxResult1);
+
+ let boxResult32  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow32);
+ //console.log(boxResult2);
+
+ let boxResult33  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow33);
+ //console.log(boxResult3);
+
+ let boxResult34  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow34);
+ //console.log(boxResult4);
+
+ let boxResult35  = await page.evaluate((sel) => {
+ let elements = Array.from(document.querySelectorAll(sel));
+   return elements.length;
+ }, pageGridOneRow35);
+ //console.log(boxResult5);
+
+ let boxResult36  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow36);
+ //console.log(boxResult6);
+
+ let boxResult37  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow37);
+ //console.log(boxResult7);
+
+ let boxResult38  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow38);
+ //console.log(boxResult8);
+
+ let boxResult39  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow39);
+ //console.log(boxResult9);
+
+ let boxResult40  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow40);
+ //console.log(boxResult10);
+
+ let boxResult41  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+   return elements.length;
+ }, pageGridOneRow41);
+ //console.log(boxResult1);
+
+ let boxResult42  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow42);
+ //console.log(boxResult2);
+
+ let boxResult43  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow43);
+ //console.log(boxResult3);
+
+ let boxResult44  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow44);
+ //console.log(boxResult4);
+
+ let boxResult45  = await page.evaluate((sel) => {
+ let elements = Array.from(document.querySelectorAll(sel));
+   return elements.length;
+ }, pageGridOneRow45);
+ //console.log(boxResult5);
+
+ let boxResult46  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow46);
+ //console.log(boxResult6);
+
+ let boxResult47  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow47);
+ //console.log(boxResult7);
+
+ let boxResult48  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow48);
+ //console.log(boxResult8);
+
+ let boxResult49  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow49);
+ //console.log(boxResult9);
+
+ let boxResult50  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow50);
+ //console.log(boxResult10);
+
+ let boxNumbers = (boxResult1+boxResult2+boxResult3+boxResult4+boxResult5+boxResult6+boxResult7+boxResult8+boxResult9+boxResult10+
+   boxResult11+boxResult12+boxResult13+boxResult14+boxResult15+boxResult16+boxResult17+boxResult18+boxResult19+boxResult20+
+   boxResult21+boxResult22+boxResult23+boxResult24+boxResult25+boxResult26+boxResult27+boxResult28+boxResult29+boxResult30+
+   boxResult31+boxResult32+boxResult33+boxResult34+boxResult35+boxResult36+boxResult37+boxResult38+boxResult39+boxResult40+
+   boxResult41+boxResult42+boxResult43+boxResult44+boxResult45+boxResult46+boxResult47+boxResult48+boxResult49+boxResult50
+ );
+ boxNumbers  = boxNumbers -1;
+
+ for (let i = 0; i <= boxNumbers ; i++) 
+ {
+
+   let boxSelector = boxResults.replace("INDEX_2", (i+1));
+   boxSelector = boxSelector.replace("INDEX",pageGridId);
+   //console.log(boxSelector);
+   let bedSelector = bedResults.replace("INDEX_2",(i+1));
+   bedSelector = bedSelector.replace("INDEX",pageGridId);
+   //console.log(bedSelector);
+   let bathSelector = bathResults.replace("INDEX_2",(i+1));
+   bathSelector = bathSelector.replace("INDEX",pageGridId);
+   //console.log(bathSelector);
+   let grossAreaSelector = grossAreaResults.replace("INDEX_2", (i+1));
+   grossAreaSelector = grossAreaSelector.replace("INDEX",pageGridId);
+   // console.log(grossAreaSelector);
+   let livingAreaSelector = livingAreaResults.replace("INDEX_2", (i+1));
+   livingAreaSelector = livingAreaSelector.replace("INDEX",pageGridId);
+
+   let poolSelector = poolResults.replace("INDEX_2", (i+1));
+   poolSelector = poolSelector.replace("INDEX",pageGridId);
+
+   let waterFrontSelector = waterFrontResults.replace("INDEX_2", (i+1));
+   waterFrontSelector = waterFrontSelector.replace("INDEX",pageGridId);
+
+   let builtSelector = builtResults.replace("INDEX_2", (i+1));
+   builtSelector = builtSelector.replace("INDEX",pageGridId);
+
+   let foreclosureSelector = foreclosureResults.replace("INDEX_2", (i+1));
+   foreclosureSelector = foreclosureSelector.replace("INDEX",pageGridId);
     
     let box_result = await page.evaluate((sel) => {
     let element = document.querySelector(sel);
       return element? element.innerHTML:null;
       }, boxSelector);
   
-    let bedBath_result = await page.evaluate((sel) => {
+    let bed_result = await page.evaluate((sel) => {
+     let element = document.querySelector(sel);
+          return element? element.innerHTML:null;
+    }, bedSelector);
+  
+    let bath_result = await page.evaluate((sel) => {
     let element = document.querySelector(sel);
       return element? element.innerHTML:null;
-      }, bedBathSelector);
+      }, bathSelector);
   
     let grossArea_result = await page.evaluate((sel) => {
     let element = document.querySelector(sel);
@@ -2263,54 +3668,22 @@ console.log("Starting Marion");
      return element? element.innerHTML:null;
     }, foreclosureSelector);
   
-  res = box_result.split(",");
-  
-  
- //console.log(res);  
- 
- //var addr = res[0].split(" ");
- 
- //var address = addr[32] +  ' ' + addr[33] + ' ' + addr[34];
- 
- //console.log(address);
-
-
-// var zip = res[2].replace(/ /g, '');
- 
- //console.log(zip);
- 
- //console.log(bedBath_result);
- 
- temp = bedBath_result.split("/");
- 
- bed = temp[0];
- 
- content = bed.toString().replace(/\t/g, '').split('\n');
- 
- //console.log(content);
- 
- bed = content[1];
- 
- //console.log(bed);
- 
- baths = temp[1];
- 
- //console.log(baths);
- 
- grossLivingTemp = grossArea_result.toString().replace(/\t/g, '').split('\n');
- 
- gLiving = grossLivingTemp[1];
- 
- //console.log(gLiving);
- 
- livingTemp = livingArea_result.toString().replace(/\t/g, '').split('\n');
- 
- lArea = livingTemp[1];
+    res = box_result;
+	  
+	  
+    
+    
+    var gLiving = grossArea_result;
+    
+    
+    var lArea = livingArea_result;
  
  
  await page.click(boxSelector);
  
- await page.waitForSelector('#psummary_data_div > div > h1:nth-child(4)',{delay:1000});
+// await page.waitForSelector('#psummary_data_div > div > h1:nth-child(4)',{delay:1000});
+
+    await page.waitFor(1000);
  
   address_result = await page.evaluate((sel) => {
   let element = document.querySelector(sel);
@@ -2326,27 +3699,27 @@ console.log("Starting Marion");
  
   soldPrice_result = await page.evaluate((sel) => {
   let element = document.querySelector(sel);
-     return element? element.innerHTML:null;
+     return element? element.innerHTML:"0";
     }, soldPriceResults);
  
   taxValue_result = await page.evaluate((sel) => {
   let element = document.querySelector(sel);
-     return element? element.innerHTML:null;
+     return element? element.innerHTML:"0";
     }, taxValueResults);
  
   landValue_result = await page.evaluate((sel) => {
   let element = document.querySelector(sel);
-     return element? element.innerHTML:null;
+     return element? element.innerHTML:"0";
     }, landValueResults);
   
   buildValue_result = await page.evaluate((sel) => {
   let element = document.querySelector(sel);
-     return element? element.innerHTML:null;
+     return element? element.innerHTML:"0";
     }, buildValueResults);
   
   cityValue_result = await page.evaluate((sel) => {
   let element = document.querySelector(sel);
-     return element? element.innerHTML:null;
+     return element? element.innerHTML:"0";
     }, cityValueResults);
   
   list_length  = await page.evaluate((sel) => {
@@ -2570,7 +3943,7 @@ console.log("Starting Marion");
   landValue = landValue_result.replace(',','');
   buildValue = buildValue_result.replace(',','');
  
-  json = {'city':cityValue_result,'address':address_result,'unit':"",'zip':zip_result,'garea':gLiving,'larea':lArea,'beds':bed, 'baths':baths,'pool':pool_result,'wf':waterFront_result,'built':built_result,'frclosure':foreclosure_result,'sold_price':soldPrice,'tax_value':taxValue,'land_value':landValue,'build_value':buildValue,'owner_name':OwnerNoAmp[0],'owner_address':ownerAddress_result,'owner_zip':ownerZip_result,'owner_city':ownerCity_result,'owner_state':ownerState_result,'owner_phone':ownerPhone_result};
+  json = {'city':cityValue_result,'address':address_result,'unit':"",'zip':zip_result,'garea':gLiving,'larea':lArea,'beds':bed_result, 'baths':bath_result,'pool':pool_result,'wf':waterFront_result,'built':built_result,'frclosure':foreclosure_result,'sold_price':soldPrice,'tax_value':taxValue,'land_value':landValue,'build_value':buildValue,'owner_name':OwnerNoAmp[0],'owner_address':ownerAddress_result,'owner_zip':ownerZip_result,'owner_city':ownerCity_result,'owner_state':ownerState_result,'owner_phone':ownerPhone_result};
    
   data = [ownerName_result,address_result +" ,"+ cityValue_result + " ," + zip_result]
   
@@ -2624,7 +3997,7 @@ console.log("Starting Marion");
       tempData.push(tempdatajson);
   }
  
-   podioJson = {"fields":{"title":ownerName_result,"lead-source":sourceData,"lead-intake-date":intakeDate,"motivation":7,"status-of-lead":14,"next-action":15,"property-address":address_result +" ,"+ cityValue_result+" ,"+zip_result ,"owners-address":ownerAddress_result +" ,"+ ownerCity_result+" ,"+ownerZip_result,"estimated-value":{"value":buildValue,"currency":"USD"},"beds-2":bed,"baths-2":baths,"square-feet":lArea,"year-built-2":built_result,"property-taxes-assement":taxValue,"last-sale-price":soldPrice}};
+   podioJson = {"fields":{"title":ownerName_result,"lead-source":sourceData,"lead-intake-date":intakeDate,"motivation":7,"status-of-lead":14,"next-action":15,"property-address":address_result +" ,"+ cityValue_result+" ,"+zip_result ,"owners-address":ownerAddress_result +" ,"+ ownerCity_result+" ,"+ownerZip_result,"estimated-value":{"value":buildValue,"currency":"USD"},"beds-2":bed_result,"baths-2":bath_result,"square-feet":lArea,"year-built-2":built_result,"property-taxes-assement":taxValue,"last-sale-price":soldPrice}};
 
     //console.log(podioJson);
     //console.log(intakeDate);
@@ -2639,7 +4012,7 @@ console.log("Starting Marion");
    });
   
   
-  //console.log(dataInserted);
+  // //console.log(dataInserted);
   if(dataInserted > 0)
   {
     insertPODIOItem(podioJson);
@@ -2647,7 +4020,7 @@ console.log("Starting Marion");
  
 }
 
-}//end of Marion 
+}//end of Polk 
 
 //Volusia
 try
@@ -2715,13 +4088,15 @@ catch(err)
  // await page.click('#ext-gen130'),{delay:5000};
 }
   
+await page.waitFor(3000);
 
 console.log("Starting Volusia");
   
   
   try
   {
-	  await page.waitForSelector('#result_orderby_data');
+    //await page.waitForSelector('#result_orderby_data');
+    await page.waitForSelector('#templateCombo');
   }
   catch(error2)
   {
@@ -2732,22 +4107,119 @@ console.log("Starting Volusia");
 
   await page.waitFor(4000);
 
-  pageSelector = await page.evaluate((sel) => {
-    let elements = Array.from( document.getElementsByClassName('x-panel-body x-panel-body-noheader x-panel-body-noborder'));
-      return elements[4].getAttribute("id");
-     }, '#BasicResult');
+  pageSelector = await page.evaluate(() => {
+  let elements = Array.from(document.getElementsByClassName('xtb-text'));
+    return elements[1].getAttribute("id");
+   });
+ //console.log(pageSelector);
 
-     pageNumberOrder = pageNumberOrderSelector.replace("INDEX",pageSelector);
-     pageNumberAdvance = pageNumberAdvanceSelector.replace("INDEX",pageSelector);
-
-  
-  
-   //console.log(pageSelector);
+ pageSelector = '#'+pageSelector;
 
   pageNumber = await page.evaluate((sel) => {
- let elements = Array.from(document.querySelectorAll(sel));
-  return elements.length;
-}, pageNumberOrder);
+  let element = document.querySelector(sel);
+    return element? element.innerHTML:null;
+    }, pageSelector);
+
+//  let pageNumber = await page.evaluate((sel) => {
+//   let elements = Array.from(document.querySelectorAll(sel));
+//   return elements.length;
+// }, ('#'+pageSelector));
+
+pageNumber = pageNumber.replace('of ','');
+
+//console.log(pageNumber);
+
+  pageTotal = await page.evaluate(() => {
+  let elements = Array.from(document.getElementsByClassName('xtb-text'));
+    return elements[3].getAttribute("id");
+   });
+ //console.log(pageSelector);
+
+ pageTotal = '#'+pageTotal;
+
+ pgTotal = await page.evaluate((sel) => {
+  let element = document.querySelector(sel);
+    return element? element.innerHTML:null;
+    }, pageTotal);
+
+//  let pageNumber = await page.evaluate((sel) => {
+//   let elements = Array.from(document.querySelectorAll(sel));
+//   return elements.length;
+// }, ('#'+pageSelector));
+
+//pageNumber = pageNumber.replace('of ','');
+
+  console.log(pgTotal);
+
+  pageNumberAdvanceId = await page.evaluate(() => {
+  let elements = Array.from(document.getElementsByClassName(' x-btn-text x-tbar-page-next'));
+    return elements[0].getAttribute("id");
+   });
+
+   pageNumberAdvanceId = '#'+pageNumberAdvanceId;
+
+
+
+  pageGridId = await page.evaluate(() => {
+  let elements = Array.from(document.getElementsByClassName('x-grid3-body'));
+    return elements[0].getAttribute("id");
+   });
+
+//console.log(pageGridId);
+
+ pageGridSelector = ' #INDEX > div:nth-child(INDEX_2) > table > tbody > tr > td.x-grid3-col.x-grid3-cell.x-grid3-td-1 > div > div > div'
+ pageGridOne = pageGridSelector.replace("INDEX",pageGridId);
+ pageGridOneRow1 = pageGridOne.replace("INDEX_2","1");
+ pageGridOneRow2 = pageGridOne.replace("INDEX_2","2");
+ pageGridOneRow3 = pageGridOne.replace("INDEX_2","3");
+ pageGridOneRow4 = pageGridOne.replace("INDEX_2","4");
+ pageGridOneRow5 = pageGridOne.replace("INDEX_2","5");
+ pageGridOneRow6 = pageGridOne.replace("INDEX_2","6");
+ pageGridOneRow7 = pageGridOne.replace("INDEX_2","7");
+ pageGridOneRow8 = pageGridOne.replace("INDEX_2","8");
+ pageGridOneRow9 = pageGridOne.replace("INDEX_2","9");
+ pageGridOneRow10 = pageGridOne.replace("INDEX_2","10");
+ pageGridOneRow11 = pageGridOne.replace("INDEX_2","11");
+ pageGridOneRow12 = pageGridOne.replace("INDEX_2","12");
+ pageGridOneRow13 = pageGridOne.replace("INDEX_2","13");
+ pageGridOneRow14 = pageGridOne.replace("INDEX_2","14");
+ pageGridOneRow15 = pageGridOne.replace("INDEX_2","15");
+ pageGridOneRow16 = pageGridOne.replace("INDEX_2","16");
+ pageGridOneRow17 = pageGridOne.replace("INDEX_2","17");
+ pageGridOneRow18 = pageGridOne.replace("INDEX_2","18");
+ pageGridOneRow19 = pageGridOne.replace("INDEX_2","19");
+ pageGridOneRow20 = pageGridOne.replace("INDEX_2","20");
+ pageGridOneRow21 = pageGridOne.replace("INDEX_2","21");
+ pageGridOneRow22 = pageGridOne.replace("INDEX_2","22");
+ pageGridOneRow23 = pageGridOne.replace("INDEX_2","23");
+ pageGridOneRow24 = pageGridOne.replace("INDEX_2","24");
+ pageGridOneRow25 = pageGridOne.replace("INDEX_2","25");
+ pageGridOneRow26 = pageGridOne.replace("INDEX_2","26");
+ pageGridOneRow27 = pageGridOne.replace("INDEX_2","27");
+ pageGridOneRow28 = pageGridOne.replace("INDEX_2","28");
+ pageGridOneRow29 = pageGridOne.replace("INDEX_2","29");
+ pageGridOneRow30 = pageGridOne.replace("INDEX_2","30");
+ pageGridOneRow31 = pageGridOne.replace("INDEX_2","31");
+ pageGridOneRow32 = pageGridOne.replace("INDEX_2","32");
+ pageGridOneRow33 = pageGridOne.replace("INDEX_2","33");
+ pageGridOneRow34 = pageGridOne.replace("INDEX_2","34");
+ pageGridOneRow35 = pageGridOne.replace("INDEX_2","35");
+ pageGridOneRow36 = pageGridOne.replace("INDEX_2","36");
+ pageGridOneRow37 = pageGridOne.replace("INDEX_2","37");
+ pageGridOneRow38 = pageGridOne.replace("INDEX_2","38");
+ pageGridOneRow39 = pageGridOne.replace("INDEX_2","39");
+ pageGridOneRow40 = pageGridOne.replace("INDEX_2","40");
+ pageGridOneRow41 = pageGridOne.replace("INDEX_2","41");
+ pageGridOneRow42 = pageGridOne.replace("INDEX_2","42");
+ pageGridOneRow43 = pageGridOne.replace("INDEX_2","43");
+ pageGridOneRow44 = pageGridOne.replace("INDEX_2","44");
+ pageGridOneRow45 = pageGridOne.replace("INDEX_2","45");
+ pageGridOneRow46 = pageGridOne.replace("INDEX_2","46");
+ pageGridOneRow47 = pageGridOne.replace("INDEX_2","47");
+ pageGridOneRow48 = pageGridOne.replace("INDEX_2","48");
+ pageGridOneRow49 = pageGridOne.replace("INDEX_2","49");
+ pageGridOneRow50 = pageGridOne.replace("INDEX_2","50");
+
  
 
   pageNumber = pageNumber-1; 
@@ -2757,96 +4229,366 @@ console.log("Starting Volusia");
 
   if(i > 0)
   {
-      await page.focus(pageNumberAdvance, {delay:1000});
-      await page.click(pageNumberAdvance);
-      await page.waitForSelector('#result_orderby_data');
-  }
+    await page.focus(pageNumberAdvanceId, {delay:1000});
+    await page.click(pageNumberAdvanceId,{delay:4000});
+    await page.waitFor(2000);
+    
+    //await page.waitForSelector('#result_orderby_data');
+ }
 
 
-  boxResult1  = await page.evaluate((sel) => {
-        let elements = Array.from(document.querySelectorAll(sel));
-        return elements.length;
-  }, '#box_result_0');
-  //console.log(boxResult1);
+ let boxResult1  = await page.evaluate((sel) => {
+       let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow1);
+ //console.log(boxResult1);
 
-  boxResult2  = await page.evaluate((sel) => {
-          let elements = Array.from(document.querySelectorAll(sel));
-            return elements.length;
-  }, '#box_result_1');
-  //console.log(boxResult2);
-
-  boxResult3  = await page.evaluate((sel) => {
-          let elements = Array.from(document.querySelectorAll(sel));
-            return elements.length;
-  }, '#box_result_2');
-  //console.log(boxResult3);
-
-  boxResult4  = await page.evaluate((sel) => {
+ let boxResult2  = await page.evaluate((sel) => {
          let elements = Array.from(document.querySelectorAll(sel));
            return elements.length;
-  }, '#box_result_3');
-  //console.log(boxResult4);
+ }, pageGridOneRow2);
+ //console.log(boxResult2);
 
-  boxResult5  = await page.evaluate((sel) => {
+ let boxResult3  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+           return elements.length;
+ }, pageGridOneRow3);
+ //console.log(boxResult3);
+
+ let boxResult4  = await page.evaluate((sel) => {
+        let elements = Array.from(document.querySelectorAll(sel));
+          return elements.length;
+ }, pageGridOneRow4);
+ //console.log(boxResult4);
+
+ let boxResult5  = await page.evaluate((sel) => {
+      let elements = Array.from(document.querySelectorAll(sel));
+        return elements.length;
+ }, pageGridOneRow5);
+ //console.log(boxResult5);
+
+ let boxResult6  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+           return elements.length;
+ }, pageGridOneRow6);
+ //console.log(boxResult6);
+
+ let boxResult7  = await page.evaluate((sel) => {
+        let elements = Array.from(document.querySelectorAll(sel));
+          return elements.length;
+ }, pageGridOneRow7);
+ //console.log(boxResult7);
+
+ let boxResult8  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+         return elements.length;
+ }, pageGridOneRow8);
+ //console.log(boxResult8);
+
+ let boxResult9  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+          return elements.length;
+ }, pageGridOneRow9);
+ //console.log(boxResult9);
+
+ let boxResult10  = await page.evaluate((sel) => {
+        let elements = Array.from(document.querySelectorAll(sel));
+          return elements.length;
+ }, pageGridOneRow10);
+ //console.log(boxResult10);
+ 
+ let boxResult11  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+   return elements.length;
+ }, pageGridOneRow11);
+ //console.log(boxResult1);
+
+ let boxResult12  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+           return elements.length;
+ }, pageGridOneRow12);
+ //console.log(boxResult2);
+
+ let boxResult13  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+           return elements.length;
+ }, pageGridOneRow13);
+ //console.log(boxResult3);
+
+ let boxResult14  = await page.evaluate((sel) => {
        let elements = Array.from(document.querySelectorAll(sel));
          return elements.length;
-  }, '#box_result_4');
-  //console.log(boxResult5);
+ }, pageGridOneRow14);
+ //console.log(boxResult4);
 
-  boxResult6  = await page.evaluate((sel) => {
-          let elements = Array.from(document.querySelectorAll(sel));
-            return elements.length;
-  }, '#box_result_5');
-  //console.log(boxResult6);
+ let boxResult15  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow15);
+ //console.log(boxResult5);
 
-  boxResult7  = await page.evaluate((sel) => {
+ let boxResult16  = await page.evaluate((sel) => {
          let elements = Array.from(document.querySelectorAll(sel));
            return elements.length;
-  }, '#box_result_6');
-  //console.log(boxResult7);
+ }, pageGridOneRow16);
+ //console.log(boxResult6);
 
-  boxResult8  = await page.evaluate((sel) => {
-          let elements = Array.from(document.querySelectorAll(sel));
-          return elements.length;
-  }, '#box_result_7');
-  //console.log(boxResult8);
+ let boxResult17  = await page.evaluate((sel) => {
+       let elements = Array.from(document.querySelectorAll(sel));
+         return elements.length;
+ }, pageGridOneRow17);
+ //console.log(boxResult7);
 
-  boxResult9  = await page.evaluate((sel) => {
-          let elements = Array.from(document.querySelectorAll(sel));
-           return elements.length;
-  }, '#box_result_8');
-  //console.log(boxResult9);
-
-  boxResult10  = await page.evaluate((sel) => {
+ let boxResult18  = await page.evaluate((sel) => {
          let elements = Array.from(document.querySelectorAll(sel));
-           return elements.length;
-  }, '#box_result_9');
-  //console.log(boxResult10);
+         return elements.length;
+ }, pageGridOneRow18);
+ //console.log(boxResult8);
 
-  boxNumbers = (boxResult1+boxResult2+boxResult3+boxResult4+boxResult5+boxResult6+boxResult7+boxResult8+boxResult9+boxResult10);
-  boxNumbers  = boxNumbers -1;
+ let boxResult19  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+         return elements.length;
+ }, pageGridOneRow19);
+ //console.log(boxResult9);
 
-  for (let i = 0; i <= boxNumbers ; i++) 
-  {
+ let boxResult20  = await page.evaluate((sel) => {
+       let elements = Array.from(document.querySelectorAll(sel));
+         return elements.length;
+ }, pageGridOneRow20);
+ //console.log(boxResult10);
 
-    let boxSelector = boxResults.replace("INDEX", i);
-    let bedBathSelector = bedBathResults.replace("INDEX", i);
-    let grossAreaSelector = grossAreaResults.replace("INDEX", i);
-    let livingAreaSelector = livingAreaResults.replace("INDEX", i);
-    let poolSelector = poolResults.replace("INDEX", i);
-    let waterFrontSelector = waterFrontResults.replace("INDEX",i);
-    let builtSelector = builtResults.replace("INDEX",i);
-    let foreclosureSelector = foreclosureResults.replace("INDEX",i);
+ let boxResult21  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+   return elements.length;
+ }, pageGridOneRow21);
+ //console.log(boxResult1);
+
+ let boxResult22  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow22);
+ //console.log(boxResult2);
+
+ let boxResult23  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow23);
+ //console.log(boxResult3);
+
+ let boxResult24  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow24);
+ //console.log(boxResult4);
+
+ let boxResult25  = await page.evaluate((sel) => {
+ let elements = Array.from(document.querySelectorAll(sel));
+   return elements.length;
+ }, pageGridOneRow25);
+ //console.log(boxResult5);
+
+ let boxResult26  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow26);
+ //console.log(boxResult6);
+
+ let boxResult27  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow27);
+ //console.log(boxResult7);
+
+ let boxResult28  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow28);
+ //console.log(boxResult8);
+
+ let boxResult29  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow29);
+ //console.log(boxResult9);
+
+ let boxResult30  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow30);
+ //console.log(boxResult10);
+
+ let boxResult31  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+   return elements.length;
+ }, pageGridOneRow31);
+ //console.log(boxResult1);
+
+ let boxResult32  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow32);
+ //console.log(boxResult2);
+
+ let boxResult33  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow33);
+ //console.log(boxResult3);
+
+ let boxResult34  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow34);
+ //console.log(boxResult4);
+
+ let boxResult35  = await page.evaluate((sel) => {
+ let elements = Array.from(document.querySelectorAll(sel));
+   return elements.length;
+ }, pageGridOneRow35);
+ //console.log(boxResult5);
+
+ let boxResult36  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow36);
+ //console.log(boxResult6);
+
+ let boxResult37  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow37);
+ //console.log(boxResult7);
+
+ let boxResult38  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow38);
+ //console.log(boxResult8);
+
+ let boxResult39  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow39);
+ //console.log(boxResult9);
+
+ let boxResult40  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow40);
+ //console.log(boxResult10);
+
+ let boxResult41  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+   return elements.length;
+ }, pageGridOneRow41);
+ //console.log(boxResult1);
+
+ let boxResult42  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow42);
+ //console.log(boxResult2);
+
+ let boxResult43  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow43);
+ //console.log(boxResult3);
+
+ let boxResult44  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow44);
+ //console.log(boxResult4);
+
+ let boxResult45  = await page.evaluate((sel) => {
+ let elements = Array.from(document.querySelectorAll(sel));
+   return elements.length;
+ }, pageGridOneRow45);
+ //console.log(boxResult5);
+
+ let boxResult46  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow46);
+ //console.log(boxResult6);
+
+ let boxResult47  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow47);
+ //console.log(boxResult7);
+
+ let boxResult48  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow48);
+ //console.log(boxResult8);
+
+ let boxResult49  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow49);
+ //console.log(boxResult9);
+
+ let boxResult50  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow50);
+ //console.log(boxResult10);
+
+ let boxNumbers = (boxResult1+boxResult2+boxResult3+boxResult4+boxResult5+boxResult6+boxResult7+boxResult8+boxResult9+boxResult10+
+   boxResult11+boxResult12+boxResult13+boxResult14+boxResult15+boxResult16+boxResult17+boxResult18+boxResult19+boxResult20+
+   boxResult21+boxResult22+boxResult23+boxResult24+boxResult25+boxResult26+boxResult27+boxResult28+boxResult29+boxResult30+
+   boxResult31+boxResult32+boxResult33+boxResult34+boxResult35+boxResult36+boxResult37+boxResult38+boxResult39+boxResult40+
+   boxResult41+boxResult42+boxResult43+boxResult44+boxResult45+boxResult46+boxResult47+boxResult48+boxResult49+boxResult50
+ );
+ boxNumbers  = boxNumbers -1;
+
+ for (let i = 0; i <= boxNumbers ; i++) 
+ {
+
+   let boxSelector = boxResults.replace("INDEX_2", (i+1));
+   boxSelector = boxSelector.replace("INDEX",pageGridId);
+   //console.log(boxSelector);
+   let bedSelector = bedResults.replace("INDEX_2",(i+1));
+   bedSelector = bedSelector.replace("INDEX",pageGridId);
+   //console.log(bedSelector);
+   let bathSelector = bathResults.replace("INDEX_2",(i+1));
+   bathSelector = bathSelector.replace("INDEX",pageGridId);
+   //console.log(bathSelector);
+   let grossAreaSelector = grossAreaResults.replace("INDEX_2", (i+1));
+   grossAreaSelector = grossAreaSelector.replace("INDEX",pageGridId);
+   // console.log(grossAreaSelector);
+   let livingAreaSelector = livingAreaResults.replace("INDEX_2", (i+1));
+   livingAreaSelector = livingAreaSelector.replace("INDEX",pageGridId);
+
+   let poolSelector = poolResults.replace("INDEX_2", (i+1));
+   poolSelector = poolSelector.replace("INDEX",pageGridId);
+
+   let waterFrontSelector = waterFrontResults.replace("INDEX_2", (i+1));
+   waterFrontSelector = waterFrontSelector.replace("INDEX",pageGridId);
+
+   let builtSelector = builtResults.replace("INDEX_2", (i+1));
+   builtSelector = builtSelector.replace("INDEX",pageGridId);
+
+   let foreclosureSelector = foreclosureResults.replace("INDEX_2", (i+1));
+   foreclosureSelector = foreclosureSelector.replace("INDEX",pageGridId);
     
     let box_result = await page.evaluate((sel) => {
     let element = document.querySelector(sel);
       return element? element.innerHTML:null;
       }, boxSelector);
   
-    let bedBath_result = await page.evaluate((sel) => {
+    let bed_result = await page.evaluate((sel) => {
+     let element = document.querySelector(sel);
+          return element? element.innerHTML:null;
+    }, bedSelector);
+  
+    let bath_result = await page.evaluate((sel) => {
     let element = document.querySelector(sel);
       return element? element.innerHTML:null;
-      }, bedBathSelector);
+      }, bathSelector);
   
     let grossArea_result = await page.evaluate((sel) => {
     let element = document.querySelector(sel);
@@ -2878,54 +4620,22 @@ console.log("Starting Volusia");
      return element? element.innerHTML:null;
     }, foreclosureSelector);
   
-  res = box_result.split(",");
+    res = box_result;
+	  
+	  
+   
+    
+    var gLiving = grossArea_result;
   
-  
- //console.log(res);  
- 
- //var addr = res[0].split(" ");
- 
- //var address = addr[32] +  ' ' + addr[33] + ' ' + addr[34];
- 
- //console.log(address);
-
-
-// var zip = res[2].replace(/ /g, '');
- 
- //console.log(zip);
- 
- //console.log(bedBath_result);
- 
- temp = bedBath_result.split("/");
- 
- bed = temp[0];
- 
- content = bed.toString().replace(/\t/g, '').split('\n');
- 
- //console.log(content);
- 
- bed = content[1];
- 
- //console.log(bed);
- 
- baths = temp[1];
- 
- //console.log(baths);
- 
- grossLivingTemp = grossArea_result.toString().replace(/\t/g, '').split('\n');
- 
- gLiving = grossLivingTemp[1];
- 
- //console.log(gLiving);
- 
- livingTemp = livingArea_result.toString().replace(/\t/g, '').split('\n');
- 
- lArea = livingTemp[1];
+    
+    var lArea = livingArea_result;
  
  
  await page.click(boxSelector);
  
- await page.waitForSelector('#psummary_data_div > div > h1:nth-child(4)',{delay:1000});
+// await page.waitForSelector('#psummary_data_div > div > h1:nth-child(4)',{delay:1000});
+
+    await page.waitFor(1000);
  
   address_result = await page.evaluate((sel) => {
   let element = document.querySelector(sel);
@@ -2941,27 +4651,27 @@ console.log("Starting Volusia");
  
   soldPrice_result = await page.evaluate((sel) => {
   let element = document.querySelector(sel);
-     return element? element.innerHTML:null;
+     return element? element.innerHTML:"0";
     }, soldPriceResults);
  
   taxValue_result = await page.evaluate((sel) => {
   let element = document.querySelector(sel);
-     return element? element.innerHTML:null;
+     return element? element.innerHTML:"0";
     }, taxValueResults);
  
   landValue_result = await page.evaluate((sel) => {
   let element = document.querySelector(sel);
-     return element? element.innerHTML:null;
+     return element? element.innerHTML:"0";
     }, landValueResults);
   
   buildValue_result = await page.evaluate((sel) => {
   let element = document.querySelector(sel);
-     return element? element.innerHTML:null;
+     return element? element.innerHTML:"0";
     }, buildValueResults);
   
   cityValue_result = await page.evaluate((sel) => {
   let element = document.querySelector(sel);
-     return element? element.innerHTML:null;
+     return element? element.innerHTML:"0";
     }, cityValueResults);
   
   list_length  = await page.evaluate((sel) => {
@@ -3188,7 +4898,7 @@ console.log("Starting Volusia");
   landValue = landValue_result.replace(',','');
   buildValue = buildValue_result.replace(',','');
  
-  json = {'city':cityValue_result,'address':address_result,'unit':"",'zip':zip_result,'garea':gLiving,'larea':lArea,'beds':bed, 'baths':baths,'pool':pool_result,'wf':waterFront_result,'built':built_result,'frclosure':foreclosure_result,'sold_price':soldPrice,'tax_value':taxValue,'land_value':landValue,'build_value':buildValue,'owner_name':OwnerNoAmp[0],'owner_address':ownerAddress_result,'owner_zip':ownerZip_result,'owner_city':ownerCity_result,'owner_state':ownerState_result,'owner_phone':ownerPhone_result};
+  json = {'city':cityValue_result,'address':address_result,'unit':"",'zip':zip_result,'garea':gLiving,'larea':lArea,'beds':bed_result, 'baths':bath_result,'pool':pool_result,'wf':waterFront_result,'built':built_result,'frclosure':foreclosure_result,'sold_price':soldPrice,'tax_value':taxValue,'land_value':landValue,'build_value':buildValue,'owner_name':OwnerNoAmp[0],'owner_address':ownerAddress_result,'owner_zip':ownerZip_result,'owner_city':ownerCity_result,'owner_state':ownerState_result,'owner_phone':ownerPhone_result};
    
   data = [ownerName_result,address_result +" ,"+ cityValue_result + " ," + zip_result];
   dataInserted;
@@ -3239,7 +4949,7 @@ console.log("Starting Volusia");
       tempData.push(tempdatajson);
    }
  
-   podioJson = {"fields":{"title":ownerName_result,"lead-source":sourceData,"lead-intake-date":intakeDate,"motivation":7,"status-of-lead":14,"next-action":15,"property-address":address_result +" ,"+ cityValue_result+" ,"+zip_result ,"owners-address":ownerAddress_result +" ,"+ ownerCity_result+" ,"+ownerZip_result,"estimated-value":{"value":buildValue,"currency":"USD"},"beds-2":bed,"baths-2":baths,"square-feet":lArea,"year-built-2":built_result,"property-taxes-assement":taxValue,"last-sale-price":soldPrice}};
+   podioJson = {"fields":{"title":ownerName_result,"lead-source":sourceData,"lead-intake-date":intakeDate,"motivation":7,"status-of-lead":14,"next-action":15,"property-address":address_result +" ,"+ cityValue_result+" ,"+zip_result ,"owners-address":ownerAddress_result +" ,"+ ownerCity_result+" ,"+ownerZip_result,"estimated-value":{"value":buildValue,"currency":"USD"},"beds-2":bed_result,"baths-2":bath_result,"square-feet":lArea,"year-built-2":built_result,"property-taxes-assement":taxValue,"last-sale-price":soldPrice}};
 
     //console.log(podioJson);
     //console.log(intakeDate);
@@ -3254,7 +4964,7 @@ console.log("Starting Volusia");
    });
   
   
-  //console.log(dataInserted);
+  // //console.log(dataInserted);
   if(dataInserted > 0)
   {
     insertPODIOItem(podioJson);
@@ -3329,14 +5039,15 @@ catch(err)
   console.log(err);
  // await page.click('#ext-gen130'),{delay:5000};
 }
-  
+await page.waitFor(3000);
 
 console.log("Starting Seminole");
   
   
   try
   {
-	  await page.waitForSelector('#result_orderby_data');
+    //await page.waitForSelector('#result_orderby_data');
+    await page.waitForSelector('#templateCombo');
   }
   catch(error2)
   {
@@ -3348,28 +5059,118 @@ console.log("Starting Seminole");
 
   await page.waitFor(4000);
 
-  //#ext-gen1897 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select
-  pageSelector = await page.evaluate((sel) => {
-    let elements = Array.from( document.getElementsByClassName('x-panel-body x-panel-body-noheader x-panel-body-noborder'));
-      return elements[4].getAttribute("id");
-     }, '#BasicResult');
+  pageSelector = await page.evaluate(() => {
+  let elements = Array.from(document.getElementsByClassName('xtb-text'));
+    return elements[1].getAttribute("id");
+   });
+ //console.log(pageSelector);
 
-     pageNumberOrder = pageNumberOrderSelector.replace("INDEX",pageSelector);
-     pageNumberAdvance = pageNumberAdvanceSelector.replace("INDEX",pageSelector);
-
-  
-  
-   //console.log(pageSelector);
+ pageSelector = '#'+pageSelector;
 
   pageNumber = await page.evaluate((sel) => {
- let elements = Array.from(document.querySelectorAll(sel));
-  return elements.length;
-}, pageNumberOrder);
-  //#ext-gen4734 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select > option:nth-child(1)
-  //#ext-gen602 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select > option:nth-child(1)
-  //#ext-gen786 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select > option:nth-child(1)
-  //#ext-gen541 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > select
+  let element = document.querySelector(sel);
+    return element? element.innerHTML:null;
+    }, pageSelector);
 
+//  let pageNumber = await page.evaluate((sel) => {
+//   let elements = Array.from(document.querySelectorAll(sel));
+//   return elements.length;
+// }, ('#'+pageSelector));
+
+pageNumber = pageNumber.replace('of ','');
+
+//console.log(pageNumber);
+
+  pageTotal = await page.evaluate(() => {
+  let elements = Array.from(document.getElementsByClassName('xtb-text'));
+    return elements[3].getAttribute("id");
+   });
+ //console.log(pageSelector);
+
+ pageTotal = '#'+pageTotal;
+
+ pgTotal = await page.evaluate((sel) => {
+  let element = document.querySelector(sel);
+    return element? element.innerHTML:null;
+    }, pageTotal);
+
+//  let pageNumber = await page.evaluate((sel) => {
+//   let elements = Array.from(document.querySelectorAll(sel));
+//   return elements.length;
+// }, ('#'+pageSelector));
+
+//pageNumber = pageNumber.replace('of ','');
+
+  console.log(pgTotal);
+
+  pageNumberAdvanceId = await page.evaluate(() => {
+  let elements = Array.from(document.getElementsByClassName(' x-btn-text x-tbar-page-next'));
+    return elements[0].getAttribute("id");
+   });
+
+   pageNumberAdvanceId = '#'+pageNumberAdvanceId;
+
+
+
+  pageGridId = await page.evaluate(() => {
+  let elements = Array.from(document.getElementsByClassName('x-grid3-body'));
+    return elements[0].getAttribute("id");
+   });
+
+//console.log(pageGridId);
+
+ pageGridSelector = ' #INDEX > div:nth-child(INDEX_2) > table > tbody > tr > td.x-grid3-col.x-grid3-cell.x-grid3-td-1 > div > div > div'
+ pageGridOne = pageGridSelector.replace("INDEX",pageGridId);
+ pageGridOneRow1 = pageGridOne.replace("INDEX_2","1");
+ pageGridOneRow2 = pageGridOne.replace("INDEX_2","2");
+ pageGridOneRow3 = pageGridOne.replace("INDEX_2","3");
+ pageGridOneRow4 = pageGridOne.replace("INDEX_2","4");
+ pageGridOneRow5 = pageGridOne.replace("INDEX_2","5");
+ pageGridOneRow6 = pageGridOne.replace("INDEX_2","6");
+ pageGridOneRow7 = pageGridOne.replace("INDEX_2","7");
+ pageGridOneRow8 = pageGridOne.replace("INDEX_2","8");
+ pageGridOneRow9 = pageGridOne.replace("INDEX_2","9");
+ pageGridOneRow10 = pageGridOne.replace("INDEX_2","10");
+ pageGridOneRow11 = pageGridOne.replace("INDEX_2","11");
+ pageGridOneRow12 = pageGridOne.replace("INDEX_2","12");
+ pageGridOneRow13 = pageGridOne.replace("INDEX_2","13");
+ pageGridOneRow14 = pageGridOne.replace("INDEX_2","14");
+ pageGridOneRow15 = pageGridOne.replace("INDEX_2","15");
+ pageGridOneRow16 = pageGridOne.replace("INDEX_2","16");
+ pageGridOneRow17 = pageGridOne.replace("INDEX_2","17");
+ pageGridOneRow18 = pageGridOne.replace("INDEX_2","18");
+ pageGridOneRow19 = pageGridOne.replace("INDEX_2","19");
+ pageGridOneRow20 = pageGridOne.replace("INDEX_2","20");
+ pageGridOneRow21 = pageGridOne.replace("INDEX_2","21");
+ pageGridOneRow22 = pageGridOne.replace("INDEX_2","22");
+ pageGridOneRow23 = pageGridOne.replace("INDEX_2","23");
+ pageGridOneRow24 = pageGridOne.replace("INDEX_2","24");
+ pageGridOneRow25 = pageGridOne.replace("INDEX_2","25");
+ pageGridOneRow26 = pageGridOne.replace("INDEX_2","26");
+ pageGridOneRow27 = pageGridOne.replace("INDEX_2","27");
+ pageGridOneRow28 = pageGridOne.replace("INDEX_2","28");
+ pageGridOneRow29 = pageGridOne.replace("INDEX_2","29");
+ pageGridOneRow30 = pageGridOne.replace("INDEX_2","30");
+ pageGridOneRow31 = pageGridOne.replace("INDEX_2","31");
+ pageGridOneRow32 = pageGridOne.replace("INDEX_2","32");
+ pageGridOneRow33 = pageGridOne.replace("INDEX_2","33");
+ pageGridOneRow34 = pageGridOne.replace("INDEX_2","34");
+ pageGridOneRow35 = pageGridOne.replace("INDEX_2","35");
+ pageGridOneRow36 = pageGridOne.replace("INDEX_2","36");
+ pageGridOneRow37 = pageGridOne.replace("INDEX_2","37");
+ pageGridOneRow38 = pageGridOne.replace("INDEX_2","38");
+ pageGridOneRow39 = pageGridOne.replace("INDEX_2","39");
+ pageGridOneRow40 = pageGridOne.replace("INDEX_2","40");
+ pageGridOneRow41 = pageGridOne.replace("INDEX_2","41");
+ pageGridOneRow42 = pageGridOne.replace("INDEX_2","42");
+ pageGridOneRow43 = pageGridOne.replace("INDEX_2","43");
+ pageGridOneRow44 = pageGridOne.replace("INDEX_2","44");
+ pageGridOneRow45 = pageGridOne.replace("INDEX_2","45");
+ pageGridOneRow46 = pageGridOne.replace("INDEX_2","46");
+ pageGridOneRow47 = pageGridOne.replace("INDEX_2","47");
+ pageGridOneRow48 = pageGridOne.replace("INDEX_2","48");
+ pageGridOneRow49 = pageGridOne.replace("INDEX_2","49");
+ pageGridOneRow50 = pageGridOne.replace("INDEX_2","50");
  
   pageNumber = pageNumber-1; 
 
@@ -3378,100 +5179,366 @@ console.log("Starting Seminole");
 
   if(i > 0)
   {
-      //#ext-gen786 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)
-      //await page.click('#ext-gen525 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)');
-      //await page.click('#ext-gen602 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)');
-      //#ext-gen4734 > div > div:nth-child(1) > table > tbody > tr > td.paginationstyle > a:nth-child(4)
-      await page.focus(pageNumberAdvance, {delay:1000});
-      await page.click(pageNumberAdvance);
-      await page.waitForSelector('#result_orderby_data');
-  }
+    await page.focus(pageNumberAdvanceId, {delay:1000});
+    await page.click(pageNumberAdvanceId,{delay:4000});
+    await page.waitFor(2000);
+    
+    //await page.waitForSelector('#result_orderby_data');
+ }
 
 
-  boxResult1  = await page.evaluate((sel) => {
-        let elements = Array.from(document.querySelectorAll(sel));
-        return elements.length;
-  }, '#box_result_0');
-  //console.log(boxResult1);
+ let boxResult1  = await page.evaluate((sel) => {
+       let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow1);
+ //console.log(boxResult1);
 
-  boxResult2  = await page.evaluate((sel) => {
-          let elements = Array.from(document.querySelectorAll(sel));
-            return elements.length;
-  }, '#box_result_1');
-  //console.log(boxResult2);
-
-  boxResult3  = await page.evaluate((sel) => {
-          let elements = Array.from(document.querySelectorAll(sel));
-            return elements.length;
-  }, '#box_result_2');
-  //console.log(boxResult3);
-
-  boxResult4  = await page.evaluate((sel) => {
+ let boxResult2  = await page.evaluate((sel) => {
          let elements = Array.from(document.querySelectorAll(sel));
            return elements.length;
-  }, '#box_result_3');
-  //console.log(boxResult4);
+ }, pageGridOneRow2);
+ //console.log(boxResult2);
 
-  boxResult5  = await page.evaluate((sel) => {
+ let boxResult3  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+           return elements.length;
+ }, pageGridOneRow3);
+ //console.log(boxResult3);
+
+ let boxResult4  = await page.evaluate((sel) => {
+        let elements = Array.from(document.querySelectorAll(sel));
+          return elements.length;
+ }, pageGridOneRow4);
+ //console.log(boxResult4);
+
+ let boxResult5  = await page.evaluate((sel) => {
+      let elements = Array.from(document.querySelectorAll(sel));
+        return elements.length;
+ }, pageGridOneRow5);
+ //console.log(boxResult5);
+
+ let boxResult6  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+           return elements.length;
+ }, pageGridOneRow6);
+ //console.log(boxResult6);
+
+ let boxResult7  = await page.evaluate((sel) => {
+        let elements = Array.from(document.querySelectorAll(sel));
+          return elements.length;
+ }, pageGridOneRow7);
+ //console.log(boxResult7);
+
+ let boxResult8  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+         return elements.length;
+ }, pageGridOneRow8);
+ //console.log(boxResult8);
+
+ let boxResult9  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+          return elements.length;
+ }, pageGridOneRow9);
+ //console.log(boxResult9);
+
+ let boxResult10  = await page.evaluate((sel) => {
+        let elements = Array.from(document.querySelectorAll(sel));
+          return elements.length;
+ }, pageGridOneRow10);
+ //console.log(boxResult10);
+ 
+ let boxResult11  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+   return elements.length;
+ }, pageGridOneRow11);
+ //console.log(boxResult1);
+
+ let boxResult12  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+           return elements.length;
+ }, pageGridOneRow12);
+ //console.log(boxResult2);
+
+ let boxResult13  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+           return elements.length;
+ }, pageGridOneRow13);
+ //console.log(boxResult3);
+
+ let boxResult14  = await page.evaluate((sel) => {
        let elements = Array.from(document.querySelectorAll(sel));
          return elements.length;
-  }, '#box_result_4');
-  //console.log(boxResult5);
+ }, pageGridOneRow14);
+ //console.log(boxResult4);
 
-  boxResult6  = await page.evaluate((sel) => {
-          let elements = Array.from(document.querySelectorAll(sel));
-            return elements.length;
-  }, '#box_result_5');
-  //console.log(boxResult6);
+ let boxResult15  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow15);
+ //console.log(boxResult5);
 
-  boxResult7  = await page.evaluate((sel) => {
+ let boxResult16  = await page.evaluate((sel) => {
          let elements = Array.from(document.querySelectorAll(sel));
            return elements.length;
-  }, '#box_result_6');
-  //console.log(boxResult7);
+ }, pageGridOneRow16);
+ //console.log(boxResult6);
 
-  boxResult8  = await page.evaluate((sel) => {
-          let elements = Array.from(document.querySelectorAll(sel));
-          return elements.length;
-  }, '#box_result_7');
-  //console.log(boxResult8);
+ let boxResult17  = await page.evaluate((sel) => {
+       let elements = Array.from(document.querySelectorAll(sel));
+         return elements.length;
+ }, pageGridOneRow17);
+ //console.log(boxResult7);
 
-  boxResult9  = await page.evaluate((sel) => {
-          let elements = Array.from(document.querySelectorAll(sel));
-           return elements.length;
-  }, '#box_result_8');
-  //console.log(boxResult9);
-
-  boxResult10  = await page.evaluate((sel) => {
+ let boxResult18  = await page.evaluate((sel) => {
          let elements = Array.from(document.querySelectorAll(sel));
-           return elements.length;
-  }, '#box_result_9');
-  //console.log(boxResult10);
+         return elements.length;
+ }, pageGridOneRow18);
+ //console.log(boxResult8);
 
-  boxNumbers = (boxResult1+boxResult2+boxResult3+boxResult4+boxResult5+boxResult6+boxResult7+boxResult8+boxResult9+boxResult10);
-  boxNumbers  = boxNumbers -1;
+ let boxResult19  = await page.evaluate((sel) => {
+         let elements = Array.from(document.querySelectorAll(sel));
+         return elements.length;
+ }, pageGridOneRow19);
+ //console.log(boxResult9);
 
-  for (let i = 0; i <= boxNumbers ; i++) 
-  {
+ let boxResult20  = await page.evaluate((sel) => {
+       let elements = Array.from(document.querySelectorAll(sel));
+         return elements.length;
+ }, pageGridOneRow20);
+ //console.log(boxResult10);
 
-    let boxSelector = boxResults.replace("INDEX", i);
-    let bedBathSelector = bedBathResults.replace("INDEX", i);
-    let grossAreaSelector = grossAreaResults.replace("INDEX", i);
-    let livingAreaSelector = livingAreaResults.replace("INDEX", i);
-    let poolSelector = poolResults.replace("INDEX", i);
-    let waterFrontSelector = waterFrontResults.replace("INDEX",i);
-    let builtSelector = builtResults.replace("INDEX",i);
-    let foreclosureSelector = foreclosureResults.replace("INDEX",i);
+ let boxResult21  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+   return elements.length;
+ }, pageGridOneRow21);
+ //console.log(boxResult1);
+
+ let boxResult22  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow22);
+ //console.log(boxResult2);
+
+ let boxResult23  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow23);
+ //console.log(boxResult3);
+
+ let boxResult24  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow24);
+ //console.log(boxResult4);
+
+ let boxResult25  = await page.evaluate((sel) => {
+ let elements = Array.from(document.querySelectorAll(sel));
+   return elements.length;
+ }, pageGridOneRow25);
+ //console.log(boxResult5);
+
+ let boxResult26  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow26);
+ //console.log(boxResult6);
+
+ let boxResult27  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow27);
+ //console.log(boxResult7);
+
+ let boxResult28  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow28);
+ //console.log(boxResult8);
+
+ let boxResult29  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow29);
+ //console.log(boxResult9);
+
+ let boxResult30  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow30);
+ //console.log(boxResult10);
+
+ let boxResult31  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+   return elements.length;
+ }, pageGridOneRow31);
+ //console.log(boxResult1);
+
+ let boxResult32  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow32);
+ //console.log(boxResult2);
+
+ let boxResult33  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow33);
+ //console.log(boxResult3);
+
+ let boxResult34  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow34);
+ //console.log(boxResult4);
+
+ let boxResult35  = await page.evaluate((sel) => {
+ let elements = Array.from(document.querySelectorAll(sel));
+   return elements.length;
+ }, pageGridOneRow35);
+ //console.log(boxResult5);
+
+ let boxResult36  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow36);
+ //console.log(boxResult6);
+
+ let boxResult37  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow37);
+ //console.log(boxResult7);
+
+ let boxResult38  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow38);
+ //console.log(boxResult8);
+
+ let boxResult39  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow39);
+ //console.log(boxResult9);
+
+ let boxResult40  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow40);
+ //console.log(boxResult10);
+
+ let boxResult41  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+   return elements.length;
+ }, pageGridOneRow41);
+ //console.log(boxResult1);
+
+ let boxResult42  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow42);
+ //console.log(boxResult2);
+
+ let boxResult43  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow43);
+ //console.log(boxResult3);
+
+ let boxResult44  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow44);
+ //console.log(boxResult4);
+
+ let boxResult45  = await page.evaluate((sel) => {
+ let elements = Array.from(document.querySelectorAll(sel));
+   return elements.length;
+ }, pageGridOneRow45);
+ //console.log(boxResult5);
+
+ let boxResult46  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+       return elements.length;
+ }, pageGridOneRow46);
+ //console.log(boxResult6);
+
+ let boxResult47  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow47);
+ //console.log(boxResult7);
+
+ let boxResult48  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow48);
+ //console.log(boxResult8);
+
+ let boxResult49  = await page.evaluate((sel) => {
+     let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow49);
+ //console.log(boxResult9);
+
+ let boxResult50  = await page.evaluate((sel) => {
+   let elements = Array.from(document.querySelectorAll(sel));
+     return elements.length;
+ }, pageGridOneRow50);
+ //console.log(boxResult10);
+
+ let boxNumbers = (boxResult1+boxResult2+boxResult3+boxResult4+boxResult5+boxResult6+boxResult7+boxResult8+boxResult9+boxResult10+
+   boxResult11+boxResult12+boxResult13+boxResult14+boxResult15+boxResult16+boxResult17+boxResult18+boxResult19+boxResult20+
+   boxResult21+boxResult22+boxResult23+boxResult24+boxResult25+boxResult26+boxResult27+boxResult28+boxResult29+boxResult30+
+   boxResult31+boxResult32+boxResult33+boxResult34+boxResult35+boxResult36+boxResult37+boxResult38+boxResult39+boxResult40+
+   boxResult41+boxResult42+boxResult43+boxResult44+boxResult45+boxResult46+boxResult47+boxResult48+boxResult49+boxResult50
+ );
+ boxNumbers  = boxNumbers -1;
+
+ for (let i = 0; i <= boxNumbers ; i++) 
+ {
+
+   let boxSelector = boxResults.replace("INDEX_2", (i+1));
+   boxSelector = boxSelector.replace("INDEX",pageGridId);
+   //console.log(boxSelector);
+   let bedSelector = bedResults.replace("INDEX_2",(i+1));
+   bedSelector = bedSelector.replace("INDEX",pageGridId);
+   //console.log(bedSelector);
+   let bathSelector = bathResults.replace("INDEX_2",(i+1));
+   bathSelector = bathSelector.replace("INDEX",pageGridId);
+   //console.log(bathSelector);
+   let grossAreaSelector = grossAreaResults.replace("INDEX_2", (i+1));
+   grossAreaSelector = grossAreaSelector.replace("INDEX",pageGridId);
+   // console.log(grossAreaSelector);
+   let livingAreaSelector = livingAreaResults.replace("INDEX_2", (i+1));
+   livingAreaSelector = livingAreaSelector.replace("INDEX",pageGridId);
+
+   let poolSelector = poolResults.replace("INDEX_2", (i+1));
+   poolSelector = poolSelector.replace("INDEX",pageGridId);
+
+   let waterFrontSelector = waterFrontResults.replace("INDEX_2", (i+1));
+   waterFrontSelector = waterFrontSelector.replace("INDEX",pageGridId);
+
+   let builtSelector = builtResults.replace("INDEX_2", (i+1));
+   builtSelector = builtSelector.replace("INDEX",pageGridId);
+
+   let foreclosureSelector = foreclosureResults.replace("INDEX_2", (i+1));
+   foreclosureSelector = foreclosureSelector.replace("INDEX",pageGridId);
     
     let box_result = await page.evaluate((sel) => {
     let element = document.querySelector(sel);
       return element? element.innerHTML:null;
       }, boxSelector);
   
-    let bedBath_result = await page.evaluate((sel) => {
+    let bed_result = await page.evaluate((sel) => {
+     let element = document.querySelector(sel);
+          return element? element.innerHTML:null;
+    }, bedSelector);
+  
+    let bath_result = await page.evaluate((sel) => {
     let element = document.querySelector(sel);
       return element? element.innerHTML:null;
-      }, bedBathSelector);
+      }, bathSelector);
   
     let grossArea_result = await page.evaluate((sel) => {
     let element = document.querySelector(sel);
@@ -3503,54 +5570,23 @@ console.log("Starting Seminole");
      return element? element.innerHTML:null;
     }, foreclosureSelector);
   
-  res = box_result.split(",");
-  
-  
- //console.log(res);  
- 
- //var addr = res[0].split(" ");
- 
- //var address = addr[32] +  ' ' + addr[33] + ' ' + addr[34];
- 
- //console.log(address);
-
-
-// var zip = res[2].replace(/ /g, '');
- 
- //console.log(zip);
- 
- //console.log(bedBath_result);
- 
- temp = bedBath_result.split("/");
- 
- bed = temp[0];
- 
- content = bed.toString().replace(/\t/g, '').split('\n');
- 
- //console.log(content);
- 
- bed = content[1];
- 
- //console.log(bed);
- 
- baths = temp[1];
- 
- //console.log(baths);
- 
- grossLivingTemp = grossArea_result.toString().replace(/\t/g, '').split('\n');
- 
- gLiving = grossLivingTemp[1];
- 
- //console.log(gLiving);
- 
- livingTemp = livingArea_result.toString().replace(/\t/g, '').split('\n');
- 
- lArea = livingTemp[1];
+    res = box_result;
+	  
+	  
+    
+    
+    var gLiving = grossArea_result;
+    
+    
+    
+    var lArea = livingArea_result;
  
  
  await page.click(boxSelector);
  
- await page.waitForSelector('#psummary_data_div > div > h1:nth-child(4)',{delay:1000});
+// await page.waitForSelector('#psummary_data_div > div > h1:nth-child(4)',{delay:1000});
+
+    await page.waitFor(1000);
  
   address_result = await page.evaluate((sel) => {
   let element = document.querySelector(sel);
@@ -3566,27 +5602,27 @@ console.log("Starting Seminole");
  
   soldPrice_result = await page.evaluate((sel) => {
   let element = document.querySelector(sel);
-     return element? element.innerHTML:null;
+     return element? element.innerHTML:"0";
     }, soldPriceResults);
  
   taxValue_result = await page.evaluate((sel) => {
   let element = document.querySelector(sel);
-     return element? element.innerHTML:null;
+     return element? element.innerHTML:"0";
     }, taxValueResults);
  
   landValue_result = await page.evaluate((sel) => {
   let element = document.querySelector(sel);
-     return element? element.innerHTML:null;
+     return element? element.innerHTML:"0";
     }, landValueResults);
   
   buildValue_result = await page.evaluate((sel) => {
   let element = document.querySelector(sel);
-     return element? element.innerHTML:null;
+     return element? element.innerHTML:"0";
     }, buildValueResults);
   
   cityValue_result = await page.evaluate((sel) => {
   let element = document.querySelector(sel);
-     return element? element.innerHTML:null;
+     return element? element.innerHTML:"0";
     }, cityValueResults);
   
   list_length  = await page.evaluate((sel) => {
@@ -3836,7 +5872,7 @@ console.log("Starting Seminole");
     FinalName = capitalizeFirst(FirstName[0]);
   }
  
-  json = {'city':cityValue_result,'address':address_result,'unit':"",'zip':zip_result,'garea':gLiving,'larea':lArea,'beds':bed, 'baths':baths,'pool':pool_result,'wf':waterFront_result,'built':built_result,'frclosure':foreclosure_result,'sold_price':soldPrice,'tax_value':taxValue,'land_value':landValue,'build_value':buildValue,'owner_name':FinalName,'owner_address':ownerAddress_result,'owner_zip':ownerZip_result,'owner_city':ownerCity_result,'owner_state':ownerState_result,'owner_phone':ownerPhone_result};
+  json = {'city':cityValue_result,'address':address_result,'unit':"",'zip':zip_result,'garea':gLiving,'larea':lArea,'beds':bed_result, 'baths':bath_result,'pool':pool_result,'wf':waterFront_result,'built':built_result,'frclosure':foreclosure_result,'sold_price':soldPrice,'tax_value':taxValue,'land_value':landValue,'build_value':buildValue,'owner_name':FinalName,'owner_address':ownerAddress_result,'owner_zip':ownerZip_result,'owner_city':ownerCity_result,'owner_state':ownerState_result,'owner_phone':ownerPhone_result};
    
   data = [ownerName_result,address_result +" ,"+ cityValue_result + " ," + zip_result];
   dataInserted;
@@ -3867,7 +5903,7 @@ console.log("Starting Seminole");
       tempData.push(tempdatajson);
    }
  
-   podioJson = {"fields":{"title":ownerName_result,"lead-source":sourceData,"lead-intake-date":intakeDate,"motivation":7,"status-of-lead":14,"next-action":15,"property-address":address_result +" ,"+ cityValue_result+" ,"+zip_result ,"owners-address":ownerAddress_result +" ,"+ ownerCity_result+" ,"+ownerZip_result,"estimated-value":{"value":buildValue,"currency":"USD"},"beds-2":bed,"baths-2":baths,"square-feet":lArea,"year-built-2":built_result,"property-taxes-assement":taxValue,"last-sale-price":soldPrice}};
+   podioJson = {"fields":{"title":ownerName_result,"lead-source":sourceData,"lead-intake-date":intakeDate,"motivation":7,"status-of-lead":14,"next-action":15,"property-address":address_result +" ,"+ cityValue_result+" ,"+zip_result ,"owners-address":ownerAddress_result +" ,"+ ownerCity_result+" ,"+ownerZip_result,"estimated-value":{"value":buildValue,"currency":"USD"},"beds-2":bed_result,"baths-2":bath_result,"square-feet":lArea,"year-built-2":built_result,"property-taxes-assement":taxValue,"last-sale-price":soldPrice}};
 
     //console.log(podioJson);
     //console.log(intakeDate);
@@ -3882,7 +5918,7 @@ console.log("Starting Seminole");
    });
   
   
-  //console.log(dataInserted);
+  // //console.log(dataInserted);
   if(dataInserted > 0)
   {
     insertPODIOItem(podioJson);
@@ -4049,8 +6085,8 @@ await converter.json2csv(viewData, json2csvCallback);
   await page.waitFor(2000);
   if(viewData.length == 0)
   {
-   sendZeroResultsEmail();
- }
+      sendZeroResultsEmail();
+  }
  else
  {
       await sendTheEmail(fileName,fileNameLetterOne,fileNameLetterTwo);
