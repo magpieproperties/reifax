@@ -255,7 +255,7 @@ await page.keyboard.down('Enter');
 
   try
   {
-    await page.click(SearchSelector.toString()),{delay:4000};
+    await page.click(SearchSelector.toString(),{delay:4000});
   }
   catch(err)
   {
@@ -1125,49 +1125,48 @@ let pageGridOneRow50 = pageGridOne.replace("INDEX_2","50");
     var dataInserted;
      
     //console.log(data);
-
-    request = new Request("INSERT INTO Properties with (ROWLOCK) ([Ownername], [Address]) SELECT '"+ data[0].toString()+ "', '"+ data[1].toString()+ "' WHERE NOT EXISTS (SELECT * FROM dbo.Properties WHERE Address = '"+data[1].toString() +"');",
-    function(err,rowCount)
+    if(cityValue_result != '0')
     {
-      if(err)
+
+      request = new Request("INSERT INTO Properties with (ROWLOCK) ([Ownername], [Address]) SELECT '"+ data[0].toString()+ "', '"+ data[1].toString()+ "' WHERE NOT EXISTS (SELECT * FROM dbo.Properties WHERE Address = '"+data[1].toString() +"');",
+      function(err,rowCount)
       {
-         console.log(err);
-        }
-        //console.log(rowCount + ' row(s) returned');
+        if(err)
+        {
+          console.log(err);
+          }
+          //console.log(rowCount + ' row(s) returned');
+          dataInserted = rowCount;
+      }
+      );
+      await connection.execSql(request);
+
+      if(dataInserted > 0)
+      {
+          viewData.push(json);
+          tempData.push(tempdatajson);
+      }
+    
+        var podioJson = {"fields":{"title":ownerName_result,"lead-source":sourceData,"lead-intake-date":intakeDate,"motivation":7,"status-of-lead":14,"next-action":15,"property-address":address_result +" ,"+ cityValue_result+" ,"+zip_result ,"owners-address":ownerAddress_result +" ,"+ ownerCity_result+" ,"+ownerZip_result,"estimated-value":{"value":buildValue,"currency":"USD"},"beds-2":bed_result,"baths-2":bath_result,"square-feet":lArea,"year-built-2":built_result,"property-taxes-assement":taxValue,"last-sale-price":soldPrice}};
+
+        //console.log(podioJson);
+        //console.log(intakeDate);
+
+      
+      
+      
+      await request.on('done', function (rowCount, more, rows) {
         dataInserted = rowCount;
+      });
+      
+      
+      // //console.log(dataInserted);
+      if(dataInserted > 0)
+      {
+        insertPODIOItem(podioJson);
+      }
+    
     }
-     
-
-    );
-    await connection.execSql(request);
-
-    if(dataInserted > 0)
-    {
-        viewData.push(json);
-        tempData.push(tempdatajson);
-    }
-	 
-	    var podioJson = {"fields":{"title":ownerName_result,"lead-source":sourceData,"lead-intake-date":intakeDate,"motivation":7,"status-of-lead":14,"next-action":15,"property-address":address_result +" ,"+ cityValue_result+" ,"+zip_result ,"owners-address":ownerAddress_result +" ,"+ ownerCity_result+" ,"+ownerZip_result,"estimated-value":{"value":buildValue,"currency":"USD"},"beds-2":bed_result,"baths-2":bath_result,"square-feet":lArea,"year-built-2":built_result,"property-taxes-assement":taxValue,"last-sale-price":soldPrice}};
-
-	    //console.log(podioJson);
-      //console.log(intakeDate);
-
-     
-    
-    
-    await request.on('done', function (rowCount, more, rows) {
-      dataInserted = rowCount;
-
-
-     });
-    
-    
-    // //console.log(dataInserted);
-    if(dataInserted > 0)
-    {
-      insertPODIOItem(podioJson);
-    }
-	 
   }
 
 }
@@ -1222,7 +1221,7 @@ await page.keyboard.down('Enter');
   
 try
 {
-  await page.click(SearchSelector.toString()),{delay:4000};
+  await page.click(SearchSelector.toString(),{delay:4000});
 }
 catch(err)
 {
@@ -2066,53 +2065,56 @@ console.log("Starting Brevard");
   tempdatajson = {'owner_name':FinalName,'address':address_result,'city':capitalizeFirst(cityValue_result),'owner_address':ownerAddress_result,'owner_city':ownerCity_result,'owner_state':ownerState_result,'owner_zip':ownerZip_result};
   
   dataInserted;
-   
-  request = new Request("INSERT INTO Properties with (ROWLOCK) ([Ownername], [Address]) SELECT '"+ data[0].toString()+ "', '"+ data[1].toString()+ "' WHERE NOT EXISTS (SELECT * FROM dbo.Properties WHERE Address = '"+data[1].toString() +"');",
-  function(err,rowCount)
-  {
-    if(err)
+
+    if(cityValue_result != '0')
     {
-       console.log(err);
+   
+      request = new Request("INSERT INTO Properties with (ROWLOCK) ([Ownername], [Address]) SELECT '"+ data[0].toString()+ "', '"+ data[1].toString()+ "' WHERE NOT EXISTS (SELECT * FROM dbo.Properties WHERE Address = '"+data[1].toString() +"');",
+      function(err,rowCount)
+      {
+        if(err)
+        {
+          console.log(err);
+          }
+          //console.log(rowCount + ' row(s) returned');
+        dataInserted = rowCount;
       }
-      //console.log(rowCount + ' row(s) returned');
-    dataInserted = rowCount;
-  }
-   
+      
 
-  );
-  await connection.execSql(request);
+      );
+      await connection.execSql(request);
 
-   if(dataInserted > 0)
-   {
-      viewData.push(json);
-      tempData.push(tempdatajson);
+      if(dataInserted > 0)
+      {
+          viewData.push(json);
+          tempData.push(tempdatajson);
 
-      //console.log(tempdatajson);
+          //console.log(tempdatajson);
+      }
+    
+      podioJson = {"fields":{"title":ownerName_result,"lead-source":sourceData,"lead-intake-date":intakeDate,"motivation":7,"status-of-lead":14,"next-action":15,"property-address":address_result +" ,"+ cityValue_result+" ,"+zip_result ,"owners-address":ownerAddress_result +" ,"+ ownerCity_result+" ,"+ownerZip_result,"estimated-value":{"value":buildValue,"currency":"USD"},"beds-2":bed_result,"baths-2":bath_result,"square-feet":lArea,"year-built-2":built_result,"property-taxes-assement":taxValue,"last-sale-price":soldPrice}};
+
+        //console.log(podioJson);
+        //console.log(intakeDate);
+
+      
+      
+      
+        await request.on('done', function (rowCount, more, rows) {
+        dataInserted = rowCount;
+
+
+      });
+      
+      
+      //console.log(dataInserted);
+      if(dataInserted > 0)
+      {
+        insertPODIOItem(podioJson);
+      }
+    
+    }
    }
- 
-   podioJson = {"fields":{"title":ownerName_result,"lead-source":sourceData,"lead-intake-date":intakeDate,"motivation":7,"status-of-lead":14,"next-action":15,"property-address":address_result +" ,"+ cityValue_result+" ,"+zip_result ,"owners-address":ownerAddress_result +" ,"+ ownerCity_result+" ,"+ownerZip_result,"estimated-value":{"value":buildValue,"currency":"USD"},"beds-2":bed_result,"baths-2":bath_result,"square-feet":lArea,"year-built-2":built_result,"property-taxes-assement":taxValue,"last-sale-price":soldPrice}};
-
-    //console.log(podioJson);
-    //console.log(intakeDate);
-
-   
-  
-  
-    await request.on('done', function (rowCount, more, rows) {
-    dataInserted = rowCount;
-
-
-   });
-  
-  
-  // //console.log(dataInserted);
-  if(dataInserted > 0)
-  {
-    insertPODIOItem(podioJson);
-  }
- 
-}
-
 } 
 
 
@@ -2178,7 +2180,7 @@ await page.keyboard.down('Enter');
   
 try
 {
-  await page.click(SearchSelector.toString()),{delay:4000};
+  await page.click(SearchSelector.toString(),{delay:4000});
 }
 catch(err)
 {
@@ -3025,49 +3027,52 @@ await page.waitFor(3000);
   
   
   dataInserted;
-   
-  request = new Request("INSERT INTO Properties with (ROWLOCK) ([Ownername], [Address]) SELECT '"+ data[0].toString()+ "', '"+ data[1].toString()+ "' WHERE NOT EXISTS (SELECT * FROM dbo.Properties WHERE Address = '"+data[1].toString() +"');",
-  function(err,rowCount)
-  {
-    if(err)
+
+  if(cityValue_result != '0')
     {
-       console.log(err);
-      }
-      //console.log(rowCount + ' row(s) returned');
+   
+    request = new Request("INSERT INTO Properties with (ROWLOCK) ([Ownername], [Address]) SELECT '"+ data[0].toString()+ "', '"+ data[1].toString()+ "' WHERE NOT EXISTS (SELECT * FROM dbo.Properties WHERE Address = '"+data[1].toString() +"');",
+    function(err,rowCount)
+    {
+      if(err)
+      {
+         console.log(err);
+        }
+        //console.log(rowCount + ' row(s) returned');
+        dataInserted = rowCount;
+    }
+    
+
+    );
+    await connection.execSql(request);
+
+    if(dataInserted > 0)
+     {
+        viewData.push(json);
+        tempData.push(tempdatajson);
+     }
+  
+     podioJson = {"fields":{"title":ownerName_result,"lead-source":sourceData,"lead-intake-date":intakeDate,"motivation":7,"status-of-lead":14,"next-action":15,"property-address":address_result +" ,"+ cityValue_result+" ,"+zip_result ,"owners-address":ownerAddress_result +" ,"+ ownerCity_result+" ,"+ownerZip_result,"estimated-value":{"value":buildValue,"currency":"USD"},"beds-2":bed_result,"baths-2":bath_result,"square-feet":lArea,"year-built-2":built_result,"property-taxes-assement":taxValue,"last-sale-price":soldPrice}};
+
+      //console.log(podioJson);
+      //console.log(intakeDate);
+
+    
+    
+    
+      await request.on('done', function (rowCount, more, rows) {
       dataInserted = rowCount;
+
+
+     });
+    
+    
+    //console.log(dataInserted);
+    if(dataInserted > 0)
+    {
+      insertPODIOItem(podioJson);
+    }
   }
-   
-
-  );
-  await connection.execSql(request);
-
-  if(dataInserted > 0)
-   {
-      viewData.push(json);
-      tempData.push(tempdatajson);
-   }
- 
-   podioJson = {"fields":{"title":ownerName_result,"lead-source":sourceData,"lead-intake-date":intakeDate,"motivation":7,"status-of-lead":14,"next-action":15,"property-address":address_result +" ,"+ cityValue_result+" ,"+zip_result ,"owners-address":ownerAddress_result +" ,"+ ownerCity_result+" ,"+ownerZip_result,"estimated-value":{"value":buildValue,"currency":"USD"},"beds-2":bed_result,"baths-2":bath_result,"square-feet":lArea,"year-built-2":built_result,"property-taxes-assement":taxValue,"last-sale-price":soldPrice}};
-
-    //console.log(podioJson);
-    //console.log(intakeDate);
-
-   
-  
-  
-    await request.on('done', function (rowCount, more, rows) {
-    dataInserted = rowCount;
-
-
-   });
-  
-  
-  // //console.log(dataInserted);
-  if(dataInserted > 0)
-  {
-    insertPODIOItem(podioJson);
-  }
- 
 }
 
 }//end of Marion
@@ -3096,32 +3101,6 @@ await page.keyboard.press('ArrowDown',{delay:250});
 await page.keyboard.press('ArrowDown',{delay:250});
 await page.keyboard.press('ArrowDown',{delay:250});
 await page.keyboard.press('ArrowDown',{delay:250});
-//await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
 
 await page.keyboard.down('Enter'); 
 
@@ -3130,7 +3109,7 @@ await page.keyboard.down('Enter');
   
 try
 {
-  await page.click(SearchSelector.toString()),{delay:4000};
+  await page.click(SearchSelector.toString(),{delay:4000});
 }
 catch(err)
 {
@@ -3975,50 +3954,53 @@ console.log("Starting Polk");
 
   tempdatajson = {'owner_name':OwnerName,'address':address_result,'city':capitalizeFirst(cityValue_result),'owner_address':ownerAddress_result,'owner_city':ownerCity_result,'owner_state':ownerState_result,'owner_zip':ownerZip_result};
   
+  if(cityValue_result != '0')
+    {
    
-  request = new Request("INSERT INTO Properties with (ROWLOCK) ([Ownername], [Address]) SELECT '"+ data[0].toString()+ "', '"+ data[1].toString()+ "' WHERE NOT EXISTS (SELECT * FROM dbo.Properties WHERE Address = '"+data[1].toString() +"');",
-  function(err,rowCount)
-  {
-    if(err)
-     {
-       console.log(err);
+      request = new Request("INSERT INTO Properties with (ROWLOCK) ([Ownername], [Address]) SELECT '"+ data[0].toString()+ "', '"+ data[1].toString()+ "' WHERE NOT EXISTS (SELECT * FROM dbo.Properties WHERE Address = '"+data[1].toString() +"');",
+      function(err,rowCount)
+      {
+        if(err)
+         {
+           console.log(err);
+          }
+          //console.log(rowCount + ' row(s) returned');
+          dataInserted = rowCount;
       }
-      //console.log(rowCount + ' row(s) returned');
-      dataInserted = rowCount;
+      
+
+      );
+      await connection.execSql(request);
+
+      if(dataInserted > 0)
+      {
+          viewData.push(json);
+          tempData.push(tempdatajson);
+      }
+    
+       podioJson = {"fields":{"title":ownerName_result,"lead-source":sourceData,"lead-intake-date":intakeDate,"motivation":7,"status-of-lead":14,"next-action":15,"property-address":address_result +" ,"+ cityValue_result+" ,"+zip_result ,"owners-address":ownerAddress_result +" ,"+ ownerCity_result+" ,"+ownerZip_result,"estimated-value":{"value":buildValue,"currency":"USD"},"beds-2":bed_result,"baths-2":bath_result,"square-feet":lArea,"year-built-2":built_result,"property-taxes-assement":taxValue,"last-sale-price":soldPrice}};
+
+        //console.log(podioJson);
+        //console.log(intakeDate);
+
+      
+      
+      
+        await request.on('done', function (rowCount, more, rows) {
+        dataInserted = rowCount;
+
+
+       });
+      
+      
+      //console.log(dataInserted);
+      if(dataInserted > 0)
+      {
+        insertPODIOItem(podioJson);
+      }
+    
+    }
   }
-   
-
-  );
-  await connection.execSql(request);
-
-  if(dataInserted > 0)
-  {
-      viewData.push(json);
-      tempData.push(tempdatajson);
-  }
- 
-   podioJson = {"fields":{"title":ownerName_result,"lead-source":sourceData,"lead-intake-date":intakeDate,"motivation":7,"status-of-lead":14,"next-action":15,"property-address":address_result +" ,"+ cityValue_result+" ,"+zip_result ,"owners-address":ownerAddress_result +" ,"+ ownerCity_result+" ,"+ownerZip_result,"estimated-value":{"value":buildValue,"currency":"USD"},"beds-2":bed_result,"baths-2":bath_result,"square-feet":lArea,"year-built-2":built_result,"property-taxes-assement":taxValue,"last-sale-price":soldPrice}};
-
-    //console.log(podioJson);
-    //console.log(intakeDate);
-
-   
-  
-  
-    await request.on('done', function (rowCount, more, rows) {
-    dataInserted = rowCount;
-
-
-   });
-  
-  
-  // //console.log(dataInserted);
-  if(dataInserted > 0)
-  {
-    insertPODIOItem(podioJson);
-  }
- 
-}
 
 }//end of Polk 
 
@@ -4046,41 +4028,13 @@ await page.keyboard.press('ArrowDown',{delay:250});
 await page.keyboard.press('ArrowDown',{delay:250});
 await page.keyboard.press('ArrowDown',{delay:250});
 await page.keyboard.press('ArrowDown',{delay:250});
-//await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
 
 await page.keyboard.down('Enter'); 
-
-
 
   
 try
 {
-  await page.click(SearchSelector.toString()),{delay:4000};
+  await page.click(SearchSelector.toString(),{delay:4000});
 }
 catch(err)
 {
@@ -4927,49 +4881,50 @@ pageNumber = pageNumber.replace('of ','');
 
   tempdatajson = {'owner_name':OwnerName,'address':address_result,'city':capitalizeFirst(cityValue_result),'owner_address':ownerAddress_result,'owner_city':ownerCity_result,'owner_state':ownerState_result,'owner_zip':ownerZip_result};
   
-   
-  request = new Request("INSERT INTO Properties with (ROWLOCK) ([Ownername], [Address]) SELECT '"+ data[0].toString()+ "', '"+ data[1].toString()+ "' WHERE NOT EXISTS (SELECT * FROM dbo.Properties WHERE Address = '"+data[1].toString() +"');",
-  function(err,rowCount)
-  {
-    if(err)
-    {
-       console.log(err);
+  if(cityValue_result != '0')
+    { 
+      request = new Request("INSERT INTO Properties with (ROWLOCK) ([Ownername], [Address]) SELECT '"+ data[0].toString()+ "', '"+ data[1].toString()+ "' WHERE NOT EXISTS (SELECT * FROM dbo.Properties WHERE Address = '"+data[1].toString() +"');",
+      function(err,rowCount)
+      {
+        if(err)
+        {
+          console.log(err);
+          }
+          //console.log(rowCount + ' row(s) returned');
+          dataInserted = rowCount;
       }
-      //console.log(rowCount + ' row(s) returned');
-      dataInserted = rowCount;
-  }
-   
+      
 
-  );
-  await connection.execSql(request);
+      );
+      await connection.execSql(request);
 
-   if(dataInserted > 0)
-   {
-      viewData.push(json);
-      tempData.push(tempdatajson);
-   }
- 
-   podioJson = {"fields":{"title":ownerName_result,"lead-source":sourceData,"lead-intake-date":intakeDate,"motivation":7,"status-of-lead":14,"next-action":15,"property-address":address_result +" ,"+ cityValue_result+" ,"+zip_result ,"owners-address":ownerAddress_result +" ,"+ ownerCity_result+" ,"+ownerZip_result,"estimated-value":{"value":buildValue,"currency":"USD"},"beds-2":bed_result,"baths-2":bath_result,"square-feet":lArea,"year-built-2":built_result,"property-taxes-assement":taxValue,"last-sale-price":soldPrice}};
+      if(dataInserted > 0)
+      {
+          viewData.push(json);
+          tempData.push(tempdatajson);
+      }
+    
+      podioJson = {"fields":{"title":ownerName_result,"lead-source":sourceData,"lead-intake-date":intakeDate,"motivation":7,"status-of-lead":14,"next-action":15,"property-address":address_result +" ,"+ cityValue_result+" ,"+zip_result ,"owners-address":ownerAddress_result +" ,"+ ownerCity_result+" ,"+ownerZip_result,"estimated-value":{"value":buildValue,"currency":"USD"},"beds-2":bed_result,"baths-2":bath_result,"square-feet":lArea,"year-built-2":built_result,"property-taxes-assement":taxValue,"last-sale-price":soldPrice}};
 
-    //console.log(podioJson);
-    //console.log(intakeDate);
+        //console.log(podioJson);
+        //console.log(intakeDate);
 
-   
-  
-  
-    await request.on('done', function (rowCount, more, rows) {
-    dataInserted = rowCount;
+      
+      
+      
+        await request.on('done', function (rowCount, more, rows) {
+        dataInserted = rowCount;
 
 
-   });
-  
-  
-  // //console.log(dataInserted);
-  if(dataInserted > 0)
-  {
-    insertPODIOItem(podioJson);
-  }
- 
+      });
+      
+      
+      // //console.log(dataInserted);
+      if(dataInserted > 0)
+      {
+        insertPODIOItem(podioJson);
+      }
+    }
 }
 
 }//end of Volusia
@@ -4994,45 +4949,13 @@ await page.keyboard.press('ArrowUp',{delay:250});
 await page.keyboard.press('ArrowUp',{delay:250});
 await page.keyboard.press('ArrowUp',{delay:250});
 await page.keyboard.press('ArrowUp',{delay:250});
-//await page.keyboard.press('ArrowDown',{delay:250});
-//await page.keyboard.press('ArrowDown',{delay:250});
-//await page.keyboard.press('ArrowDown',{delay:250});
-//await page.keyboard.press('ArrowDown',{delay:250});
-//await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
-// await page.keyboard.press('ArrowDown',{delay:250});
 
 await page.keyboard.down('Enter'); 
-
-
 
   
 try
 {
-  await page.click(SearchSelector.toString()),{delay:3000};
+  await page.click(SearchSelector.toString(),{delay:4000});
 }
 catch(err)
 {
@@ -5881,50 +5804,46 @@ pageNumber = pageNumber.replace('of ','');
 
   tempdatajson = {'owner_name':FinalName,'address':address_result,'city':capitalizeFirst(cityValue_result),'owner_address':ownerAddress_result,'owner_city':ownerCity_result,'owner_state':ownerState_result,'owner_zip':ownerZip_result};
   
-   
-  request = new Request("INSERT INTO Properties with (ROWLOCK) ([Ownername], [Address]) SELECT '"+ data[0].toString()+ "', '"+ data[1].toString()+ "' WHERE NOT EXISTS (SELECT * FROM dbo.Properties WHERE Address = '"+data[1].toString() +"');",
-  function(err,rowCount)
-  {
-    if(err)
+    if(cityValue_result != '0')
+    {   
+    request = new Request("INSERT INTO Properties with (ROWLOCK) ([Ownername], [Address]) SELECT '"+ data[0].toString()+ "', '"+ data[1].toString()+ "' WHERE NOT EXISTS (SELECT * FROM dbo.Properties WHERE Address = '"+data[1].toString() +"');",
+    function(err,rowCount)
     {
-       console.log(err);
-      }
-      //console.log(rowCount + ' row(s) returned');
+      if(err)
+      {
+        console.log(err);
+        }
+        //console.log(rowCount + ' row(s) returned');
+        dataInserted = rowCount;
+    }
+    
+
+    );
+    await connection.execSql(request);
+
+    if(dataInserted > 0)
+    {
+        viewData.push(json);
+        tempData.push(tempdatajson);
+    }
+  
+    podioJson = {"fields":{"title":ownerName_result,"lead-source":sourceData,"lead-intake-date":intakeDate,"motivation":7,"status-of-lead":14,"next-action":15,"property-address":address_result +" ,"+ cityValue_result+" ,"+zip_result ,"owners-address":ownerAddress_result +" ,"+ ownerCity_result+" ,"+ownerZip_result,"estimated-value":{"value":buildValue,"currency":"USD"},"beds-2":bed_result,"baths-2":bath_result,"square-feet":lArea,"year-built-2":built_result,"property-taxes-assement":taxValue,"last-sale-price":soldPrice}};
+
+      //console.log(podioJson);
+      //console.log(intakeDate);
+      await request.on('done', function (rowCount, more, rows) {
       dataInserted = rowCount;
+    });
+    
+    
+    //console.log(dataInserted);
+    if(dataInserted > 0)
+    {
+      insertPODIOItem(podioJson);
+    }
+  
   }
-   
-
-  );
-  await connection.execSql(request);
-
-   if(dataInserted > 0)
-   {
-      viewData.push(json);
-      tempData.push(tempdatajson);
-   }
- 
-   podioJson = {"fields":{"title":ownerName_result,"lead-source":sourceData,"lead-intake-date":intakeDate,"motivation":7,"status-of-lead":14,"next-action":15,"property-address":address_result +" ,"+ cityValue_result+" ,"+zip_result ,"owners-address":ownerAddress_result +" ,"+ ownerCity_result+" ,"+ownerZip_result,"estimated-value":{"value":buildValue,"currency":"USD"},"beds-2":bed_result,"baths-2":bath_result,"square-feet":lArea,"year-built-2":built_result,"property-taxes-assement":taxValue,"last-sale-price":soldPrice}};
-
-    //console.log(podioJson);
-    //console.log(intakeDate);
-
-   
-  
-  
-    await request.on('done', function (rowCount, more, rows) {
-    dataInserted = rowCount;
-
-
-   });
-  
-  
-  // //console.log(dataInserted);
-  if(dataInserted > 0)
-  {
-    insertPODIOItem(podioJson);
-  }
- 
-}
+ }
 
 } 
 
