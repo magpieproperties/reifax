@@ -197,7 +197,8 @@ await page.keyboard.press('ArrowDown',{delay:250});
 await page.keyboard.press('ArrowDown',{delay:250});
 await page.keyboard.press('ArrowDown',{delay:250});
 await page.keyboard.press('ArrowDown',{delay:250});
-await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.press('ArrowDown',{delay:250});
 await page.keyboard.down('Enter');
 
 
@@ -263,7 +264,8 @@ await page.keyboard.down('Enter');
 	 // await page.click('#ext-gen130'),{delay:5000};
   }
   
-  
+  await page.waitFor(4000);
+
   try
   {
     // await page.waitForSelector('#result_orderby_asc');
@@ -1160,7 +1162,7 @@ let pageGridOneRow50 = pageGridOne.replace("INDEX_2","50");
       });
       
       
-      // //console.log(dataInserted);
+      //console.log(dataInserted);
       if(dataInserted > 0)
       {
         insertPODIOItem(podioJson);
@@ -1212,8 +1214,8 @@ await page.keyboard.press('ArrowUp',{delay:250});
 await page.keyboard.press('ArrowUp',{delay:250});
 await page.keyboard.press('ArrowUp',{delay:250});
 await page.keyboard.press('ArrowUp',{delay:250});
-await page.keyboard.press('ArrowUp',{delay:250});
-//await page.keyboard.press('ArrowUp',{delay:250});
+// await page.keyboard.press('ArrowUp',{delay:250});
+// await page.keyboard.press('ArrowUp',{delay:250});
 await page.keyboard.down('Enter'); 
 
 
@@ -2169,7 +2171,7 @@ await page.keyboard.press('ArrowDown',{delay:250});
 await page.keyboard.press('ArrowDown',{delay:250});
 await page.keyboard.press('ArrowDown',{delay:250});
 await page.keyboard.press('ArrowDown',{delay:250});
-await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.press('ArrowDown',{delay:250});
 //await page.keyboard.press('ArrowDown',{delay:250});
 //await page.keyboard.press('ArrowDown',{delay:250});
 //await page.keyboard.press('ArrowDown',{delay:250});
@@ -3090,6 +3092,7 @@ catch(err)
 //await page.waitForNavigation({waitUntil:'networkidle0'});
 await page.click("#ext-gen201", {delay:2000});
 
+await page.keyboard.press('ArrowDown',{delay:250});
 await page.keyboard.press('ArrowDown',{delay:250});
 await page.keyboard.press('ArrowDown',{delay:250});
 await page.keyboard.press('ArrowDown',{delay:250});
@@ -4028,6 +4031,7 @@ await page.keyboard.press('ArrowDown',{delay:250});
 await page.keyboard.press('ArrowDown',{delay:250});
 await page.keyboard.press('ArrowDown',{delay:250});
 await page.keyboard.press('ArrowDown',{delay:250});
+//await page.keyboard.press('ArrowDown',{delay:250});
 
 await page.keyboard.down('Enter'); 
 
@@ -4947,8 +4951,8 @@ await page.keyboard.press('ArrowUp',{delay:250});
 await page.keyboard.press('ArrowUp',{delay:250});
 await page.keyboard.press('ArrowUp',{delay:250});
 await page.keyboard.press('ArrowUp',{delay:250});
-await page.keyboard.press('ArrowUp',{delay:250});
-await page.keyboard.press('ArrowUp',{delay:250});
+// await page.keyboard.press('ArrowUp',{delay:250});
+// await page.keyboard.press('ArrowUp',{delay:250});
 
 await page.keyboard.down('Enter'); 
 
